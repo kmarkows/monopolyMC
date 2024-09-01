@@ -1,0 +1,25 @@
+#include "Game.hpp"
+#include <cinttypes>
+#include <cstdlib>
+#include <iostream>
+
+#include "./ut/mocks/MockDiceThrower.hpp"
+
+int main()
+{
+	srand((unsigned)time(NULL));
+	// Player player1(0);
+	// player1.print();
+	// const auto diceResult = player1.throwDice();
+	// std::cout << (int)diceResult.getFirst() << " " << (int)diceResult.getSecond() << std::endl;
+
+	DiceThrower diceThrower;
+	Game game(2000, 8, &diceThrower);
+	// game.printPlayersData();
+
+	game.play();
+
+	game.printTilesVisitedCounters();
+
+	return 0;
+}
