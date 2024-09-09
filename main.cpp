@@ -15,6 +15,7 @@ int main()
 
 	DiceThrower diceThrower;
 	Game game(2000, 8, &diceThrower);
+	game.enableBuying();
 	// game.printPlayersData();
 
 	game.play();

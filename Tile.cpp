@@ -5,6 +5,11 @@ const std::string Tile::getType() const
 	return type;
 }
 
+const uint8_t Tile::getId() const
+{
+	return tileId;
+}
+
 const uint8_t Tile::getOwnerId() const
 {
 	return ownerId;

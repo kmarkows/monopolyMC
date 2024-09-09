@@ -1,3 +1,5 @@
+#pragma once
+
 #include "DiceResult.hpp"
 #include "Tile.hpp"
 #include <cinttypes>
@@ -11,6 +13,7 @@ class Player
 	Player(uint8_t givenId) : id{givenId} {};
 
 	const bool isInPrison() const;
+    const bool hasGetOutOfPrisonCard() const;
 	const uint8_t getCurrTile() const;
 	const uint8_t getId() const;
 	const uint8_t getTurnsSpentInPrison() const;
@@ -18,6 +21,8 @@ class Player
 	const bool isPlaying() const;
 
 	void goToPrison();
+    void acquireGetOutOfPrisonCard();
+    void useGetOutOfPrisonCard();
 	void getOutOfPrison();
 	void setCurrTile(const uint8_t nextTile);
 	void incrementTurnsSpentInPrison();
@@ -33,6 +38,7 @@ class Player
 	uint8_t id{invalidPlayerId};
 	uint8_t currTile{0};
 	bool prison{false};
+    bool getOutOfPrisonCard{false};
 	bool playing{true};
 	uint8_t turnsSpentInPrison{0};
 	int balance{startingBalance};

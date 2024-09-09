@@ -23,6 +23,7 @@ void Game::play()
 					{
 						setPrison(player);
 					}
+                    // Cards here so when player is moved on tile he lands can be handled
 				}
 				else
 				{
@@ -41,12 +42,15 @@ void Game::play()
 		// printPlayersData();
 		// std::cout << std::endl;
 	}
+	// printPropertiesData();
 }
 
 void Game::handleTile(Player &player)
 {
-    // std::cout << "Game::handleTile" << std::endl;
+	// std::cout << "Game::handleTile" << std::endl;
 	const auto currTileType = board.getTiles().at(player.getCurrTile()).getType();
+
+	// TO DO community chest and chance handling
 
 	if (currTileType == "IncomeTax" or currTileType == "LuxuryTax")
 	{
@@ -55,22 +59,34 @@ void Game::handleTile(Player &player)
 		return;
 	}
 
-	// TO DO railroad handling
+	if (currTileType == "Railroad" and isBuyingEnabled)
+	{
+		handleBuyProperty(player, currTileType);
+		return;
+	}
 
-	// TO DO utilities handling
-
-	// TO DO community chest and chance handling
+	if (currTileType == "Utilities" and isBuyingEnabled)
+	{
+		handleBuyProperty(player, currTileType);
+		return;
+	}
 
 	if (currTileType == "Property" and isBuyingEnabled)
 	{
-		// always buy strategy
-		const int tileCost = board.getTiles().at(player.getCurrTile()).getCost();
-		const uint8_t ownerId = board.getTiles().at(player.getCurrTile()).getOwnerId();
-		if (ownerId == invalidPlayerId and player.getCurrentBalance() > tileCost)
-		{
-			board.getTilesForModification().at(player.getCurrTile()).setOwnerId(player.getId());
-			player.subtractBalance(tileCost);
-		}
+		handleBuyProperty(player, currTileType);
+		return;
+	}
+}
+
+void Game::handleBuyProperty(Player &player, const std::string &currTileType)
+{
+	// always buy strategy
+	const int tileCost = board.getTiles().at(player.getCurrTile()).getCost();
+	const uint8_t ownerId = board.getTiles().at(player.getCurrTile()).getOwnerId();
+	if (ownerId == invalidPlayerId and player.getCurrentBalance() > tileCost)
+	{
+		board.getTilesForModification().at(player.getCurrTile()).setOwnerId(player.getId());
+		player.subtractBalance(tileCost);
 	}
 }
 
@@ -169,6 +185,17 @@ void Game::printPlayersData()
 	}
 }
 
+void Game::printPropertiesData()
+{
+	for (const auto &tile : getBoardData().getTiles())
+	{
+		if (tile.getType() == "Property")
+		{
+			std::cout << "tile:" << (int)tile.getId() << " owner:" << (int)tile.getOwnerId() << std::endl;
+		}
+	}
+}
+
 std::vector<Player> &Game::getPlayersDataForManipulation()
 {
 	return players;
@@ -179,12 +206,12 @@ const std::vector<Player> &Game::getPlayersData() const
 	return players;
 }
 
-const Board Game::getBoardData() const
+const Board &Game::getBoardData() const
 {
-    return board;
+	return board;
 }
 
 void Game::enableBuying()
 {
-    isBuyingEnabled = true;
+	isBuyingEnabled = true;
 }
