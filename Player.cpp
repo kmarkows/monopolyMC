@@ -16,6 +16,11 @@ const bool Player::hasGetOutOfPrisonCard() const
 	return getOutOfPrisonCard;
 }
 
+const uint8_t Player::getStayingInPrisonStrategy() const
+{
+	return stayingInPrisonStrategy;
+}
+
 const uint8_t Player::getCurrTile() const
 {
 	return currTile;
@@ -53,12 +58,17 @@ void Player::acquireGetOutOfPrisonCard()
 
 void Player::useGetOutOfPrisonCard()
 {
-    getOutOfPrisonCard = false;
+	getOutOfPrisonCard = false;
 }
 
 void Player::getOutOfPrison()
 {
 	prison = false;
+}
+
+void Player::setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrategy)
+{
+	stayingInPrisonStrategy = givenStayingInPrisonStrategy;
 }
 
 void Player::setCurrTile(const uint8_t nextTile)

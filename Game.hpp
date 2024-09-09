@@ -26,7 +26,6 @@ class Game
   private:
 	void createPlayersData();
 	void handleMovement(Player &player);
-	void handleGetOutOfPrison(Player &player);
 	void handleTile(Player &player);
 	void handleBuyProperty(Player &player, const std::string &currTileType);
 	void setPrison(Player &player);

@@ -13,7 +13,8 @@ class Player
 	Player(uint8_t givenId) : id{givenId} {};
 
 	const bool isInPrison() const;
-    const bool hasGetOutOfPrisonCard() const;
+	const bool hasGetOutOfPrisonCard() const;
+	const uint8_t getStayingInPrisonStrategy() const;
 	const uint8_t getCurrTile() const;
 	const uint8_t getId() const;
 	const uint8_t getTurnsSpentInPrison() const;
@@ -21,9 +22,10 @@ class Player
 	const bool isPlaying() const;
 
 	void goToPrison();
-    void acquireGetOutOfPrisonCard();
-    void useGetOutOfPrisonCard();
+	void acquireGetOutOfPrisonCard();
+	void useGetOutOfPrisonCard();
 	void getOutOfPrison();
+	void setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrategy);
 	void setCurrTile(const uint8_t nextTile);
 	void incrementTurnsSpentInPrison();
 	void resetTurnsSpentInPrison();
@@ -38,8 +40,10 @@ class Player
 	uint8_t id{invalidPlayerId};
 	uint8_t currTile{0};
 	bool prison{false};
-    bool getOutOfPrisonCard{false};
+	bool getOutOfPrisonCard{false};
 	bool playing{true};
 	uint8_t turnsSpentInPrison{0};
 	int balance{startingBalance};
+
+	uint8_t stayingInPrisonStrategy{0}; // 0 - 1 - 2, as short - if has Cards uses it - as long
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdlib>
+
 #include "DiceResult.hpp"
 
 class DiceThrower

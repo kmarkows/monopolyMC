@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "GetOutOfPrisonHandler.hpp"
 
 Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower)
 {
@@ -23,12 +24,17 @@ void Game::play()
 					{
 						setPrison(player);
 					}
-                    // Cards here so when player is moved on tile he lands can be handled
 				}
 				else
 				{
-					handleGetOutOfPrison(player);
+					// TO DO first you try to get out of prison then you move
+
+					// TO DO use get out of prison handler
+					// handleGetOutOfPrison(player);
+					GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
+					getOutOfPrisonHandler.handle();
 				}
+				// Cards here so when player is moved on tile he lands can be handled
 				handleTile(player);
 
 				collectTilesData(player.getCurrTile());
@@ -119,33 +125,6 @@ void Game::handleMovement(Player &player)
 
 	nextTile = nextTile % numOfMonopolyBoradTiles;
 	player.setCurrTile(nextTile);
-}
-
-void Game::handleGetOutOfPrison(Player &player)
-{
-	const auto diceResult = diceThrower->throwDice();
-	if (player.getTurnsSpentInPrison() == 2)
-	{
-		player.getOutOfPrison();
-		auto nextTile = player.getCurrTile();
-		nextTile += (diceResult.getFirst() + diceResult.getSecond());
-		nextTile = nextTile % numOfMonopolyBoradTiles;
-		player.setCurrTile(nextTile);
-		return;
-	}
-	// TO DO choose to pay 50$ to get out of prison instantly
-	// std::cout << (int)diceResult.getFirst() << " " << (int)diceResult.getSecond() << std::endl;
-	// std::cout << "trying to get out of prison" << std::endl;
-	if (diceResult.getFirst() == diceResult.getSecond())
-	{
-		// std::cout << "got out of prison" << std::endl;
-		player.getOutOfPrison();
-	}
-	else
-	{
-		// std::cout << "increment get out of prison counter" << std::endl;
-		player.incrementTurnsSpentInPrison();
-	}
 }
 
 void Game::setPrison(Player &player)

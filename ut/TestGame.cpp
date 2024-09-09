@@ -48,13 +48,16 @@ TEST_F(TestGame, TestGetOutOfPrisonThrowingDouble)
 
     Game game(iterations, numOfPlayers, &mockDiceThrower);
 
+    constexpr uint8_t likesToStayInPrison = 2;
     game.getPlayersDataForManipulation().at(0).goToPrison();
     game.getPlayersDataForManipulation().at(0).setCurrTile(prisonTile);
+    game.getPlayersDataForManipulation().at(0).setStayingInPrisonStrategy(likesToStayInPrison);
 
     game.play();
 
+    const uint8_t finishTile = prisonTile + 12;
     EXPECT_EQ(game.getPlayersData().at(0).isInPrison(), false);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), prisonTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), finishTile);
 }
 
 TEST_F(TestGame, TestGetOutOfPrisonNotThrowingDouble)
@@ -65,14 +68,17 @@ TEST_F(TestGame, TestGetOutOfPrisonNotThrowingDouble)
 
     Game game(iterations, numOfPlayers, &mockDiceThrower);
 
+    constexpr uint8_t likesToStayInPrison = 2;
     game.getPlayersDataForManipulation().at(0).goToPrison();
     game.getPlayersDataForManipulation().at(0).setCurrTile(prisonTile);
+    game.getPlayersDataForManipulation().at(0).setStayingInPrisonStrategy(likesToStayInPrison);
 
     game.play();
 
     const uint8_t finishTile = prisonTile + 3;
     EXPECT_EQ(game.getPlayersData().at(0).isInPrison(), false);
     EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), finishTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(), startingBalance - prisonFine);
 }
 
 TEST_F(TestGame, TestGoingThroughStartTileAndGet200)
