@@ -32,8 +32,9 @@ void GetOutOfPrisonHandler::handle()
 		moveAfterLeavingPrison(diceResult);
 		return;
 	}
-	// std::cout << (int)diceResult.getFirst() << " " << (int)diceResult.getSecond() << std::endl;
-	// std::cout << "trying to get out of prison" << std::endl;
+	// std::cout << (int)diceResult.getFirst() << " " <<
+	// (int)diceResult.getSecond() << std::endl; std::cout << "trying to get out
+	// of prison" << std::endl;
 
 	if (diceResult.getFirst() == diceResult.getSecond())
 	{

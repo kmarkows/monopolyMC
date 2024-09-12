@@ -2,7 +2,7 @@
 
 #include "Card.hpp"
 
-constexpr uint8_t chanceCardNumber = 15;
+constexpr uint8_t chanceCardsNumber = 15;
 
 class Chance
 {
@@ -11,5 +11,5 @@ class Chance
 	const Card &getCardById(const uint8_t id) const;
 
   private:
-	std::array<Card, chanceCardNumber> cards;
+	std::array<Card, chanceCardsNumber> cards;
 };

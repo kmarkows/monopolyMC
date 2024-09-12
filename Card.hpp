@@ -1,20 +1,19 @@
 #pragma once
 
-#include "Board.hpp"
-#include "Player.hpp"
+#include "Game.hpp"
 #include "functional"
 
 class Card
 {
   public:
 	Card() = default;
-	Card(const std::function<void(Player &, Board &)> givenAction, const uint8_t givenId)
+	Card(const std::function<void(Game &, Player &)> givenAction, const uint8_t givenId)
 		: action{givenAction}, id{givenId} {};
 
-	void doAction(Player &player, Board &board) const;
+	void doAction(Game &game, Player &player) const;
 	const uint8_t getId() const;
 
   private:
 	uint8_t id;
-	std::function<void(Player &, Board &)> action;
+	std::function<void(Game &, Player &)> action;
 };

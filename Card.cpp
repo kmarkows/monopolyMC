@@ -1,8 +1,8 @@
 #include "Card.hpp"
 
-void Card::doAction(Player &player, Board &board) const
+void Card::doAction(Game &game, Player &player) const
 {
-	action(player, board);
+	action(game, player);
 }
 
 const uint8_t Card::getId() const

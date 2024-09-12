@@ -27,14 +27,12 @@ void Game::play()
 				}
 				else
 				{
-					// TO DO first you try to get out of prison then you move
-
-					// TO DO use get out of prison handler
-					// handleGetOutOfPrison(player);
 					GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
 					getOutOfPrisonHandler.handle();
 				}
-				// Cards here so when player is moved on tile he lands can be handled
+				// TO DOCards here so when player is moved on tile he lands can be
+				// handled
+
 				handleTile(player);
 
 				collectTilesData(player.getCurrTile());
@@ -55,8 +53,6 @@ void Game::handleTile(Player &player)
 {
 	// std::cout << "Game::handleTile" << std::endl;
 	const auto currTileType = board.getTiles().at(player.getCurrTile()).getType();
-
-	// TO DO community chest and chance handling
 
 	if (currTileType == "IncomeTax" or currTileType == "LuxuryTax")
 	{
@@ -87,6 +83,7 @@ void Game::handleTile(Player &player)
 void Game::handleBuyProperty(Player &player, const std::string &currTileType)
 {
 	// always buy strategy
+	// TO DO extract to new class BuyPropertyHandler
 	const int tileCost = board.getTiles().at(player.getCurrTile()).getCost();
 	const uint8_t ownerId = board.getTiles().at(player.getCurrTile()).getOwnerId();
 	if (ownerId == invalidPlayerId and player.getCurrentBalance() > tileCost)
@@ -105,7 +102,8 @@ void Game::handleMovement(Player &player)
 	while (throwCounter < 3 and isDouble)
 	{
 		auto diceResult = diceThrower->throwDice();
-		// std::cout << (int)diceResult.getFirst() << " " << (int)diceResult.getSecond() << std::endl;
+		// std::cout << (int)diceResult.getFirst() << " " <<
+		// (int)diceResult.getSecond() << std::endl;
 		isDouble = diceResult.getFirst() == diceResult.getSecond();
 		throwCounter++;
 

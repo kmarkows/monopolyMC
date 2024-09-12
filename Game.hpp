@@ -9,6 +9,7 @@
 class Game
 {
   public:
+	Game() = default;
 	Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower);
 	void play();
 
