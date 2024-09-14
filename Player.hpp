@@ -20,6 +20,8 @@ class Player
 	const uint8_t getTurnsSpentInPrison() const;
 	const int getCurrentBalance() const;
 	const bool isPlaying() const;
+	const bool hasInterActedWithTile() const;
+	const std::vector<uint8_t> &getOwnedTilesIds() const;
 
 	void goToPrison();
 	void acquireGetOutOfPrisonCard();
@@ -33,6 +35,9 @@ class Player
 	void addBalance(const int addition);
 	void subtractBalance(const int subtraction);
 	void setNotPlaying();
+	void setInteractedWithTile();
+	void resetInteractedWithTile();
+	void addOwnedTileId(const uint8_t newTileId);
 
 	void print();
 
@@ -44,6 +49,8 @@ class Player
 	bool playing{true};
 	uint8_t turnsSpentInPrison{0};
 	int balance{startingBalance};
+	bool interactedWithTile{false};
+	std::vector<uint8_t> ownedTilesIds{};
 
 	uint8_t stayingInPrisonStrategy{0}; // 0 - 1 - 2, as short - if has Cards uses it - as long
 };

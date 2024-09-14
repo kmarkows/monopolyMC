@@ -46,6 +46,16 @@ const bool Player::isPlaying() const
 	return playing;
 }
 
+const bool Player::hasInterActedWithTile() const
+{
+	return interactedWithTile;
+}
+
+const std::vector<uint8_t> &Player::getOwnedTilesIds() const
+{
+	return ownedTilesIds;
+}
+
 void Player::goToPrison()
 {
 	prison = true;
@@ -108,4 +118,19 @@ void Player::subtractBalance(const int subtraction)
 void Player::setNotPlaying()
 {
 	playing = false;
+}
+
+void Player::setInteractedWithTile()
+{
+	interactedWithTile = true;
+}
+
+void Player::resetInteractedWithTile()
+{
+	interactedWithTile = false;
+}
+
+void Player::addOwnedTileId(const uint8_t newTileId)
+{
+	ownedTilesIds.push_back(newTileId);
 }

@@ -14,7 +14,7 @@ class Board
   public:
 	Board();
 
-	const std::array<Tile, numOfMonopolyBoradTiles> getTiles() const;
+	const std::array<Tile, numOfMonopolyBoradTiles> &getTiles() const;
 	std::array<Tile, numOfMonopolyBoradTiles> &getTilesForModification();
 
   private:

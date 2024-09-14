@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "./ut/mocks/MockDiceThrower.hpp"
+#include "./ut/mocks/MockDiceThrowerSingle.hpp"
 
 int main()
 {
@@ -15,7 +16,8 @@ int main()
 	// (int)diceResult.getSecond() << std::endl;
 
 	DiceThrower diceThrower;
-	Game game(2000, 8, &diceThrower);
+	DiceThrowerSingle diceThrowerSingle;
+	Game game(2000, 8, &diceThrower, &diceThrowerSingle);
 	game.enableBuying();
 	// game.printPlayersData();
 

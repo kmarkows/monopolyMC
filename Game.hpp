@@ -2,6 +2,7 @@
 
 #include "Board.hpp"
 #include "DiceThrower.hpp"
+#include "DiceThrowerSingle.hpp"
 #include "Player.hpp"
 #include <map>
 #include <vector>
@@ -10,7 +11,8 @@ class Game
 {
   public:
 	Game() = default;
-	Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower);
+	Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower,
+		 const DiceThrowerSingle *givenDiceThrowerSingle);
 	void play();
 
 	void printPlayersData();
@@ -21,7 +23,9 @@ class Game
 	const std::vector<Player> &getPlayersData() const;
 
 	const Board &getBoardData() const;
+	Board &getBoardDataForModification();
 
+	const bool isBuyingEnabled() const;
 	void enableBuying();
 
   private:
@@ -37,8 +41,9 @@ class Game
 	uint8_t numOfPlayers;
 	std::vector<Player> players{};
 	const DiceThrower *diceThrower;
+	const DiceThrowerSingle *diceThrowerSingle;
 	Board board{};
-	bool isBuyingEnabled{false};
+	bool buyingEnabled{false};
 
 	std::map<uint8_t, uint32_t> tilesVisitedCounters{};
 };

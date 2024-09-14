@@ -1,11 +1,13 @@
 #include "Game.hpp"
 #include "GetOutOfPrisonHandler.hpp"
 
-Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower)
+Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower,
+		   const DiceThrowerSingle *givenDiceThrowerSingle)
 {
 	iterations = givenIterations;
 	numOfPlayers = givenNumOfPlayers;
 	diceThrower = givenDiceThrower;
+	diceThrowerSingle = givenDiceThrowerSingle;
 	createPlayersData();
 }
 
@@ -61,19 +63,19 @@ void Game::handleTile(Player &player)
 		return;
 	}
 
-	if (currTileType == "Railroad" and isBuyingEnabled)
+	if (currTileType == "Railroad" and buyingEnabled)
 	{
 		handleBuyProperty(player, currTileType);
 		return;
 	}
 
-	if (currTileType == "Utilities" and isBuyingEnabled)
+	if (currTileType == "Utilities" and buyingEnabled)
 	{
 		handleBuyProperty(player, currTileType);
 		return;
 	}
 
-	if (currTileType == "Property" and isBuyingEnabled)
+	if (currTileType == "Property" and buyingEnabled)
 	{
 		handleBuyProperty(player, currTileType);
 		return;
@@ -84,11 +86,13 @@ void Game::handleBuyProperty(Player &player, const std::string &currTileType)
 {
 	// always buy strategy
 	// TO DO extract to new class BuyPropertyHandler
-	const int tileCost = board.getTiles().at(player.getCurrTile()).getCost();
-	const uint8_t ownerId = board.getTiles().at(player.getCurrTile()).getOwnerId();
+	const auto &tile = board.getTiles().at(player.getCurrTile());
+	const int tileCost = tile.getCost();
+	const uint8_t ownerId = tile.getOwnerId();
 	if (ownerId == invalidPlayerId and player.getCurrentBalance() > tileCost)
 	{
 		board.getTilesForModification().at(player.getCurrTile()).setOwnerId(player.getId());
+		player.addOwnedTileId(tile.getId());
 		player.subtractBalance(tileCost);
 	}
 }
@@ -188,7 +192,17 @@ const Board &Game::getBoardData() const
 	return board;
 }
 
+Board &Game::getBoardDataForModification()
+{
+	return board;
+}
+
+const bool Game::isBuyingEnabled() const
+{
+	return buyingEnabled;
+}
+
 void Game::enableBuying()
 {
-	isBuyingEnabled = true;
+	buyingEnabled = true;
 }
