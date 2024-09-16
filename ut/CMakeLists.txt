@@ -48,3 +48,15 @@ add_test(
     NAME TestGetOutOfPrisonHandler
     COMMAND TestGetOutOfPrisonHandler
 )
+
+add_executable(TestUtils TestUtils.cpp)
+target_link_libraries(TestUtils
+    gtest_main
+    gtest
+    Monopoly
+)
+
+add_test(
+    NAME TestUtils
+    COMMAND TestUtils
+)

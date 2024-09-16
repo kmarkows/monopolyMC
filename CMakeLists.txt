@@ -13,7 +13,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_library(Monopoly STATIC main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp)
+add_library(Monopoly STATIC main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp)
 
 enable_testing()
 add_subdirectory(ut)

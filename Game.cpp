@@ -43,6 +43,12 @@ void Game::play()
                 // else
                 // try to buy
 
+				// TO DO
+				// if (tile owned)
+				// pay
+				// else
+				// try to buy
+
 				collectTilesData(player.getCurrTile());
 			}
 			else

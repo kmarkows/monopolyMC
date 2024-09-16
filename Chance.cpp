@@ -50,7 +50,44 @@ Chance::Chance()
 
 	cards.at(4) = Card(
 		[](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
-			// TO DO
+			currPlayer.setInteractedWithTile();
+			if (currPlayer.getCurrTile() >= 0 and currPlayer.getCurrTile() < 10)
+			{
+				const uint8_t nearestRailroadTileId = 5;
+				currPlayer.setCurrTile(nearestRailroadTileId);
+				auto &tile = game.getBoardDataForModification().getTilesForModification().at(nearestRailroadTileId);
+
+				if (tile.getOwnerId() == currPlayer.getId())
+				{
+					return;
+				}
+
+				if (tile.getOwnerId() == invalidPlayerId)
+				{
+					if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingEnabled())
+					{
+						tile.setOwnerId(currPlayer.getId());
+						currPlayer.addOwnedTileId(tile.getId());
+						currPlayer.subtractBalance(tile.getCost());
+					}
+					return;
+				}
+
+				auto &owner = game.getPlayersDataForManipulation().at(tile.getOwnerId() - 1);
+				const uint8_t numOfRailroadOwned = 0;
+				for (const auto &tileId : owner.getOwnedTilesIds())
+				{
+				}
+			}
+			else if (currPlayer.getCurrTile() >= 10 and currPlayer.getCurrTile() < 20)
+			{
+			}
+			else if (currPlayer.getCurrTile() >= 20 and currPlayer.getCurrTile() < 30)
+			{
+			}
+			else
+			{
+			}
 		},
 		4);
 
