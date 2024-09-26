@@ -2,45 +2,45 @@
 
 const std::string &Tile::getType() const
 {
-	return type;
+    return type;
 }
 
 const uint8_t Tile::getId() const
 {
-	return tileId;
+    return tileId;
 }
 
 const uint8_t Tile::getOwnerId() const
 {
-	return ownerId;
+    return ownerId;
 }
 
 const int Tile::getCost() const
 {
-	return cost;
+    return cost;
 }
 
 const std::vector<int> &Tile::getRents() const
 {
-	return rents;
+    return rents;
 }
 
 const uint8_t Tile::getNumOfHouses() const
 {
-	return numOfHouses;
+    return numOfHouses;
 }
 
 void Tile::setOwnerId(const uint8_t toBeOwnerId)
 {
-	ownerId = toBeOwnerId;
+    ownerId = toBeOwnerId;
 }
 
 void Tile::buildHouse()
 {
-	numOfHouses++;
+    numOfHouses++;
 }
 
 void Tile::setNumOfHouses(const uint8_t newNumOfHouses)
 {
-	numOfHouses = newNumOfHouses;
+    numOfHouses = newNumOfHouses;
 }

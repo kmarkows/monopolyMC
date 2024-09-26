@@ -12,11 +12,11 @@ constexpr uint8_t prisonTile = 10;
 class Board
 {
   public:
-	Board();
+    Board();
 
-	const std::array<Tile, numOfMonopolyBoradTiles> &getTiles() const;
-	std::array<Tile, numOfMonopolyBoradTiles> &getTilesForModification();
+    const std::array<Tile, numOfMonopolyBoradTiles> &getTiles() const;
+    std::array<Tile, numOfMonopolyBoradTiles> &getTilesForModification();
 
   private:
-	std::array<Tile, numOfMonopolyBoradTiles> tiles{};
+    std::array<Tile, numOfMonopolyBoradTiles> tiles{};
 };

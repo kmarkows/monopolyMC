@@ -1,13 +1,14 @@
 #include "../Utils.cpp"
 #include <gtest/gtest.h>
 
-namespace ut {
+namespace ut
+{
 
 constexpr uint8_t firstPlayerId = 1;
 
-class TestUtils : public ::testing::Test {
-protected:
-
+class TestUtils : public ::testing::Test
+{
+  protected:
     Utils utils;
 };
 

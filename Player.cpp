@@ -3,134 +3,134 @@
 
 void Player::print()
 {
-	std::cout << "player id:" << (int)id << " currentTile:" << (int)currTile << std::endl;
+    std::cout << "player id:" << (int)id << " currentTile:" << (int)currTile << std::endl;
 }
 
 const bool Player::isInPrison() const
 {
-	return prison;
+    return prison;
 }
 
 const bool Player::hasGetOutOfPrisonCard() const
 {
-	return getOutOfPrisonCard;
+    return getOutOfPrisonCard;
 }
 
 const uint8_t Player::getStayingInPrisonStrategy() const
 {
-	return stayingInPrisonStrategy;
+    return stayingInPrisonStrategy;
 }
 
 const uint8_t Player::getCurrTile() const
 {
-	return currTile;
+    return currTile;
 }
 
 const uint8_t Player::getId() const
 {
-	return id;
+    return id;
 }
 
 const uint8_t Player::getTurnsSpentInPrison() const
 {
-	return turnsSpentInPrison;
+    return turnsSpentInPrison;
 }
 
 const int Player::getCurrentBalance() const
 {
-	return balance;
+    return balance;
 }
 
 const bool Player::isPlaying() const
 {
-	return playing;
+    return playing;
 }
 
 const bool Player::hasInterActedWithTile() const
 {
-	return interactedWithTile;
+    return interactedWithTile;
 }
 
 const std::vector<uint8_t> &Player::getOwnedTilesIds() const
 {
-	return ownedTilesIds;
+    return ownedTilesIds;
 }
 
 void Player::goToPrison()
 {
-	prison = true;
+    prison = true;
 }
 
 void Player::acquireGetOutOfPrisonCard()
 {
-	getOutOfPrisonCard = true;
+    getOutOfPrisonCard = true;
 }
 
 void Player::useGetOutOfPrisonCard()
 {
-	getOutOfPrisonCard = false;
+    getOutOfPrisonCard = false;
 }
 
 void Player::getOutOfPrison()
 {
-	prison = false;
+    prison = false;
 }
 
 void Player::setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrategy)
 {
-	stayingInPrisonStrategy = givenStayingInPrisonStrategy;
+    stayingInPrisonStrategy = givenStayingInPrisonStrategy;
 }
 
 void Player::setCurrTile(const uint8_t nextTile)
 {
-	currTile = nextTile;
+    currTile = nextTile;
 }
 
 void Player::incrementTurnsSpentInPrison()
 {
-	turnsSpentInPrison++;
+    turnsSpentInPrison++;
 }
 
 void Player::resetTurnsSpentInPrison()
 {
-	turnsSpentInPrison = 0;
+    turnsSpentInPrison = 0;
 }
 
 void Player::setBalance(const int balance)
 {
-	this->balance = balance;
+    this->balance = balance;
 }
 
 void Player::addBalance(const int addition)
 {
-	balance += addition;
+    balance += addition;
 }
 
 void Player::subtractBalance(const int subtraction)
 {
-	balance -= subtraction;
-	if (balance <= 0)
-	{
-		setNotPlaying();
-	}
+    balance -= subtraction;
+    if (balance <= 0)
+    {
+        setNotPlaying();
+    }
 }
 
 void Player::setNotPlaying()
 {
-	playing = false;
+    playing = false;
 }
 
 void Player::setInteractedWithTile()
 {
-	interactedWithTile = true;
+    interactedWithTile = true;
 }
 
 void Player::resetInteractedWithTile()
 {
-	interactedWithTile = false;
+    interactedWithTile = false;
 }
 
 void Player::addOwnedTileId(const uint8_t newTileId)
 {
-	ownedTilesIds.push_back(newTileId);
+    ownedTilesIds.push_back(newTileId);
 }

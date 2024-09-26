@@ -9,12 +9,12 @@ constexpr int prisonFine = 50;
 class GetOutOfPrisonHandler
 {
   public:
-	GetOutOfPrisonHandler(Player &givenPlayer, const DiceThrower *givenDiceThrower);
-	void handle();
+    GetOutOfPrisonHandler(Player &givenPlayer, const DiceThrower *givenDiceThrower);
+    void handle();
 
   private:
-	void moveAfterLeavingPrison(const DiceResult &diceResult);
+    void moveAfterLeavingPrison(const DiceResult &diceResult);
 
-	Player &player;
-	const DiceThrower *diceThrower;
+    Player &player;
+    const DiceThrower *diceThrower;
 };
