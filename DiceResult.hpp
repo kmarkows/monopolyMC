@@ -5,7 +5,7 @@
 class DiceResult
 {
   public:
-    DiceResult(const uint8_t num1, const uint8_t num2) : first(num1), second(num2){};
+    DiceResult(const uint8_t num1, const uint8_t num2) : first(num1), second(num2) {};
     uint8_t getFirst() const
     {
         return first;
