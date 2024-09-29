@@ -202,6 +202,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerBuysThatTileCardId4)
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
     EXPECT_EQ(player.getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(closestRailway).getOwnerId(), firstPlayerId);
+    EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
 
 TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasOnlyOneRailroadTileCardId4)
@@ -215,13 +216,92 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasOnlyOne
     game.getPlayersDataForManipulation().push_back(player);
 
     Player player2(secondPlayerId);
-    player.addOwnedTileId(closestRailway);
+    player2.addOwnedTileId(closestRailway);
     game.getBoardDataForModification().getTilesForModification().at(closestRailway).setOwnerId(secondPlayerId);
     game.getPlayersDataForManipulation().push_back(player2);
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 25);
+    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 50);
+    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 50);
+    EXPECT_EQ(player.hasInterActedWithTile(), true);
+}
+
+TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasThreeRailroadTileCardId4)
+{
+    currentlyTestedCard = 4;
+
+    const uint8_t closestRailway = 5;
+    const uint8_t tileClosestToRailroad5Tile = 6;
+    player.setCurrTile(tileClosestToRailroad5Tile);
+    player.setBalance(startingBalance);
+    game.getPlayersDataForManipulation().push_back(player);
+
+    Player player2(secondPlayerId);
+    player2.addOwnedTileId(closestRailway);
+    player2.addOwnedTileId(15);
+    player2.addOwnedTileId(25);
+    game.getBoardDataForModification().getTilesForModification().at(closestRailway).setOwnerId(secondPlayerId);
+    game.getBoardDataForModification().getTilesForModification().at(15).setOwnerId(secondPlayerId);
+    game.getBoardDataForModification().getTilesForModification().at(25).setOwnerId(secondPlayerId);
+    game.getPlayersDataForManipulation().push_back(player2);
+
+    chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
+
+    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
+    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 200);
+    EXPECT_EQ(player.hasInterActedWithTile(), true);
+}
+
+TEST_F(TestChance, TestGoToTile35FromTile32AndPlayerPaysAnotherPlayerWhoHasFourRailroadTileCardId4)
+{
+    currentlyTestedCard = 4;
+
+    const uint8_t closestRailway = 35;
+    const uint8_t tileClosestToRailroad5Tile = 32;
+    player.setCurrTile(tileClosestToRailroad5Tile);
+    player.setBalance(startingBalance);
+    game.getPlayersDataForManipulation().push_back(player);
+
+    Player player2(secondPlayerId);
+    player2.addOwnedTileId(closestRailway);
+    player2.addOwnedTileId(5);
+    player2.addOwnedTileId(15);
+    player2.addOwnedTileId(25);
+    game.getBoardDataForModification().getTilesForModification().at(closestRailway).setOwnerId(secondPlayerId);
+    game.getBoardDataForModification().getTilesForModification().at(5).setOwnerId(secondPlayerId);
+    game.getBoardDataForModification().getTilesForModification().at(15).setOwnerId(secondPlayerId);
+    game.getBoardDataForModification().getTilesForModification().at(25).setOwnerId(secondPlayerId);
+    game.getPlayersDataForManipulation().push_back(player2);
+
+    chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
+
+    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 400);
+    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 400);
+    EXPECT_EQ(player.hasInterActedWithTile(), true);
+}
+
+TEST_F(TestChance, TestGoToTile17FromTile15AndPlayerBuysThatTileCardId4)
+{
+    currentlyTestedCard = 4;
+
+    const uint8_t closestRailway = 15;
+    const uint8_t tileClosestToRailroad5Tile = 17;
+    player.setCurrTile(tileClosestToRailroad5Tile);
+    player.setBalance(startingBalance);
+    game.enableBuying();
+
+    chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
+
+    const std::vector<uint8_t> ownedTilesIds{closestRailway};
+    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
+    EXPECT_EQ(player.getOwnedTilesIds(), ownedTilesIds);
+    EXPECT_EQ(game.getBoardData().getTiles().at(closestRailway).getOwnerId(), firstPlayerId);
+    EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
 
 TEST_F(TestChance, TestGetDividend50CardId5)

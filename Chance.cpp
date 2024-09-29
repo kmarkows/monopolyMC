@@ -50,45 +50,31 @@ Chance::Chance()
         3);
 
     cards.at(4) = Card(
-        [](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
+        [this](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
             currPlayer.setInteractedWithTile();
             if (currPlayer.getCurrTile() >= 0 and currPlayer.getCurrTile() < 10)
             {
                 const uint8_t nearestRailroadTileId = 5;
-                currPlayer.setCurrTile(nearestRailroadTileId);
-                auto &tile = game.getBoardDataForModification().getTilesForModification().at(nearestRailroadTileId);
-
-                if (tile.getOwnerId() == currPlayer.getId())
-                {
-                    return;
-                }
-
-                if (tile.getOwnerId() == invalidPlayerId)
-                {
-                    if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingEnabled())
-                    {
-                        tile.setOwnerId(currPlayer.getId());
-                        currPlayer.addOwnedTileId(tile.getId());
-                        currPlayer.subtractBalance(tile.getCost());
-                    }
-                    return;
-                }
-
-                auto &owner = game.getPlayersDataForManipulation().at(tile.getOwnerId() - 1);
-                const uint8_t numOfRailroadOwned = game.getUtils().getNumOfTilesOfEachTypeOwnedByPlayer(owner, tile);
-                const int rentToPay = tile.getRents().at(numOfRailroadOwned - 1);
-                currPlayer.addOwnedTileId(rentToPay * 2);
-                currPlayer.subtractBalance(rentToPay * 2);
+                handleRailroad(game, currPlayer, nearestRailroadTileId);
                 return;
             }
             else if (currPlayer.getCurrTile() >= 10 and currPlayer.getCurrTile() < 20)
             {
+                const uint8_t nearestRailroadTileId = 15;
+                handleRailroad(game, currPlayer, nearestRailroadTileId);
+                return;
             }
             else if (currPlayer.getCurrTile() >= 20 and currPlayer.getCurrTile() < 30)
             {
+                const uint8_t nearestRailroadTileId = 25;
+                handleRailroad(game, currPlayer, nearestRailroadTileId);
+                return;
             }
             else
             {
+                const uint8_t nearestRailroadTileId = 35;
+                handleRailroad(game, currPlayer, nearestRailroadTileId);
+                return;
             }
         },
         4);
@@ -170,7 +156,8 @@ const Card &Chance::getCardById(const uint8_t id) const
     return cards.at(id);
 }
 
-void Chance::handleUtility(Game &game, Player &currPlayer, const DiceThrower *diceThrower, const uint8_t utilityTileId)
+void Chance::handleUtility(Game &game, Player &currPlayer, const DiceThrower *diceThrower,
+                           const uint8_t utilityTileId) const
 {
     currPlayer.setCurrTile(utilityTileId);
     auto &tile = game.getBoardDataForModification().getTilesForModification().at(utilityTileId);
@@ -196,4 +183,31 @@ void Chance::handleUtility(Game &game, Player &currPlayer, const DiceThrower *di
     auto &owner = game.getPlayersDataForManipulation().at(tile.getOwnerId() - 1);
     currPlayer.subtractBalance(diceResultSum * 10);
     owner.addBalance(diceResultSum * 10);
+}
+
+void Chance::handleRailroad(Game &game, Player &currPlayer, const uint8_t railroadTileId) const
+{
+    currPlayer.setCurrTile(railroadTileId);
+    auto &tile = game.getBoardDataForModification().getTilesForModification().at(railroadTileId);
+    if (tile.getOwnerId() == currPlayer.getId())
+    {
+        return;
+    }
+
+    if (tile.getOwnerId() == invalidPlayerId)
+    {
+        if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingEnabled())
+        {
+            tile.setOwnerId(currPlayer.getId());
+            currPlayer.addOwnedTileId(tile.getId());
+            currPlayer.subtractBalance(tile.getCost());
+        }
+        return;
+    }
+
+    auto &owner = game.getPlayersDataForManipulation().at(tile.getOwnerId() - 1);
+    const uint8_t numOfRailroadOwned = game.getUtils().getNumOfTilesOfEachTypeOwnedByPlayer(owner, tile);
+    const int rentToPay = tile.getRents().at(numOfRailroadOwned - 1);
+    owner.addBalance(rentToPay * 2);
+    currPlayer.subtractBalance(rentToPay * 2);
 }
