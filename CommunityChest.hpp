@@ -9,7 +9,7 @@ class CommunityChest
 {
   public:
     CommunityChest();
-    void playNextCard(Game& game, Player& player, const DiceThrower *diceThrower);
+    void playNextCard(Game &game, Player &player, const DiceThrower *diceThrower);
     const Card &getCardById(const uint8_t id) const;
 
   private:

@@ -32,7 +32,8 @@ void Game::play()
                     GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
                     getOutOfPrisonHandler.handle();
                 }
-                if (cardsEnabled and (utils.isCommunityChestTile(player.getCurrTile()) or utils.isChanceTile(player.getCurrTile())))
+                if (cardsEnabled and
+                    (utils.isCommunityChestTile(player.getCurrTile()) or utils.isChanceTile(player.getCurrTile())))
                 {
                     handleChanceOrCommunityChestTile(player);
                 }
@@ -145,7 +146,7 @@ void Game::handleMovement(Player &player)
     player.setCurrTile(nextTile);
 }
 
-void Game::handleChanceOrCommunityChestTile(Player& player)
+void Game::handleChanceOrCommunityChestTile(Player &player)
 {
     // staring from beginning TO DO chose first card randomly
     if (utils.isChanceTile(player.getCurrTile()))
@@ -156,7 +157,6 @@ void Game::handleChanceOrCommunityChestTile(Player& player)
     {
         chance.playNextCard(*this, player, diceThrower);
     }
-
 }
 
 void Game::setPrison(Player &player)

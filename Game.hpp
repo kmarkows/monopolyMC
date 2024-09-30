@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Board.hpp"
+#include "Chance.hpp"
+#include "CommunityChest.hpp"
 #include "DiceThrower.hpp"
 #include "DiceThrowerSingle.hpp"
 #include "Player.hpp"
 #include "Utils.hpp"
-#include "Chance.hpp"
-#include "CommunityChest.hpp"
 #include <map>
 #include <optional>
 #include <vector>
@@ -45,7 +45,7 @@ class Game
     void handleTile(Player &player);
     void handleBuyProperty(Player &player, const std::string &currTileType);
     void setPrison(Player &player);
-    void handleChanceOrCommunityChestTile(Player& player);
+    void handleChanceOrCommunityChestTile(Player &player);
 
     void collectTilesData(const uint8_t currTile);
 
