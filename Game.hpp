@@ -5,7 +5,10 @@
 #include "DiceThrowerSingle.hpp"
 #include "Player.hpp"
 #include "Utils.hpp"
+#include "Chance.hpp"
+#include "CommunityChest.hpp"
 #include <map>
+#include <optional>
 #include <vector>
 
 class Game
@@ -22,6 +25,8 @@ class Game
 
     std::vector<Player> &getPlayersDataForManipulation();
     const std::vector<Player> &getPlayersData() const;
+    Player &getPlayerByIdForManipulation(const uint8_t playerId);
+    const Player &getPlayerById(const uint8_t playerId) const;
 
     const Board &getBoardData() const;
     Board &getBoardDataForModification();
@@ -31,12 +36,16 @@ class Game
     const bool isBuyingEnabled() const;
     void enableBuying();
 
+    const bool areCardsEnabled() const;
+    void enableCards();
+
   private:
     void createPlayersData();
     void handleMovement(Player &player);
     void handleTile(Player &player);
     void handleBuyProperty(Player &player, const std::string &currTileType);
     void setPrison(Player &player);
+    void handleChanceOrCommunityChestTile(Player& player);
 
     void collectTilesData(const uint8_t currTile);
 
@@ -48,6 +57,9 @@ class Game
     const DiceThrowerSingle *diceThrowerSingle;
     Board board{};
     bool buyingEnabled{false};
+    bool cardsEnabled{false};
+    CommunityChest communityChest;
+    Chance chance;
 
     std::map<uint8_t, uint32_t> tilesVisitedCounters{};
 };

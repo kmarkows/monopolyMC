@@ -1,8 +1,9 @@
 #pragma once
 
 #include "DiceThrower.hpp"
-#include "Game.hpp"
-#include "functional"
+#include "Game.fwd.hpp"
+#include "Player.hpp"
+#include <functional>
 
 class Card
 {

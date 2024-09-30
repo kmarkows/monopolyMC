@@ -151,6 +151,13 @@ Chance::Chance()
         Card([](Game &game, Player &currPlayer, const DiceThrower *diceThrower) { currPlayer.addBalance(150); }, 14);
 }
 
+void Chance::playNextCard(Game& game, Player& player, const DiceThrower *diceThrower)
+{
+    // TO DO Handle if prison card is owned by a player then skip this card
+    cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);
+    nextCardIdToBePlayed++;
+}
+
 const Card &Chance::getCardById(const uint8_t id) const
 {
     return cards.at(id);
@@ -180,7 +187,7 @@ void Chance::handleUtility(Game &game, Player &currPlayer, const DiceThrower *di
     const DiceResult diceResult = diceThrower->throwDice();
     const int diceResultSum = diceResult.getFirst() + diceResult.getSecond();
 
-    auto &owner = game.getPlayersDataForManipulation().at(tile.getOwnerId() - 1);
+    auto &owner = game.getPlayerByIdForManipulation(tile.getOwnerId());
     currPlayer.subtractBalance(diceResultSum * 10);
     owner.addBalance(diceResultSum * 10);
 }
@@ -205,7 +212,7 @@ void Chance::handleRailroad(Game &game, Player &currPlayer, const uint8_t railro
         return;
     }
 
-    auto &owner = game.getPlayersDataForManipulation().at(tile.getOwnerId() - 1);
+    auto &owner = game.getPlayerByIdForManipulation(tile.getOwnerId());
     const uint8_t numOfRailroadOwned = game.getUtils().getNumOfTilesOfEachTypeOwnedByPlayer(owner, tile);
     const int rentToPay = tile.getRents().at(numOfRailroadOwned - 1);
     owner.addBalance(rentToPay * 2);

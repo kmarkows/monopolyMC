@@ -210,4 +210,17 @@ TEST_F(TestCommunityChest, TestInheritMoneyGet100CardId16)
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 100);
 }
 
+TEST_F(TestCommunityChest, playFirstThreeCardsOnOnePlayerCardIds0And1And2)
+{
+    player.setBalance(startingBalance);
+    player.setCurrTile(2);
+
+    communityChest.playNextCard(game, player, &mockDiceThrower);
+    communityChest.playNextCard(game, player, &mockDiceThrower);
+    communityChest.playNextCard(game, player, &mockDiceThrower);
+
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200 + 200 - 50);
+    EXPECT_EQ(player.getCurrTile(), 0);
+}
+
 } // namespace ut

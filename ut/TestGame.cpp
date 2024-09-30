@@ -6,6 +6,8 @@
 namespace ut
 {
 
+constexpr uint8_t firstPlayerId = 1;
+
 class TestGame : public ::testing::Test
 {
   protected:
@@ -244,6 +246,40 @@ TEST_F(TestGame, TestPlayer1Buys3rdPropertyAndLaterPlayer2CannotBuyIt)
 
     EXPECT_EQ(game.getPlayersData().at(1).getCurrentBalance(), startingBalance);
     EXPECT_EQ(game.getPlayersData().at(1).getCurrTile(), tileToBuy);
+}
+
+TEST_F(TestGame, TestPlayerGoesToChanceTileId7)
+{
+    iterations = 1;
+    numOfPlayers = 1;
+    MockDiceThrower<3, 4> mockDiceThrower;
+    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
+
+    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    game.enableBuying();
+    game.enableCards();
+
+    game.play();
+
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTile(), 0);
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrentBalance(), startingBalance + 200);
+}
+
+TEST_F(TestGame, TestPlayerStartsOnPrisonTileRolls7AndGoesToCommunityChestTileId17)
+{
+    iterations = 1;
+    numOfPlayers = 1;
+    MockDiceThrower<3, 4> mockDiceThrower;
+    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
+
+    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    game.enableBuying();
+    game.enableCards();
+
+    game.play();
+
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTile(), 0);
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrentBalance(), startingBalance + 200);
 }
 
 } // namespace ut

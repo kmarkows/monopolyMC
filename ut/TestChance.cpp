@@ -7,6 +7,7 @@ namespace ut
 
 constexpr uint8_t firstPlayerId = 1;
 constexpr uint8_t secondPlayerId = 2;
+constexpr uint8_t thirdPlayerId = 3;
 
 class TestChance : public ::testing::Test
 {
@@ -157,13 +158,13 @@ TEST_F(TestChance, TestGoToTile12FromTile6AndTileIsAlreadyOwnedSoPlayerPays10Tim
 
     Player player2(secondPlayerId);
     game.getPlayersDataForManipulation().push_back(player2);
-    game.getPlayersDataForManipulation().at(secondPlayerId - 1).setBalance(startingBalance);
+    game.getPlayerByIdForManipulation(secondPlayerId).setBalance(startingBalance);
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrTile(), waterUtilsTileId);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 70);
-    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 70);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 70);
 }
 
 TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerIsOwnerNothingHappensCardId4)
@@ -224,7 +225,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasOnlyOne
 
     EXPECT_EQ(player.getCurrTile(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 50);
-    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 50);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 50);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
 
@@ -251,7 +252,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasThreeRa
 
     EXPECT_EQ(player.getCurrTile(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
-    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 200);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 200);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
 
@@ -280,7 +281,7 @@ TEST_F(TestChance, TestGoToTile35FromTile32AndPlayerPaysAnotherPlayerWhoHasFourR
 
     EXPECT_EQ(player.getCurrTile(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 400);
-    EXPECT_EQ(game.getPlayersData().at(secondPlayerId - 1).getCurrentBalance(), startingBalance + 400);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 400);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
 
@@ -416,8 +417,8 @@ TEST_F(TestChance, TestAdvanceToTile39CardId12)
 TEST_F(TestChance, TestPayEveryPlayer50CardId13)
 {
     currentlyTestedCard = 13;
-    Player player2(2);
-    Player player3(3);
+    Player player2(secondPlayerId);
+    Player player3(thirdPlayerId);
     player.setBalance(startingBalance);
     player2.setBalance(startingBalance);
     player3.setBalance(startingBalance);
@@ -428,8 +429,8 @@ TEST_F(TestChance, TestPayEveryPlayer50CardId13)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 2 * 50);
-    EXPECT_EQ(game.getPlayersData().at(1).getCurrentBalance(), startingBalance + 50);
-    EXPECT_EQ(game.getPlayersData().at(2).getCurrentBalance(), startingBalance + 50);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 50);
+    EXPECT_EQ(game.getPlayerById(thirdPlayerId).getCurrentBalance(), startingBalance + 50);
 }
 
 TEST_F(TestChance, TestGet150CardId14)
@@ -440,6 +441,26 @@ TEST_F(TestChance, TestGet150CardId14)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 150);
+}
+
+TEST_F(TestChance, playFirstThreeCardsOnOnePlayerCardIds0And1And2)
+{
+    player.setBalance(startingBalance);
+    player.setCurrTile(6);
+
+    chance.playNextCard(game, player, &mockDiceThrower);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
+    EXPECT_EQ(player.getCurrTile(), 0);
+
+    player.setCurrTile(6);
+    chance.playNextCard(game, player, &mockDiceThrower);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
+    EXPECT_EQ(player.getCurrTile(), 24);
+
+    player.setCurrTile(22);
+    chance.playNextCard(game, player, &mockDiceThrower);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200 + 200);
+    EXPECT_EQ(player.getCurrTile(), 11);
 }
 
 } // namespace ut

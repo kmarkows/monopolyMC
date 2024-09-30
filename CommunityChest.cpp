@@ -94,6 +94,13 @@ CommunityChest::CommunityChest()
         Card([](Game &game, Player &currPlayer, const DiceThrower *diceThrower) { currPlayer.addBalance(100); }, 16);
 }
 
+void CommunityChest::playNextCard(Game& game, Player& player, const DiceThrower *diceThrower)
+{
+    // TO DO Handle if prison card is owned by a player then skip this card
+    cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);
+    nextCardIdToBePlayed++;
+}
+
 const Card &CommunityChest::getCardById(const uint8_t id) const
 {
     return cards.at(id);

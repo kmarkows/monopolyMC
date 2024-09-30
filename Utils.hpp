@@ -11,6 +11,8 @@ class Utils
   public:
     Utils() = default;
     const uint8_t getNumOfTilesOfEachTypeOwnedByPlayer(const Player &player, const Tile &tile) const;
+    const bool isChanceTile(const uint8_t tileId) const;
+    const bool isCommunityChestTile(const uint8_t tileId) const;
 
   private:
     const uint8_t countRailroadTiles(const Player &player) const;

@@ -210,4 +210,18 @@ TEST_F(TestUtils, countSameBlueTilesNumberOfExpect0)
     EXPECT_EQ(utils.getNumOfTilesOfEachTypeOwnedByPlayer(player, tile), 0);
 }
 
+TEST_F(TestUtils, isChanceTile)
+{
+    EXPECT_EQ(true, utils.isChanceTile(7));
+    EXPECT_EQ(true, utils.isChanceTile(22));
+    EXPECT_EQ(true, utils.isChanceTile(36));
+}
+
+TEST_F(TestUtils, isCommunityChest)
+{
+    EXPECT_EQ(true, utils.isCommunityChestTile(2));
+    EXPECT_EQ(true, utils.isCommunityChestTile(17));
+    EXPECT_EQ(true, utils.isCommunityChestTile(23));
+}
+
 } // namespace ut

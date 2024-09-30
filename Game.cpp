@@ -32,6 +32,10 @@ void Game::play()
                     GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
                     getOutOfPrisonHandler.handle();
                 }
+                if (cardsEnabled and (utils.isCommunityChestTile(player.getCurrTile()) or utils.isChanceTile(player.getCurrTile())))
+                {
+                    handleChanceOrCommunityChestTile(player);
+                }
                 // TO DOCards here so when player is moved on tile he lands can be
                 // handled
 
@@ -53,7 +57,7 @@ void Game::play()
             }
             else
             {
-                // TO DO remove player from players vector
+                // TO DO remove player from players vector to whole new class
                 std::cout << "player lost" << std::endl;
             }
         }
@@ -141,6 +145,20 @@ void Game::handleMovement(Player &player)
     player.setCurrTile(nextTile);
 }
 
+void Game::handleChanceOrCommunityChestTile(Player& player)
+{
+    // staring from beginning TO DO chose first card randomly
+    if (utils.isChanceTile(player.getCurrTile()))
+    {
+        chance.playNextCard(*this, player, diceThrower);
+    }
+    else
+    {
+        chance.playNextCard(*this, player, diceThrower);
+    }
+
+}
+
 void Game::setPrison(Player &player)
 {
     // std::cout << "goToPrisonTile" << std::endl;
@@ -222,4 +240,42 @@ const bool Game::isBuyingEnabled() const
 void Game::enableBuying()
 {
     buyingEnabled = true;
+}
+
+const bool Game::areCardsEnabled() const
+{
+    return cardsEnabled;
+}
+
+void Game::enableCards()
+{
+    cardsEnabled = true;
+}
+
+Player &Game::getPlayerByIdForManipulation(const uint8_t playerId)
+{
+    // TO DO not finding player functionality
+    for (auto &player : players)
+    {
+        if (player.getId() == playerId)
+        {
+            return player;
+        }
+    }
+    std::cout << "Player with id:" << (int)playerId << " not found" << std::endl;
+    return players.at(0);
+}
+
+const Player &Game::getPlayerById(const uint8_t playerId) const
+{
+    // TO DO not finding player functionality
+    for (const auto &player : players)
+    {
+        if (player.getId() == playerId)
+        {
+            return player;
+        }
+    }
+    std::cout << "Player with id:" << (int)playerId << " not found" << std::endl;
+    return players.at(0);
 }
