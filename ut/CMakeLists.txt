@@ -60,3 +60,15 @@ add_test(
     NAME TestUtils
     COMMAND TestUtils
 )
+
+add_executable(TestRentPayer TestRentPayer.cpp)
+target_link_libraries(TestRentPayer
+    gtest_main
+    gtest
+    Monopoly
+)
+
+add_test(
+    NAME TestRentPayer
+    COMMAND TestRentPayer
+)

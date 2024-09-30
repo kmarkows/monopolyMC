@@ -51,7 +51,7 @@ void GetOutOfPrisonHandler::handle()
 
 void GetOutOfPrisonHandler::moveAfterLeavingPrison(const DiceResult &diceResult)
 {
-    auto nextTile = player.getCurrTile();
+    auto nextTile = player.getCurrTileId();
     nextTile += (diceResult.getFirst() + diceResult.getSecond());
     nextTile = nextTile % numOfMonopolyBoradTiles;
     player.setCurrTile(nextTile);

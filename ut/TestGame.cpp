@@ -7,6 +7,8 @@ namespace ut
 {
 
 constexpr uint8_t firstPlayerId = 1;
+constexpr uint8_t secondPlayerId = 2;
+constexpr int startingBalance = 1500;
 
 class TestGame : public ::testing::Test
 {
@@ -27,7 +29,8 @@ TEST_F(TestGame, testMovement)
     game.play();
 
     const uint8_t finishTile = 15;
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), finishTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), finishTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getPreviousDiceRollSum(), 3);
 }
 
 TEST_F(TestGame, TestGoToPrison)
@@ -42,7 +45,7 @@ TEST_F(TestGame, TestGoToPrison)
     game.play();
 
     EXPECT_EQ(game.getPlayersData().at(0).isInPrison(), true);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), prisonTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), prisonTile);
 }
 
 TEST_F(TestGame, TestGetOutOfPrisonThrowingDouble)
@@ -63,7 +66,7 @@ TEST_F(TestGame, TestGetOutOfPrisonThrowingDouble)
 
     const uint8_t finishTile = prisonTile + 12;
     EXPECT_EQ(game.getPlayersData().at(0).isInPrison(), false);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), finishTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), finishTile);
 }
 
 TEST_F(TestGame, TestGetOutOfPrisonNotThrowingDouble)
@@ -84,7 +87,7 @@ TEST_F(TestGame, TestGetOutOfPrisonNotThrowingDouble)
 
     const uint8_t finishTile = prisonTile + 3;
     EXPECT_EQ(game.getPlayersData().at(0).isInPrison(), false);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), finishTile);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), finishTile);
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(), startingBalance - prisonFine);
 }
 
@@ -114,7 +117,7 @@ TEST_F(TestGame, TestGoOnIncomeTaxAndPay)
     game.play();
 
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(), 1300);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), 4);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), 4);
 }
 
 TEST_F(TestGame, TestGoOnLuxuryTaxAndPay)
@@ -131,7 +134,7 @@ TEST_F(TestGame, TestGoOnLuxuryTaxAndPay)
     game.play();
 
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(), 1400);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), 38);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), 38);
 }
 
 TEST_F(TestGame, TestGoOnIncomeTaxPayAndLoseGame)
@@ -148,7 +151,7 @@ TEST_F(TestGame, TestGoOnIncomeTaxPayAndLoseGame)
     game.play();
 
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(), 0);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), 4);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), 4);
     EXPECT_EQ(game.getPlayersData().at(0).isPlaying(), false);
 }
 
@@ -170,7 +173,7 @@ TEST_F(TestGame, TestGoOn3rdTileAndBuyProperty)
     const std::vector<uint8_t> ownedTilesIds{tileToBuy};
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(),
               startingBalance - game.getBoardData().getTiles().at(tileToBuy).getCost());
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), tileToBuy);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), tileToBuy);
     EXPECT_EQ(game.getPlayersData().at(0).getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(tileToBuy).getOwnerId(), buyerId);
 }
@@ -193,7 +196,7 @@ TEST_F(TestGame, TestGoOn5rdTileAndBuyRailroad)
     const std::vector<uint8_t> ownedTilesIds{tileToBuy};
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(),
               startingBalance - game.getBoardData().getTiles().at(tileToBuy).getCost());
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), tileToBuy);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), tileToBuy);
     EXPECT_EQ(game.getPlayersData().at(0).getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(tileToBuy).getOwnerId(), buyerId);
 }
@@ -218,7 +221,7 @@ TEST_F(TestGame, TestGoOn5rdTileAndBuyPropertyAndUtilities)
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(),
               startingBalance - game.getBoardData().getTiles().at(tile1ToBuy).getCost() -
                   game.getBoardData().getTiles().at(tile2ToBuy).getCost());
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), tile2ToBuy);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), tile2ToBuy);
     EXPECT_EQ(game.getPlayersData().at(0).getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(tile1ToBuy).getOwnerId(), buyerId);
     EXPECT_EQ(game.getBoardData().getTiles().at(tile2ToBuy).getOwnerId(), buyerId);
@@ -241,11 +244,11 @@ TEST_F(TestGame, TestPlayer1Buys3rdPropertyAndLaterPlayer2CannotBuyIt)
 
     EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(),
               startingBalance - game.getBoardData().getTiles().at(tileToBuy).getCost());
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTile(), tileToBuy);
+    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), tileToBuy);
     EXPECT_EQ(game.getBoardData().getTiles().at(tileToBuy).getOwnerId(), buyerId);
 
     EXPECT_EQ(game.getPlayersData().at(1).getCurrentBalance(), startingBalance);
-    EXPECT_EQ(game.getPlayersData().at(1).getCurrTile(), tileToBuy);
+    EXPECT_EQ(game.getPlayersData().at(1).getCurrTileId(), tileToBuy);
 }
 
 TEST_F(TestGame, TestPlayerGoesToChanceTileId7)
@@ -261,7 +264,7 @@ TEST_F(TestGame, TestPlayerGoesToChanceTileId7)
 
     game.play();
 
-    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTile(), 0);
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTileId(), 0);
     EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrentBalance(), startingBalance + 200);
 }
 
@@ -275,11 +278,31 @@ TEST_F(TestGame, TestPlayerStartsOnPrisonTileRolls7AndGoesToCommunityChestTileId
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
     game.enableBuying();
     game.enableCards();
+    game.enablePaying();
 
     game.play();
 
-    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTile(), 0);
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTileId(), 0);
     EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrentBalance(), startingBalance + 200);
+}
+
+TEST_F(TestGame, TestFirstPlayerGoesToTileId6BuysIdAndThenSecondPlayerGoesToThatTileAndPaysrentNoHouses)
+{
+    iterations = 1;
+    numOfPlayers = 2;
+    MockDiceThrower<2, 4> mockDiceThrower;
+    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
+
+    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    game.enableBuying();
+    game.enablePaying();
+
+    game.play();
+
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrTileId(), 6);
+    EXPECT_EQ(game.getPlayerById(firstPlayerId).getCurrentBalance(), startingBalance + 6 - 100);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrTileId(), 6);
+    EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance - 6);
 }
 
 } // namespace ut

@@ -25,7 +25,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestHaveGetOutOfPrisonCardStrategy1)
     getOutOfPrisonHandler.handle();
 
     EXPECT_EQ(player.isInPrison(), false);
-    EXPECT_EQ(player.getCurrTile(), prisonTile + 3);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile + 3);
 }
 
 TEST_F(TestGetOutOfPrisonHandler, TestHaveGetOutOfPrisonCardStrategy2)
@@ -40,7 +40,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestHaveGetOutOfPrisonCardStrategy2)
     getOutOfPrisonHandler.handle();
 
     EXPECT_EQ(player.isInPrison(), true);
-    EXPECT_EQ(player.getCurrTile(), prisonTile);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile);
 }
 
 TEST_F(TestGetOutOfPrisonHandler, TestDoesntHaveGetOutOfPrisonCardPays50Strategy0)
@@ -54,7 +54,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestDoesntHaveGetOutOfPrisonCardPays50Strategy
     getOutOfPrisonHandler.handle();
 
     EXPECT_EQ(player.isInPrison(), false);
-    EXPECT_EQ(player.getCurrTile(), prisonTile + 3);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile + 3);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - prisonFine);
 }
 
@@ -69,7 +69,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestThrowDoubleStrategy2)
     getOutOfPrisonHandler.handle();
 
     EXPECT_EQ(player.isInPrison(), false);
-    EXPECT_EQ(player.getCurrTile(), prisonTile + 4);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile + 4);
 }
 
 TEST_F(TestGetOutOfPrisonHandler, TestNotThrowDoubleForFirstTimeStrategy2)
@@ -83,7 +83,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestNotThrowDoubleForFirstTimeStrategy2)
     getOutOfPrisonHandler.handle();
 
     EXPECT_EQ(player.isInPrison(), true);
-    EXPECT_EQ(player.getCurrTile(), prisonTile);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile);
 }
 
 TEST_F(TestGetOutOfPrisonHandler, TestNotThrowDoubleForThirdTimeStrategy2)
@@ -99,7 +99,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestNotThrowDoubleForThirdTimeStrategy2)
     getOutOfPrisonHandler.handle();
 
     EXPECT_EQ(player.isInPrison(), false);
-    EXPECT_EQ(player.getCurrTile(), prisonTile + 3);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile + 3);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - prisonFine);
 }
 

@@ -21,7 +21,7 @@ const uint8_t Player::getStayingInPrisonStrategy() const
     return stayingInPrisonStrategy;
 }
 
-const uint8_t Player::getCurrTile() const
+const uint8_t Player::getCurrTileId() const
 {
     return currTile;
 }
@@ -54,6 +54,11 @@ const bool Player::hasInterActedWithTile() const
 const std::vector<uint8_t> &Player::getOwnedTilesIds() const
 {
     return ownedTilesIds;
+}
+
+const uint8_t Player::getPreviousDiceRollSum() const
+{
+    return previousDiceRollSum;
 }
 
 void Player::goToPrison()
@@ -133,4 +138,9 @@ void Player::resetInteractedWithTile()
 void Player::addOwnedTileId(const uint8_t newTileId)
 {
     ownedTilesIds.push_back(newTileId);
+}
+
+void Player::setPreviousDiceRollSum(const uint8_t previousRoll)
+{
+    previousDiceRollSum = previousRoll;
 }

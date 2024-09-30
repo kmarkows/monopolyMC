@@ -30,7 +30,7 @@ TEST_F(TestChance, TestGoToStartFieldCardId0)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 0);
+    EXPECT_EQ(player.getCurrTileId(), 0);
 }
 
 TEST_F(TestChance, TestGoToTile24AndPassStartCardId1)
@@ -44,7 +44,7 @@ TEST_F(TestChance, TestGoToTile24AndPassStartCardId1)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 24);
+    EXPECT_EQ(player.getCurrTileId(), 24);
 }
 
 TEST_F(TestChance, TestGoToTile24AndNotPassStartCardId1)
@@ -57,7 +57,7 @@ TEST_F(TestChance, TestGoToTile24AndNotPassStartCardId1)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance);
-    EXPECT_EQ(player.getCurrTile(), 24);
+    EXPECT_EQ(player.getCurrTileId(), 24);
 }
 
 TEST_F(TestChance, TestGoToTile11AndPassStartCardId2)
@@ -71,7 +71,7 @@ TEST_F(TestChance, TestGoToTile11AndPassStartCardId2)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 11);
+    EXPECT_EQ(player.getCurrTileId(), 11);
 }
 
 TEST_F(TestChance, TestGoToTile11AndNotPassStartCardId2)
@@ -85,7 +85,7 @@ TEST_F(TestChance, TestGoToTile11AndNotPassStartCardId2)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance);
-    EXPECT_EQ(player.getCurrTile(), 11);
+    EXPECT_EQ(player.getCurrTileId(), 11);
 }
 
 TEST_F(TestChance, TestGoToTile12FromTile6AndPlayerIsOwnerNothingHappensCardId3)
@@ -102,7 +102,7 @@ TEST_F(TestChance, TestGoToTile12FromTile6AndPlayerIsOwnerNothingHappensCardId3)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), waterUtilsTileId);
+    EXPECT_EQ(player.getCurrTileId(), waterUtilsTileId);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
@@ -121,7 +121,7 @@ TEST_F(TestChance, TestGoToTile28FromTile6AndPlayerIsOwnerNothingHappensCardId3)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), electricityUtilsTileId);
+    EXPECT_EQ(player.getCurrTileId(), electricityUtilsTileId);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
@@ -139,7 +139,7 @@ TEST_F(TestChance, TestGoToTile12FromTile6AndPlayerBuysThatTileCardId3)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     const std::vector<uint8_t> ownedTilesIds{waterUtilsTileId};
-    EXPECT_EQ(player.getCurrTile(), waterUtilsTileId);
+    EXPECT_EQ(player.getCurrTileId(), waterUtilsTileId);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 150);
     EXPECT_EQ(player.getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(waterUtilsTileId).getOwnerId(), firstPlayerId);
@@ -162,7 +162,7 @@ TEST_F(TestChance, TestGoToTile12FromTile6AndTileIsAlreadyOwnedSoPlayerPays10Tim
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), waterUtilsTileId);
+    EXPECT_EQ(player.getCurrTileId(), waterUtilsTileId);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 70);
     EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 70);
 }
@@ -181,7 +181,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerIsOwnerNothingHappensCardId4)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrTileId(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
 }
@@ -199,7 +199,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerBuysThatTileCardId4)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     const std::vector<uint8_t> ownedTilesIds{closestRailway};
-    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrTileId(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
     EXPECT_EQ(player.getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(closestRailway).getOwnerId(), firstPlayerId);
@@ -223,7 +223,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasOnlyOne
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrTileId(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 50);
     EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 50);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
@@ -250,7 +250,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerPaysAnotherPlayerWhoHasThreeRa
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrTileId(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
     EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 200);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
@@ -279,7 +279,7 @@ TEST_F(TestChance, TestGoToTile35FromTile32AndPlayerPaysAnotherPlayerWhoHasFourR
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrTileId(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 400);
     EXPECT_EQ(game.getPlayerById(secondPlayerId).getCurrentBalance(), startingBalance + 400);
     EXPECT_EQ(player.hasInterActedWithTile(), true);
@@ -298,7 +298,7 @@ TEST_F(TestChance, TestGoToTile17FromTile15AndPlayerBuysThatTileCardId4)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     const std::vector<uint8_t> ownedTilesIds{closestRailway};
-    EXPECT_EQ(player.getCurrTile(), closestRailway);
+    EXPECT_EQ(player.getCurrTileId(), closestRailway);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 200);
     EXPECT_EQ(player.getOwnedTilesIds(), ownedTilesIds);
     EXPECT_EQ(game.getBoardData().getTiles().at(closestRailway).getOwnerId(), firstPlayerId);
@@ -332,7 +332,7 @@ TEST_F(TestChance, TestGoBack3TilesCardId7)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), 7 - 3);
+    EXPECT_EQ(player.getCurrTileId(), 7 - 3);
 }
 
 TEST_F(TestChance, TestGoToJailCardCardId8)
@@ -343,7 +343,7 @@ TEST_F(TestChance, TestGoToJailCardCardId8)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), 10);
+    EXPECT_EQ(player.getCurrTileId(), 10);
     EXPECT_EQ(player.isInPrison(), true);
 }
 
@@ -377,7 +377,7 @@ TEST_F(TestChance, TestGoToTile5AndPassStartCardId10)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 5);
+    EXPECT_EQ(player.getCurrTileId(), 5);
 }
 
 TEST_F(TestChance, TestGoToTile11AndNotPassStartCardId10)
@@ -390,7 +390,7 @@ TEST_F(TestChance, TestGoToTile11AndNotPassStartCardId10)
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance);
-    EXPECT_EQ(player.getCurrTile(), 5);
+    EXPECT_EQ(player.getCurrTileId(), 5);
 }
 
 TEST_F(TestChance, TestPayPoorTax15CardId11)
@@ -411,7 +411,7 @@ TEST_F(TestChance, TestAdvanceToTile39CardId12)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), 39);
+    EXPECT_EQ(player.getCurrTileId(), 39);
 }
 
 TEST_F(TestChance, TestPayEveryPlayer50CardId13)
@@ -450,17 +450,17 @@ TEST_F(TestChance, playFirstThreeCardsOnOnePlayerCardIds0And1And2)
 
     chance.playNextCard(game, player, &mockDiceThrower);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 0);
+    EXPECT_EQ(player.getCurrTileId(), 0);
 
     player.setCurrTile(6);
     chance.playNextCard(game, player, &mockDiceThrower);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 24);
+    EXPECT_EQ(player.getCurrTileId(), 24);
 
     player.setCurrTile(22);
     chance.playNextCard(game, player, &mockDiceThrower);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200 + 200);
-    EXPECT_EQ(player.getCurrTile(), 11);
+    EXPECT_EQ(player.getCurrTileId(), 11);
 }
 
 } // namespace ut

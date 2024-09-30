@@ -15,7 +15,7 @@ Chance::Chance()
 
     cards.at(1) = Card(
         [](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
-            if (currPlayer.getCurrTile() > 24)
+            if (currPlayer.getCurrTileId() > 24)
             {
                 currPlayer.addBalance(200);
             }
@@ -25,7 +25,7 @@ Chance::Chance()
 
     cards.at(2) = Card(
         [](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
-            if (currPlayer.getCurrTile() > 11)
+            if (currPlayer.getCurrTileId() > 11)
             {
                 currPlayer.addBalance(200);
             }
@@ -36,7 +36,7 @@ Chance::Chance()
     cards.at(3) = Card(
         [this](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
             currPlayer.setInteractedWithTile();
-            if (currPlayer.getCurrTile() < 20)
+            if (currPlayer.getCurrTileId() < 20)
             {
                 const uint8_t firstUtilitiesTileId = 12;
                 handleUtility(game, currPlayer, diceThrower, firstUtilitiesTileId);
@@ -52,19 +52,19 @@ Chance::Chance()
     cards.at(4) = Card(
         [this](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
             currPlayer.setInteractedWithTile();
-            if (currPlayer.getCurrTile() >= 0 and currPlayer.getCurrTile() < 10)
+            if (currPlayer.getCurrTileId() >= 0 and currPlayer.getCurrTileId() < 10)
             {
                 const uint8_t nearestRailroadTileId = 5;
                 handleRailroad(game, currPlayer, nearestRailroadTileId);
                 return;
             }
-            else if (currPlayer.getCurrTile() >= 10 and currPlayer.getCurrTile() < 20)
+            else if (currPlayer.getCurrTileId() >= 10 and currPlayer.getCurrTileId() < 20)
             {
                 const uint8_t nearestRailroadTileId = 15;
                 handleRailroad(game, currPlayer, nearestRailroadTileId);
                 return;
             }
-            else if (currPlayer.getCurrTile() >= 20 and currPlayer.getCurrTile() < 30)
+            else if (currPlayer.getCurrTileId() >= 20 and currPlayer.getCurrTileId() < 30)
             {
                 const uint8_t nearestRailroadTileId = 25;
                 handleRailroad(game, currPlayer, nearestRailroadTileId);
@@ -87,7 +87,7 @@ Chance::Chance()
         6);
 
     cards.at(7) = Card([](Game &game, Player &currPlayer,
-                          const DiceThrower *diceThrower) { currPlayer.setCurrTile(currPlayer.getCurrTile() - 3); },
+                          const DiceThrower *diceThrower) { currPlayer.setCurrTile(currPlayer.getCurrTileId() - 3); },
                        7);
 
     cards.at(8) = Card(
@@ -120,7 +120,7 @@ Chance::Chance()
 
     cards.at(10) = Card(
         [](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
-            if (currPlayer.getCurrTile() > 5)
+            if (currPlayer.getCurrTileId() > 5)
             {
                 currPlayer.addBalance(200);
             }

@@ -6,6 +6,7 @@
 #include "DiceThrower.hpp"
 #include "DiceThrowerSingle.hpp"
 #include "Player.hpp"
+#include "RentPayer.hpp"
 #include "Utils.hpp"
 #include <map>
 #include <optional>
@@ -39,11 +40,15 @@ class Game
     const bool areCardsEnabled() const;
     void enableCards();
 
+    const bool isPayingEnabled() const;
+    void enablePaying();
+
   private:
     void createPlayersData();
     void handleMovement(Player &player);
-    void handleTile(Player &player);
-    void handleBuyProperty(Player &player, const std::string &currTileType);
+    void handleTaxTiles(Player &player);
+    void handleBuyTile(Player &player);
+    void handleBuyTile(Player &player, const Tile &tile);
     void setPrison(Player &player);
     void handleChanceOrCommunityChestTile(Player &player);
 
@@ -58,6 +63,8 @@ class Game
     Board board{};
     bool buyingEnabled{false};
     bool cardsEnabled{false};
+    bool payingEnabled{false};
+    RentPayer rentPayer;
     CommunityChest communityChest;
     Chance chance;
 

@@ -22,7 +22,7 @@ void Game::play()
                 if (not player.isInPrison())
                 {
                     handleMovement(player);
-                    if (player.getCurrTile() == goToPrisonTile)
+                    if (player.getCurrTileId() == goToPrisonTile)
                     {
                         setPrison(player);
                     }
@@ -32,15 +32,28 @@ void Game::play()
                     GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
                     getOutOfPrisonHandler.handle();
                 }
-                if (cardsEnabled and
-                    (utils.isCommunityChestTile(player.getCurrTile()) or utils.isChanceTile(player.getCurrTile())))
+
+                const auto &tile = board.getTiles().at(player.getCurrTileId());
+                if (cardsEnabled and (utils.isCommunityChestTile(tile) or utils.isChanceTile(tile)))
                 {
                     handleChanceOrCommunityChestTile(player);
                 }
-                // TO DOCards here so when player is moved on tile he lands can be
-                // handled
 
-                handleTile(player);
+                if (utils.isLuxuryTax(tile) or utils.isIncomeTax(tile))
+                {
+                    handleTaxTiles(player);
+                }
+                // if player has not interacted with tile by card fe. railroad nad utility
+
+                if (tile.getOwnerId() == invalidPlayerId and buyingEnabled)
+                {
+                    handleBuyTile(player);
+                }
+                else if (tile.getOwnerId() != player.getId() and payingEnabled)
+                {
+                    rentPayer.payRent(player, getPlayerByIdForManipulation(tile.getOwnerId()), tile,
+                                      player.getPreviousDiceRollSum());
+                }
 
                 // TO DO
                 // if (tile owned)
@@ -48,13 +61,7 @@ void Game::play()
                 // else
                 // try to buy
 
-                // TO DO
-                // if (tile owned)
-                // pay
-                // else
-                // try to buy
-
-                collectTilesData(player.getCurrTile());
+                collectTilesData(player.getCurrTileId());
             }
             else
             {
@@ -68,47 +75,43 @@ void Game::play()
     // printPropertiesData();
 }
 
-void Game::handleTile(Player &player)
+void Game::handleTaxTiles(Player &player)
 {
-    // std::cout << "Game::handleTile" << std::endl;
-    const auto currTileType = board.getTiles().at(player.getCurrTile()).getType();
+    const auto &tile = board.getTiles().at(player.getCurrTileId());
+    const int tax = utils.isIncomeTax(tile) ? 200 : 100;
+    player.subtractBalance(tax);
+}
 
-    if (currTileType == "IncomeTax" or currTileType == "LuxuryTax")
+void Game::handleBuyTile(Player &player)
+{
+    // TO DO extract to new class BuyPropertyHandler
+    const auto &tile = board.getTiles().at(player.getCurrTileId());
+    if (tile.getType() == "Railroad")
     {
-        const int subtraction = currTileType == "IncomeTax" ? 200 : 100;
-        player.subtractBalance(subtraction);
+        handleBuyTile(player, tile);
         return;
     }
 
-    if (currTileType == "Railroad" and buyingEnabled)
+    if (tile.getType() == "Utilities")
     {
-        handleBuyProperty(player, currTileType);
+        handleBuyTile(player, tile);
         return;
     }
 
-    if (currTileType == "Utilities" and buyingEnabled)
+    if (tile.getType() == "Property")
     {
-        handleBuyProperty(player, currTileType);
-        return;
-    }
-
-    if (currTileType == "Property" and buyingEnabled)
-    {
-        handleBuyProperty(player, currTileType);
+        handleBuyTile(player, tile);
         return;
     }
 }
 
-void Game::handleBuyProperty(Player &player, const std::string &currTileType)
+void Game::handleBuyTile(Player &player, const Tile &tile)
 {
-    // always buy strategy
-    // TO DO extract to new class BuyPropertyHandler
-    const auto &tile = board.getTiles().at(player.getCurrTile());
+    // always buy strategy TO DO change that
     const int tileCost = tile.getCost();
-    const uint8_t ownerId = tile.getOwnerId();
-    if (ownerId == invalidPlayerId and player.getCurrentBalance() > tileCost)
+    if (player.getCurrentBalance() > tileCost)
     {
-        board.getTilesForModification().at(player.getCurrTile()).setOwnerId(player.getId());
+        board.getTilesForModification().at(player.getCurrTileId()).setOwnerId(player.getId());
         player.addOwnedTileId(tile.getId());
         player.subtractBalance(tileCost);
     }
@@ -118,7 +121,7 @@ void Game::handleMovement(Player &player)
 {
     uint8_t throwCounter = 0;
     bool isDouble = true;
-    auto nextTile = player.getCurrTile();
+    auto nextTile = player.getCurrTileId();
 
     while (throwCounter < 3 and isDouble)
     {
@@ -129,6 +132,7 @@ void Game::handleMovement(Player &player)
         throwCounter++;
 
         nextTile += (diceResult.getFirst() + diceResult.getSecond());
+        player.setPreviousDiceRollSum(diceResult.getFirst() + diceResult.getSecond());
     }
 
     if (throwCounter == 3 and isDouble)
@@ -149,7 +153,7 @@ void Game::handleMovement(Player &player)
 void Game::handleChanceOrCommunityChestTile(Player &player)
 {
     // staring from beginning TO DO chose first card randomly
-    if (utils.isChanceTile(player.getCurrTile()))
+    if (utils.isChanceTile(board.getTiles().at(player.getCurrTileId())))
     {
         chance.playNextCard(*this, player, diceThrower);
     }
@@ -250,6 +254,16 @@ const bool Game::areCardsEnabled() const
 void Game::enableCards()
 {
     cardsEnabled = true;
+}
+
+const bool Game::isPayingEnabled() const
+{
+    return payingEnabled;
+}
+
+void Game::enablePaying()
+{
+    payingEnabled = true;
 }
 
 Player &Game::getPlayerByIdForManipulation(const uint8_t playerId)

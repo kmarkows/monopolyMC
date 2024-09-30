@@ -15,13 +15,14 @@ class Player
     const bool isInPrison() const;
     const bool hasGetOutOfPrisonCard() const;
     const uint8_t getStayingInPrisonStrategy() const;
-    const uint8_t getCurrTile() const;
+    const uint8_t getCurrTileId() const;
     const uint8_t getId() const;
     const uint8_t getTurnsSpentInPrison() const;
     const int getCurrentBalance() const;
     const bool isPlaying() const;
     const bool hasInterActedWithTile() const;
     const std::vector<uint8_t> &getOwnedTilesIds() const;
+    const uint8_t getPreviousDiceRollSum() const;
 
     void goToPrison();
     void acquireGetOutOfPrisonCard();
@@ -38,6 +39,7 @@ class Player
     void setInteractedWithTile();
     void resetInteractedWithTile();
     void addOwnedTileId(const uint8_t newTileId);
+    void setPreviousDiceRollSum(const uint8_t previousRoll);
 
     void print();
 
@@ -51,6 +53,7 @@ class Player
     int balance{startingBalance};
     bool interactedWithTile{false};
     std::vector<uint8_t> ownedTilesIds{};
+    uint8_t previousDiceRollSum{0};
 
     uint8_t stayingInPrisonStrategy{0}; // 0 - 1 - 2, as short - if has Cards uses it - as long
 };

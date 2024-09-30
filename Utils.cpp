@@ -20,14 +20,24 @@ const uint8_t Utils::getNumOfTilesOfEachTypeOwnedByPlayer(const Player &player, 
     return 0;
 }
 
-const bool Utils::isChanceTile(const uint8_t tileId) const
+const bool Utils::isChanceTile(const Tile &tile) const
 {
-    return tileId == 7 or tileId == 22 or tileId == 36;
+    return tile.getType() == "Chance";
 }
 
-const bool Utils::isCommunityChestTile(const uint8_t tileId) const
+const bool Utils::isCommunityChestTile(const Tile &tile) const
 {
-    return tileId == 2 or tileId == 17 or tileId == 23;
+    return tile.getType() == "CommunityChest";
+}
+
+const bool Utils::isIncomeTax(const Tile &tile) const
+{
+    return tile.getType() == "IncomeTax";
+}
+
+const bool Utils::isLuxuryTax(const Tile &tile) const
+{
+    return tile.getType() == "LuxuryTax";
 }
 
 const uint8_t Utils::countRailroadTiles(const Player &player) const

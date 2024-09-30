@@ -212,16 +212,36 @@ TEST_F(TestUtils, countSameBlueTilesNumberOfExpect0)
 
 TEST_F(TestUtils, isChanceTile)
 {
-    EXPECT_EQ(true, utils.isChanceTile(7));
-    EXPECT_EQ(true, utils.isChanceTile(22));
-    EXPECT_EQ(true, utils.isChanceTile(36));
+    Tile tile1("Chance", 0, {}, 0, 7);
+    Tile tile2("Chance", 0, {}, 0, 22);
+    Tile tile3("Chance", 0, {}, 0, 36);
+
+    EXPECT_EQ(true, utils.isChanceTile(tile1));
+    EXPECT_EQ(true, utils.isChanceTile(tile2));
+    EXPECT_EQ(true, utils.isChanceTile(tile3));
 }
 
 TEST_F(TestUtils, isCommunityChest)
 {
-    EXPECT_EQ(true, utils.isCommunityChestTile(2));
-    EXPECT_EQ(true, utils.isCommunityChestTile(17));
-    EXPECT_EQ(true, utils.isCommunityChestTile(23));
+    Tile tile1("CommunityChest", 0, {}, 0, 2);
+    Tile tile2("CommunityChest", 0, {}, 0, 17);
+    Tile tile3("CommunityChest", 0, {}, 0, 33);
+
+    EXPECT_EQ(true, utils.isCommunityChestTile(tile1));
+    EXPECT_EQ(true, utils.isCommunityChestTile(tile2));
+    EXPECT_EQ(true, utils.isCommunityChestTile(tile3));
+}
+
+TEST_F(TestUtils, isIncomeTax)
+{
+    Tile tile1("IncomeTax", 0, {}, 0, 4);
+    EXPECT_EQ(true, utils.isIncomeTax(tile1));
+}
+
+TEST_F(TestUtils, isLuxuryTax)
+{
+    Tile tile1("LuxuryTax", 350, {}, 0, 38);
+    EXPECT_EQ(true, utils.isLuxuryTax(tile1));
 }
 
 } // namespace ut

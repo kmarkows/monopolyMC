@@ -27,7 +27,7 @@ TEST_F(TestCommunityChest, TestGoToStartFieldCardId0)
     communityChest.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200);
-    EXPECT_EQ(player.getCurrTile(), 0);
+    EXPECT_EQ(player.getCurrTileId(), 0);
 }
 
 TEST_F(TestCommunityChest, TestBankErrorGet200CardId1)
@@ -77,7 +77,7 @@ TEST_F(TestCommunityChest, TestGoToJailCardCardId5)
 
     communityChest.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.getCurrTile(), prisonTile);
+    EXPECT_EQ(player.getCurrTileId(), prisonTile);
     EXPECT_EQ(player.isInPrison(), true);
 }
 
@@ -220,7 +220,7 @@ TEST_F(TestCommunityChest, playFirstThreeCardsOnOnePlayerCardIds0And1And2)
     communityChest.playNextCard(game, player, &mockDiceThrower);
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200 + 200 - 50);
-    EXPECT_EQ(player.getCurrTile(), 0);
+    EXPECT_EQ(player.getCurrTileId(), 0);
 }
 
 } // namespace ut
