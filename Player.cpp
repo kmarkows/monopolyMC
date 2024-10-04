@@ -21,6 +21,11 @@ const uint8_t Player::getStayingInPrisonStrategy() const
     return stayingInPrisonStrategy;
 }
 
+const uint8_t Player::getBuyingHousesStrategy() const
+{
+    return buyingHousesStrategy;
+}
+
 const uint8_t Player::getCurrTileId() const
 {
     return currTile;
@@ -86,6 +91,11 @@ void Player::setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrate
     stayingInPrisonStrategy = givenStayingInPrisonStrategy;
 }
 
+void Player::setBuyingHousesStrategy(const uint8_t givenBuyingHousesStrategy)
+{
+    buyingHousesStrategy = givenBuyingHousesStrategy;
+}
+
 void Player::setCurrTile(const uint8_t nextTile)
 {
     currTile = nextTile;
@@ -138,6 +148,7 @@ void Player::resetInteractedWithTile()
 void Player::addOwnedTileId(const uint8_t newTileId)
 {
     ownedTilesIds.push_back(newTileId);
+    std::sort(ownedTilesIds.begin(), ownedTilesIds.end());
 }
 
 void Player::setPreviousDiceRollSum(const uint8_t previousRoll)

@@ -244,4 +244,48 @@ TEST_F(TestUtils, isLuxuryTax)
     EXPECT_EQ(true, utils.isLuxuryTax(tile1));
 }
 
+TEST_F(TestUtils, ExpectTilesToBuildToBe1And3)
+{
+    Player player(firstPlayerId);
+    Board board;
+    player.addOwnedTileId(1);
+    player.addOwnedTileId(3);
+    player.addOwnedTileId(5);
+
+    std::vector<uint8_t> expectedTileIdsOnWhichPlayerCanBuild{1, 3};
+
+    EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
+}
+
+TEST_F(TestUtils, ExpectTilesToBuildToBeNone)
+{
+    Player player(firstPlayerId);
+    Board board;
+    player.addOwnedTileId(5);
+    player.addOwnedTileId(6);
+    player.addOwnedTileId(8);
+
+    std::vector<uint8_t> expectedTileIdsOnWhichPlayerCanBuild{};
+
+    EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
+}
+
+TEST_F(TestUtils, ExpectTilesToBuildToBeAllLightBlueAndRed)
+{
+    Player player(firstPlayerId);
+    Board board;
+    player.addOwnedTileId(5);
+    player.addOwnedTileId(6);
+    player.addOwnedTileId(8);
+    player.addOwnedTileId(9);
+    player.addOwnedTileId(21);
+    player.addOwnedTileId(23);
+    player.addOwnedTileId(24);
+    player.addOwnedTileId(25);
+
+    std::vector<uint8_t> expectedTileIdsOnWhichPlayerCanBuild{6, 8, 9, 21, 23, 24};
+
+    EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
+}
+
 } // namespace ut

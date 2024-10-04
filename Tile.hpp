@@ -17,6 +17,7 @@ class Tile
     const uint8_t getId() const;
     const uint8_t getOwnerId() const;
     const int getCost() const;
+    const int getHouseCost() const;
     const std::vector<int> &getRents() const;
     const uint8_t getNumOfHouses() const;
 

@@ -72,3 +72,15 @@ add_test(
     NAME TestRentPayer
     COMMAND TestRentPayer
 )
+
+add_executable(TestHousesBuilder TestHousesBuilder.cpp)
+target_link_libraries(TestHousesBuilder
+    gtest_main
+    gtest
+    Monopoly
+)
+
+add_test(
+    NAME TestHousesBuilder
+    COMMAND TestHousesBuilder
+)

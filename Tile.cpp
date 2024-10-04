@@ -20,6 +20,11 @@ const int Tile::getCost() const
     return cost;
 }
 
+const int Tile::getHouseCost() const
+{
+    return houseCost;
+}
+
 const std::vector<int> &Tile::getRents() const
 {
     return rents;
