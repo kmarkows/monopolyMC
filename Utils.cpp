@@ -20,56 +20,86 @@ const uint8_t Utils::getNumOfTilesOfEachTypeOwnedByPlayer(const Player &player, 
     return 0;
 }
 
-const std::vector<uint8_t> Utils::getTileIdsOnWhichPlayerCanBuildHouses(const Player &player, const Board &board) const
+const std::vector<std::vector<uint8_t>> Utils::getTileIdsOnWhichPlayerCanBuildHouses(const Player &player,
+                                                                                     const Board &board) const
 {
-    std::unordered_set<uint8_t> tileIdsOnWhichPlayerCanBuildSet{};
+    std::vector<std::vector<uint8_t>> tileIdsOnWhichPlayerCanBuild{};
     for (const uint8_t ownedTileId : player.getOwnedTilesIds())
     {
         if (board.getTiles().at(ownedTileId).getType() == "Property")
         {
-            if (ownedTileId > 0 and ownedTileId < 5)
+            if (ownedTileId == 1)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, brownColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, brownColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 5 and ownedTileId < 10)
+            else if (ownedTileId == 6)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, lightBlueColorTileIds,
-                                                         tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, lightBlueColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 10 and ownedTileId < 15)
+            else if (ownedTileId == 11)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, pinkColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, pinkColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 15 and ownedTileId < 20)
+            else if (ownedTileId == 16)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, orangeColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, orangeColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 20 and ownedTileId < 25)
+            else if (ownedTileId == 21)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, redColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, redColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 25 and ownedTileId < 30)
+            else if (ownedTileId == 26)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, yelowColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, yelowColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 30 and ownedTileId < 35)
+            else if (ownedTileId == 31)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, greenColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, greenColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
-            else if (ownedTileId > 35 and ownedTileId < 40)
+            else if (ownedTileId == 37)
             {
-                checkIfBuildingPossibleOnGivenColorTiles(player, blueColorTileIds, tileIdsOnWhichPlayerCanBuildSet);
+                checkIfBuildingPossibleOnGivenColorTiles(player, blueColorTileIds, tileIdsOnWhichPlayerCanBuild);
             }
         }
     }
-
-    std::vector<uint8_t> tileIdsOnWhichPlayerCanBuild{};
-    for (const uint8_t buildableIds : tileIdsOnWhichPlayerCanBuildSet)
-    {
-        tileIdsOnWhichPlayerCanBuild.push_back(buildableIds);
-    }
-    std::sort(tileIdsOnWhichPlayerCanBuild.begin(), tileIdsOnWhichPlayerCanBuild.end());
     return tileIdsOnWhichPlayerCanBuild;
+}
+
+const uint8_t Utils::getMaxNumOfHousesThatCanBeBuildOnGivenTile(const Tile &tile, const Board &board) const
+{
+    if (tile.getId() > 0 and tile.getId() < 5)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, brownColorTileIds) + 1;
+    }
+    else if (tile.getId() > 5 and tile.getId() < 10)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, lightBlueColorTileIds) + 1;
+    }
+    else if (tile.getId() > 10 and tile.getId() < 15)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, pinkColorTileIds) + 1;
+    }
+    else if (tile.getId() > 15 and tile.getId() < 20)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, orangeColorTileIds) + 1;
+    }
+    else if (tile.getId() > 20 and tile.getId() < 25)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, redColorTileIds) + 1;
+    }
+    else if (tile.getId() > 25 and tile.getId() < 30)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, yelowColorTileIds) + 1;
+    }
+    else if (tile.getId() > 30 and tile.getId() < 35)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, greenColorTileIds) + 1;
+    }
+    else if (tile.getId() > 35 and tile.getId() < 40)
+    {
+        return getMinNumberOfHousesOnSameColorTiles(board, blueColorTileIds) + 1;
+    }
+    return 0;
 }
 
 const bool Utils::isChanceTile(const Tile &tile) const
@@ -171,14 +201,23 @@ const uint8_t Utils::countSameColorPropertyTiles(const Player &player, const std
     return numOfGivenColorTilesOwned;
 }
 
-void Utils::checkIfBuildingPossibleOnGivenColorTiles(const Player &player, const std::vector<uint8_t> &sameColorTiles,
-                                                     std::unordered_set<uint8_t> &tileIdsOnWhichPlayerCanBuild) const
+void Utils::checkIfBuildingPossibleOnGivenColorTiles(
+    const Player &player, const std::vector<uint8_t> &sameColorTiles,
+    std::vector<std::vector<uint8_t>> &tileIdsOnWhichPlayerCanBuild) const
 {
     if (sameColorTiles.size() == countSameColorPropertyTiles(player, sameColorTiles))
     {
-        for (const uint8_t sameColorTileId : sameColorTiles)
-        {
-            tileIdsOnWhichPlayerCanBuild.insert(sameColorTileId);
-        }
+        tileIdsOnWhichPlayerCanBuild.push_back(sameColorTiles);
     }
+}
+
+const uint8_t Utils::getMinNumberOfHousesOnSameColorTiles(const Board &board,
+                                                          const std::vector<uint8_t> &sameColorTiles) const
+{
+    uint8_t minNumberOfHouses{6};
+    for (const uint8_t sameColorId : sameColorTiles)
+    {
+        minNumberOfHouses = std::min(board.getTiles().at(sameColorId).getNumOfHouses(), minNumberOfHouses);
+    }
+    return minNumberOfHouses;
 }

@@ -21,7 +21,7 @@ const uint8_t Player::getStayingInPrisonStrategy() const
     return stayingInPrisonStrategy;
 }
 
-const uint8_t Player::getBuyingHousesStrategy() const
+const BuyingHousesStrategy Player::getBuyingHousesStrategy() const
 {
     return buyingHousesStrategy;
 }
@@ -91,7 +91,7 @@ void Player::setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrate
     stayingInPrisonStrategy = givenStayingInPrisonStrategy;
 }
 
-void Player::setBuyingHousesStrategy(const uint8_t givenBuyingHousesStrategy)
+void Player::setBuyingHousesStrategy(const BuyingHousesStrategy givenBuyingHousesStrategy)
 {
     buyingHousesStrategy = givenBuyingHousesStrategy;
 }

@@ -2,16 +2,57 @@
 
 void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils)
 {
-    if (player.getBuyingHousesStrategy() == 0)
+    int moneyToSpentAtHouseBuying =
+        player.getBuyingHousesStrategy().moneyToSpentAtHouseBuying * player.getCurrentBalance();
+    if (player.getBuyingHousesStrategy().colorPriority == 0)
     {
-        for (const uint8_t ownedTileIdwhereBuildingIsAllowed :
-             utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board))
+        const auto &tileIdsOnWhichPlayerCanBuildHouses = utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board);
+        for (int8_t i = 0; i < tileIdsOnWhichPlayerCanBuildHouses.size(); i++)
         {
-            auto &tile = board.getTilesForModification().at(ownedTileIdwhereBuildingIsAllowed);
-            while (player.getCurrentBalance() > tile.getHouseCost() and tile.getNumOfHouses() < 5)
+            const auto &sameColorTileIdsOnWhichPlayerCanBuild = tileIdsOnWhichPlayerCanBuildHouses[i];
+            const Tile &firstTileOfGivenColor = board.getTiles().at(sameColorTileIdsOnWhichPlayerCanBuild[0]);
+            while (utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(firstTileOfGivenColor, board) < 6 and
+                   moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost())
             {
-                tile.buildHouse();
-                player.subtractBalance(tile.getHouseCost());
+                for (int8_t j = 0; j < sameColorTileIdsOnWhichPlayerCanBuild.size(); j++)
+                {
+                    Tile &tileOnPlayerTriesToBuild =
+                        board.getTilesForModification().at(sameColorTileIdsOnWhichPlayerCanBuild[j]);
+                    if (tileOnPlayerTriesToBuild.getNumOfHouses() <
+                            utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tileOnPlayerTriesToBuild, board) and
+                        moneyToSpentAtHouseBuying >= tileOnPlayerTriesToBuild.getHouseCost())
+                    {
+                        tileOnPlayerTriesToBuild.buildHouse();
+                        player.subtractBalance(tileOnPlayerTriesToBuild.getHouseCost());
+                        moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
+                    }
+                }
+            }
+        }
+    }
+    else if (player.getBuyingHousesStrategy().colorPriority == 1)
+    {
+        const auto &tileIdsOnWhichPlayerCanBuildHouses = utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board);
+        for (int8_t i = tileIdsOnWhichPlayerCanBuildHouses.size() - 1; i >= 0; i--)
+        {
+            const auto &sameColorTileIdsOnWhichPlayerCanBuild = tileIdsOnWhichPlayerCanBuildHouses[i];
+            const Tile &firstTileOfGivenColor = board.getTiles().at(sameColorTileIdsOnWhichPlayerCanBuild[0]);
+            while (utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(firstTileOfGivenColor, board) < 6 and
+                   moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost())
+            {
+                for (int8_t j = sameColorTileIdsOnWhichPlayerCanBuild.size() - 1; j >= 0; j--)
+                {
+                    Tile &tileOnPlayerTriesToBuild =
+                        board.getTilesForModification().at(sameColorTileIdsOnWhichPlayerCanBuild[j]);
+                    if (tileOnPlayerTriesToBuild.getNumOfHouses() <
+                            utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tileOnPlayerTriesToBuild, board) and
+                        moneyToSpentAtHouseBuying >= tileOnPlayerTriesToBuild.getHouseCost())
+                    {
+                        tileOnPlayerTriesToBuild.buildHouse();
+                        player.subtractBalance(tileOnPlayerTriesToBuild.getHouseCost());
+                        moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
+                    }
+                }
             }
         }
     }

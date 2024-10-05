@@ -1,6 +1,5 @@
 #pragma once
 
-#include <unordered_set>
 #include <vector>
 
 #include "Board.hpp"
@@ -12,7 +11,9 @@ class Utils
   public:
     Utils() = default;
     const uint8_t getNumOfTilesOfEachTypeOwnedByPlayer(const Player &player, const Tile &tile) const;
-    const std::vector<uint8_t> getTileIdsOnWhichPlayerCanBuildHouses(const Player &player, const Board &board) const;
+    const std::vector<std::vector<uint8_t>> getTileIdsOnWhichPlayerCanBuildHouses(const Player &player,
+                                                                                  const Board &board) const;
+    const uint8_t getMaxNumOfHousesThatCanBeBuildOnGivenTile(const Tile &tile, const Board &board) const;
     const bool isChanceTile(const Tile &tile) const;
     const bool isCommunityChestTile(const Tile &tile) const;
     const bool isIncomeTax(const Tile &tile) const;
@@ -23,8 +24,11 @@ class Utils
     const uint8_t countUtilityTiles(const Player &player) const;
     const uint8_t countPropertyTiles(const Player &player, const Tile &tile) const;
     const uint8_t countSameColorPropertyTiles(const Player &player, const std::vector<uint8_t> &sameColorTiles) const;
-    void checkIfBuildingPossibleOnGivenColorTiles(const Player &player, const std::vector<uint8_t> &sameColorTiles,
-                                                  std::unordered_set<uint8_t> &tileIdsOnWhichPlayerCanBuild) const;
+    void checkIfBuildingPossibleOnGivenColorTiles(
+        const Player &player, const std::vector<uint8_t> &sameColorTiles,
+        std::vector<std::vector<uint8_t>> &tileIdsOnWhichPlayerCanBuild) const;
+    const uint8_t getMinNumberOfHousesOnSameColorTiles(const Board &board,
+                                                       const std::vector<uint8_t> &sameColorTiles) const;
 
     std::vector<uint8_t> brownColorTileIds{1, 3};
     std::vector<uint8_t> lightBlueColorTileIds{6, 8, 9};

@@ -252,7 +252,7 @@ TEST_F(TestUtils, ExpectTilesToBuildToBe1And3)
     player.addOwnedTileId(3);
     player.addOwnedTileId(5);
 
-    std::vector<uint8_t> expectedTileIdsOnWhichPlayerCanBuild{1, 3};
+    std::vector<std::vector<uint8_t>> expectedTileIdsOnWhichPlayerCanBuild{{1, 3}};
 
     EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
 }
@@ -265,7 +265,7 @@ TEST_F(TestUtils, ExpectTilesToBuildToBeNone)
     player.addOwnedTileId(6);
     player.addOwnedTileId(8);
 
-    std::vector<uint8_t> expectedTileIdsOnWhichPlayerCanBuild{};
+    std::vector<std::vector<uint8_t>> expectedTileIdsOnWhichPlayerCanBuild{};
 
     EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
 }
@@ -283,9 +283,50 @@ TEST_F(TestUtils, ExpectTilesToBuildToBeAllLightBlueAndRed)
     player.addOwnedTileId(24);
     player.addOwnedTileId(25);
 
-    std::vector<uint8_t> expectedTileIdsOnWhichPlayerCanBuild{6, 8, 9, 21, 23, 24};
+    std::vector<std::vector<uint8_t>> expectedTileIdsOnWhichPlayerCanBuild{{6, 8, 9}, {21, 23, 24}};
 
     EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
+}
+
+TEST_F(TestUtils, getMaxNumOfHousesThatCanBeBuildOnGivenTileGet1OnBrownTiles)
+{
+    Board board;
+    Tile tile("Property", 60, {2, 10, 30, 90, 160, 250}, 50, 1);
+    board.getTilesForModification().at(1).setNumOfHouses(0);
+    board.getTilesForModification().at(3).setNumOfHouses(0);
+
+    EXPECT_EQ(1, utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tile, board));
+}
+
+TEST_F(TestUtils, getMaxNumOfHousesThatCanBeBuildOnGivenTileGet2OnBrownTiles)
+{
+    Board board;
+    Tile tile("Property", 60, {2, 10, 30, 90, 160, 250}, 50, 1);
+    board.getTilesForModification().at(1).setNumOfHouses(2);
+    board.getTilesForModification().at(3).setNumOfHouses(1);
+
+    EXPECT_EQ(2, utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tile, board));
+}
+
+TEST_F(TestUtils, getMaxNumOfHousesThatCanBeBuildOnGivenTileGet5OnBlueTiles)
+{
+    Board board;
+    Tile tile("Property", 400, {50, 200, 600, 1400, 1700, 2000}, 200, 39);
+    board.getTilesForModification().at(39).setNumOfHouses(4);
+    board.getTilesForModification().at(37).setNumOfHouses(4);
+
+    EXPECT_EQ(5, utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tile, board));
+}
+
+TEST_F(TestUtils, getMaxNumOfHousesThatCanBeBuildOnGivenTileGet3OnPinkTiles)
+{
+    Board board;
+    Tile tile("Property", 140, {10, 50, 150, 450, 625, 750}, 100, 13);
+    board.getTilesForModification().at(11).setNumOfHouses(2);
+    board.getTilesForModification().at(13).setNumOfHouses(2);
+    board.getTilesForModification().at(14).setNumOfHouses(3);
+
+    EXPECT_EQ(3, utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tile, board));
 }
 
 } // namespace ut

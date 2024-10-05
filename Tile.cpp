@@ -42,6 +42,7 @@ void Tile::setOwnerId(const uint8_t toBeOwnerId)
 
 void Tile::buildHouse()
 {
+    // TO DO: if hotel is built then increment num of available houses
     numOfHouses++;
 }
 

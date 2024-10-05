@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BuyingHousesStrategy.hpp"
 #include "DiceResult.hpp"
 #include "Tile.hpp"
 #include <cinttypes>
@@ -15,7 +16,7 @@ class Player
     const bool isInPrison() const;
     const bool hasGetOutOfPrisonCard() const;
     const uint8_t getStayingInPrisonStrategy() const;
-    const uint8_t getBuyingHousesStrategy() const;
+    const BuyingHousesStrategy getBuyingHousesStrategy() const;
     const uint8_t getCurrTileId() const;
     const uint8_t getId() const;
     const uint8_t getTurnsSpentInPrison() const;
@@ -30,7 +31,7 @@ class Player
     void useGetOutOfPrisonCard();
     void getOutOfPrison();
     void setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrategy);
-    void setBuyingHousesStrategy(const uint8_t givenBuyingHousesStrategy);
+    void setBuyingHousesStrategy(const BuyingHousesStrategy givenBuyingHousesStrategy);
     void setCurrTile(const uint8_t nextTile);
     void incrementTurnsSpentInPrison();
     void resetTurnsSpentInPrison();
@@ -58,5 +59,5 @@ class Player
     uint8_t previousDiceRollSum{0};
 
     uint8_t stayingInPrisonStrategy{0}; // 0 - 1 - 2, as short - if has Cards uses it - as long
-    uint8_t buyingHousesStrategy{0};    // 0 - buys houses for all money starting from most expensive tiles
+    BuyingHousesStrategy buyingHousesStrategy{};
 };
