@@ -17,13 +17,13 @@ int main()
 
     DiceThrower diceThrower;
     DiceThrowerSingle diceThrowerSingle;
-    Game game(2000, 8, &diceThrower, &diceThrowerSingle);
+    Game game(200, 2, &diceThrower, &diceThrowerSingle);
     game.enableBuying();
     // game.printPlayersData();
 
     game.play();
 
-    game.printTilesVisitedCounters();
+    // game.printTilesVisitedCounters();
 
     return 0;
 }

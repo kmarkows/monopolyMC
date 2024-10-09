@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "GetOutOfPrisonHandler.hpp"
+#include "Logger.hpp"
 
 Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower,
            const DiceThrowerSingle *givenDiceThrowerSingle)
@@ -19,6 +20,8 @@ void Game::play()
         {
             if (player.isPlaying())
             {
+                // TO DO write to testGame some tests including houses building
+                housesBuilder.tryBuilding(player, board, utils);
                 if (not player.isInPrison())
                 {
                     handleMovement(player);
@@ -66,7 +69,7 @@ void Game::play()
             else
             {
                 // TO DO remove player from players vector to whole new class
-                std::cout << "player lost" << std::endl;
+                // std::cout << "player lost" << std::endl;
             }
         }
         // printPlayersData();
@@ -114,6 +117,9 @@ void Game::handleBuyTile(Player &player, const Tile &tile)
         board.getTilesForModification().at(player.getCurrTileId()).setOwnerId(player.getId());
         player.addOwnedTileId(tile.getId());
         player.subtractBalance(tileCost);
+        Logger logger(
+            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        logger.logTileBuying(player, tile);
     }
 }
 

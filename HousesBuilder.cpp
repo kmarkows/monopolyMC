@@ -1,5 +1,7 @@
 #include "HousesBuilder.hpp"
+#include "Logger.hpp"
 
+// TO DO refactoring
 void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils)
 {
     int moneyToSpentAtHouseBuying =
@@ -25,6 +27,9 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
                         tileOnPlayerTriesToBuild.buildHouse();
                         player.subtractBalance(tileOnPlayerTriesToBuild.getHouseCost());
                         moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
+                        Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
+                                      "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+                        logger.logHouseBuying(player, tileOnPlayerTriesToBuild);
                     }
                 }
             }
@@ -51,6 +56,9 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
                         tileOnPlayerTriesToBuild.buildHouse();
                         player.subtractBalance(tileOnPlayerTriesToBuild.getHouseCost());
                         moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
+                        Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
+                                      "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+                        logger.logHouseBuying(player, tileOnPlayerTriesToBuild);
                     }
                 }
             }

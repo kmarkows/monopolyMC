@@ -5,6 +5,7 @@
 #include "CommunityChest.hpp"
 #include "DiceThrower.hpp"
 #include "DiceThrowerSingle.hpp"
+#include "HousesBuilder.hpp"
 #include "Player.hpp"
 #include "RentPayer.hpp"
 #include "Utils.hpp"
@@ -57,14 +58,15 @@ class Game
     uint32_t iterations;
     uint8_t numOfPlayers;
     std::vector<Player> players{};
-    Utils utils;
     const DiceThrower *diceThrower;
     const DiceThrowerSingle *diceThrowerSingle;
     Board board{};
     bool buyingEnabled{false};
     bool cardsEnabled{false};
     bool payingEnabled{false};
+    Utils utils;
     RentPayer rentPayer;
+    HousesBuilder housesBuilder;
     CommunityChest communityChest;
     Chance chance;
 

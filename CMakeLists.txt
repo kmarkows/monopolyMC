@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(Monopoly VERSION 1.0)
+project(Monopoly)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -13,7 +13,8 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_library(Monopoly STATIC main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp)
+add_executable(monopoly.exe main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp Logger.cpp)
+add_library(MonopolyLib STATIC main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp Logger.cpp)
 
 enable_testing()
 add_subdirectory(ut)
