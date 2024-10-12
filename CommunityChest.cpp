@@ -1,6 +1,7 @@
 #include "CommunityChest.hpp"
 #include "DiceThrower.hpp"
 #include "Game.hpp"
+#include "Logger.hpp"
 #include "Player.hpp"
 
 CommunityChest::CommunityChest()
@@ -97,8 +98,11 @@ CommunityChest::CommunityChest()
 void CommunityChest::playNextCard(Game &game, Player &player, const DiceThrower *diceThrower)
 {
     // TO DO Handle if prison card is owned by a player then skip this card
+    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    logger.logDrawCardCommunityChest(player, nextCardIdToBePlayed);
     cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);
     nextCardIdToBePlayed++;
+    nextCardIdToBePlayed = nextCardIdToBePlayed % communityChestCardsNumber;
 }
 
 const Card &CommunityChest::getCardById(const uint8_t id) const

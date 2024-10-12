@@ -1,6 +1,7 @@
 #include "Chance.hpp"
 #include "DiceThrower.hpp"
 #include "Game.hpp"
+#include "Logger.hpp"
 #include "Player.hpp"
 #include "Utils.hpp"
 
@@ -154,8 +155,11 @@ Chance::Chance()
 void Chance::playNextCard(Game &game, Player &player, const DiceThrower *diceThrower)
 {
     // TO DO Handle if prison card is owned by a player then skip this card
+    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    logger.logDrawCardChance(player, nextCardIdToBePlayed);
     cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);
     nextCardIdToBePlayed++;
+    nextCardIdToBePlayed = nextCardIdToBePlayed % chanceCardsNumber;
 }
 
 const Card &Chance::getCardById(const uint8_t id) const

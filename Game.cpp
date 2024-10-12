@@ -16,6 +16,9 @@ void Game::play()
 {
     for (uint32_t it = 0; it < iterations; it++)
     {
+        Logger logger(
+            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        logger.logStartOfEachIteration(players, it);
         for (auto &player : players)
         {
             if (player.isPlaying())
@@ -42,20 +45,23 @@ void Game::play()
                     handleChanceOrCommunityChestTile(player);
                 }
 
-                if (utils.isLuxuryTax(tile) or utils.isIncomeTax(tile))
+                if (not player.hasInterActedWithTile())
                 {
-                    handleTaxTiles(player);
-                }
-                // if player has not interacted with tile by card fe. railroad nad utility
+                    if (utils.isLuxuryTax(tile) or utils.isIncomeTax(tile))
+                    {
+                        handleTaxTiles(player);
+                    }
+                    // if player has not interacted with tile by card fe. railroad nad utility
 
-                if (tile.getOwnerId() == invalidPlayerId and buyingEnabled)
-                {
-                    handleBuyTile(player);
-                }
-                else if (tile.getOwnerId() != player.getId() and payingEnabled)
-                {
-                    rentPayer.payRent(player, getPlayerByIdForManipulation(tile.getOwnerId()), tile,
-                                      player.getPreviousDiceRollSum());
+                    if (tile.getOwnerId() == invalidPlayerId and buyingEnabled)
+                    {
+                        handleBuyTile(player);
+                    }
+                    else if (tile.getOwnerId() != player.getId() and payingEnabled)
+                    {
+                        rentPayer.payRent(player, getPlayerByIdForManipulation(tile.getOwnerId()), tile,
+                                          player.getPreviousDiceRollSum());
+                    }
                 }
 
                 // TO DO
@@ -159,13 +165,14 @@ void Game::handleMovement(Player &player)
 void Game::handleChanceOrCommunityChestTile(Player &player)
 {
     // staring from beginning TO DO chose first card randomly
+    // TO DO log cards functionality
     if (utils.isChanceTile(board.getTiles().at(player.getCurrTileId())))
     {
         chance.playNextCard(*this, player, diceThrower);
     }
     else
     {
-        chance.playNextCard(*this, player, diceThrower);
+        communityChest.playNextCard(*this, player, diceThrower);
     }
 }
 

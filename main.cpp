@@ -19,6 +19,8 @@ int main()
     DiceThrowerSingle diceThrowerSingle;
     Game game(200, 2, &diceThrower, &diceThrowerSingle);
     game.enableBuying();
+    game.enableCards();
+    game.enablePaying();
     // game.printPlayersData();
 
     game.play();

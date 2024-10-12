@@ -14,15 +14,106 @@ Logger::~Logger()
     logFile.close();
 }
 
-void Logger::logHouseBuying(const Player &player, const Tile &tile)
+void Logger::logStartOfEachIteration(const std::vector<Player> &players, const uint32_t iteration)
 {
-    logFile << "Player:" << (int)player.getId() << " boughtHouseNumber:" << (int)tile.getNumOfHouses()
-            << " onTile:" << (int)tile.getId() << " for:" << tile.getHouseCost()
-            << " balanceLeft:" << player.getCurrentBalance() << std::endl;
+    logFile << std::endl;
+    logFile << "---------------------------------- Start of iteration:" << (int)iteration
+            << " ----------------------------------" << std::endl;
+    for (const auto &player : players)
+    {
+        logFile << "PlayerId:" << (int)player.getId() << " currTileId:" << (int)player.getCurrTileId()
+                << " currBalance:" << player.getCurrentBalance() << " isInPrison:" << player.isInPrison()
+                << " hasGetOutOfPrisonCard:" << player.hasGetOutOfPrisonCard() << " ownedTiles:[";
+        for (uint8_t i = 0; i < player.getOwnedTilesIds().size(); i++)
+        {
+            logFile << (int)player.getOwnedTilesIds()[i];
+            if (i != player.getOwnedTilesIds().size() - 1)
+            {
+                logFile << ", ";
+            }
+        }
+        logFile << "]" << std::endl;
+    }
 }
 
 void Logger::logTileBuying(const Player &player, const Tile &tile)
 {
-    logFile << "Player: " << (int)player.getId() << " boughtTileNumer::" << (int)tile.getId()
-            << " for: " << tile.getCost() << " balanceLeft: " << player.getCurrentBalance() << std::endl;
+    logFile << "PlayerId:" << (int)player.getId() << " boughtTileNumer:" << (int)tile.getId()
+            << " for:" << tile.getCost() << " balanceLeft:" << player.getCurrentBalance() << std::endl;
+}
+
+void Logger::logTryHouseBuying(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " triesToBuyHouses"
+            << " currBalance:" << player.getCurrentBalance()
+            << " moneyToSpentAtHouseBuying:" << player.getBuyingHousesStrategy().moneyToSpentAtHouseBuying
+            << " colorPriority:" << (int)player.getBuyingHousesStrategy().colorPriority << std::endl;
+}
+
+void Logger::logHouseBuying(const Player &player, const Tile &tile)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " boughtHouseNumber:" << (int)tile.getNumOfHouses()
+            << " onTile:" << (int)tile.getId() << " for:" << tile.getHouseCost()
+            << " balanceLeft:" << player.getCurrentBalance() << std::endl;
+}
+
+void Logger::logPlayerGoesToPrison(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " goToPrison" << std::endl;
+}
+
+void Logger::logPlayerTriesToGetOutOfPrison(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance()
+            << " triesToGetOutOfPrison strategy:" << (int)player.getStayingInPrisonStrategy()
+            << " hasGetOutOfPrisonCard:" << player.hasGetOutOfPrisonCard() << std::endl;
+}
+
+void Logger::logPlayerGetsOutOfPrisonByCard(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByUsingCard"
+            << " hasGetOutOfPrisonCard:" << player.hasGetOutOfPrisonCard() << std::endl;
+}
+
+void Logger::logPlayerGetsOutOfPrisonByFine(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByPayingFine"
+            << " currBalance:" << player.getCurrentBalance() << std::endl;
+}
+
+void Logger::logPlayerGetsOutOfPrisonByDouble(const Player &player, const DiceResult &diceResult)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByThrowingDouble"
+            << " first:" << diceResult.getFirst() << " second:" << diceResult.getSecond() << std::endl;
+}
+
+void Logger::logPlayerGetsOutOfPrisonByStaying(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByStayingThreeTurns"
+            << " currBalance:" << player.getCurrentBalance() << std::endl;
+}
+
+void Logger::logDrawCardCommunityChest(const Player &player, const uint8_t cardToBeDrawed)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " drawsCommunityChestCardId:" << (int)cardToBeDrawed << std::endl;
+}
+
+void Logger::logDrawCardChance(const Player &player, const uint8_t cardToBeDrawed)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " drawsChanceCardId:" << (int)cardToBeDrawed << std::endl;
+}
+
+void Logger::logRentPayer(const Player &player, const Player &owner, const Tile &tile)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance()
+            << " goesOnTileId:" << (int)tile.getId() << " tileType:" << tile.getType()
+            << " numOfHouses:" << (int)tile.getNumOfHouses() << " hasToPayRentToOwnerId:" << (int)owner.getId()
+            << " currBalance:" << owner.getCurrentBalance() << std::endl;
+}
+
+void Logger::logPayingRent(const Player &player, const Player &owner, const int rent)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance()
+            << " paidRent:" << rent << " hasToPayRentToOwnerId:" << (int)owner.getId()
+            << " currBalance:" << owner.getCurrentBalance() << std::endl;
 }

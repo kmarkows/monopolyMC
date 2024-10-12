@@ -6,6 +6,9 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
 {
     int moneyToSpentAtHouseBuying =
         player.getBuyingHousesStrategy().moneyToSpentAtHouseBuying * player.getCurrentBalance();
+    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
+                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    logger.logTryHouseBuying(player);
     if (player.getBuyingHousesStrategy().colorPriority == 0)
     {
         const auto &tileIdsOnWhichPlayerCanBuildHouses = utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board);

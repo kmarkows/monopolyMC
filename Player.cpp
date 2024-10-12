@@ -1,4 +1,6 @@
 #include "Player.hpp"
+#include "Logger.hpp"
+
 #include <iostream>
 
 void Player::print()
@@ -68,6 +70,8 @@ const uint8_t Player::getPreviousDiceRollSum() const
 
 void Player::goToPrison()
 {
+    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    logger.logPlayerGoesToPrison(*this);
     prison = true;
 }
 
