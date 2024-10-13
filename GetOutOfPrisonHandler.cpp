@@ -17,7 +17,7 @@ void GetOutOfPrisonHandler::handle()
         moveAfterLeavingPrison(diceResult);
         Logger logger(
             "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logPlayerGetsOutOfPrisonByCard(player);
+        logger.logPlayerGetsOutOfPrisonByCard(player, diceResult);
         return;
     }
 
@@ -29,7 +29,7 @@ void GetOutOfPrisonHandler::handle()
         moveAfterLeavingPrison(diceResult);
         Logger logger(
             "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logPlayerGetsOutOfPrisonByFine(player);
+        logger.logPlayerGetsOutOfPrisonByFine(player, diceResult);
         return;
     }
 
@@ -41,7 +41,7 @@ void GetOutOfPrisonHandler::handle()
         moveAfterLeavingPrison(diceResult);
         Logger logger(
             "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logPlayerGetsOutOfPrisonByStaying(player);
+        logger.logPlayerGetsOutOfPrisonByStaying(player, diceResult);
         return;
     }
     // std::cout << (int)diceResult.getFirst() << " " <<

@@ -1,6 +1,8 @@
 #include "Game.hpp"
+
 #include "GetOutOfPrisonHandler.hpp"
 #include "Logger.hpp"
+#include "PlayerRemover.hpp"
 
 Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower,
            const DiceThrowerSingle *givenDiceThrowerSingle)
@@ -21,67 +23,62 @@ void Game::play()
         logger.logStartOfEachIteration(players, it);
         for (auto &player : players)
         {
-            if (player.isPlaying())
+            // TO DO write to testGame some tests including houses building
+            housesBuilder.tryBuilding(player, board, utils);
+            if (not player.isInPrison())
             {
-                // TO DO write to testGame some tests including houses building
-                housesBuilder.tryBuilding(player, board, utils);
-                if (not player.isInPrison())
+                handleMovement(player);
+                if (player.getCurrTileId() == goToPrisonTile)
                 {
-                    handleMovement(player);
-                    if (player.getCurrTileId() == goToPrisonTile)
-                    {
-                        setPrison(player);
-                    }
+                    setPrison(player);
                 }
-                else
-                {
-                    GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
-                    getOutOfPrisonHandler.handle();
-                }
-
-                const auto &tile = board.getTiles().at(player.getCurrTileId());
-                if (cardsEnabled and (utils.isCommunityChestTile(tile) or utils.isChanceTile(tile)))
-                {
-                    handleChanceOrCommunityChestTile(player);
-                }
-
-                if (not player.hasInterActedWithTile())
-                {
-                    if (utils.isLuxuryTax(tile) or utils.isIncomeTax(tile))
-                    {
-                        handleTaxTiles(player);
-                    }
-                    // if player has not interacted with tile by card fe. railroad nad utility
-
-                    if (tile.getOwnerId() == invalidPlayerId and buyingEnabled)
-                    {
-                        handleBuyTile(player);
-                    }
-                    else if (tile.getOwnerId() != player.getId() and payingEnabled)
-                    {
-                        rentPayer.payRent(player, getPlayerByIdForManipulation(tile.getOwnerId()), tile,
-                                          player.getPreviousDiceRollSum());
-                    }
-                }
-
-                // TO DO
-                // if (tile owned)
-                // pay
-                // else
-                // try to buy
-
-                collectTilesData(player.getCurrTileId());
             }
             else
             {
-                // TO DO remove player from players vector to whole new class
-                // std::cout << "player lost" << std::endl;
+                GetOutOfPrisonHandler getOutOfPrisonHandler(player, diceThrower);
+                getOutOfPrisonHandler.handle();
             }
+
+            const auto &tile = board.getTiles().at(player.getCurrTileId());
+            if (cardsEnabled and (utils.isCommunityChestTile(tile) or utils.isChanceTile(tile)))
+            {
+                handleChanceOrCommunityChestTile(player);
+            }
+
+            if (not player.hasInterActedWithTile())
+            {
+                if (utils.isLuxuryTax(tile) or utils.isIncomeTax(tile))
+                {
+                    handleTaxTiles(player);
+                }
+
+                if (tile.getOwnerId() == invalidPlayerId and buyingEnabled)
+                {
+                    handleBuyTile(player);
+                }
+                else if (tile.getOwnerId() != player.getId() and payingEnabled)
+                {
+                    rentPayer.payRent(player, getPlayerByIdForManipulation(tile.getOwnerId()), tile,
+                                      player.getPreviousDiceRollSum());
+                }
+            }
+
+            if (not player.isPlaying())
+            {
+                PlayerRemover playerRemover;
+                playerRemover.remove(players, player, board);
+
+                if (players.size() == 1)
+                {
+                    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
+                                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+                    logger.logGameEnd(players);
+                    return;
+                }
+            }
+            collectTilesData(player.getCurrTileId());
         }
-        // printPlayersData();
-        // std::cout << std::endl;
     }
-    // printPropertiesData();
 }
 
 void Game::handleTaxTiles(Player &player)
@@ -138,8 +135,6 @@ void Game::handleMovement(Player &player)
     while (throwCounter < 3 and isDouble)
     {
         auto diceResult = diceThrower->throwDice();
-        // std::cout << (int)diceResult.getFirst() << " " <<
-        // (int)diceResult.getSecond() << std::endl;
         isDouble = diceResult.getFirst() == diceResult.getSecond();
         throwCounter++;
 
@@ -165,7 +160,6 @@ void Game::handleMovement(Player &player)
 void Game::handleChanceOrCommunityChestTile(Player &player)
 {
     // staring from beginning TO DO chose first card randomly
-    // TO DO log cards functionality
     if (utils.isChanceTile(board.getTiles().at(player.getCurrTileId())))
     {
         chance.playNextCard(*this, player, diceThrower);
@@ -178,7 +172,6 @@ void Game::handleChanceOrCommunityChestTile(Player &player)
 
 void Game::setPrison(Player &player)
 {
-    // std::cout << "goToPrisonTile" << std::endl;
     player.goToPrison();
     player.setCurrTile(prisonTile);
 }

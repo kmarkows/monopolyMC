@@ -69,28 +69,31 @@ void Logger::logPlayerTriesToGetOutOfPrison(const Player &player)
             << " hasGetOutOfPrisonCard:" << player.hasGetOutOfPrisonCard() << std::endl;
 }
 
-void Logger::logPlayerGetsOutOfPrisonByCard(const Player &player)
+void Logger::logPlayerGetsOutOfPrisonByCard(const Player &player, const DiceResult &diceResult)
 {
     logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByUsingCard"
-            << " hasGetOutOfPrisonCard:" << player.hasGetOutOfPrisonCard() << std::endl;
+            << " hasGetOutOfPrisonCard:" << player.hasGetOutOfPrisonCard() << " first:" << (int)diceResult.getFirst()
+            << " second:" << (int)diceResult.getSecond() << std::endl;
 }
 
-void Logger::logPlayerGetsOutOfPrisonByFine(const Player &player)
+void Logger::logPlayerGetsOutOfPrisonByFine(const Player &player, const DiceResult &diceResult)
 {
     logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByPayingFine"
-            << " currBalance:" << player.getCurrentBalance() << std::endl;
+            << " currBalance:" << player.getCurrentBalance() << " first:" << (int)diceResult.getFirst()
+            << " second:" << (int)diceResult.getSecond() << std::endl;
 }
 
 void Logger::logPlayerGetsOutOfPrisonByDouble(const Player &player, const DiceResult &diceResult)
 {
     logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByThrowingDouble"
-            << " first:" << diceResult.getFirst() << " second:" << diceResult.getSecond() << std::endl;
+            << " first:" << (int)diceResult.getFirst() << " second:" << (int)diceResult.getSecond() << std::endl;
 }
 
-void Logger::logPlayerGetsOutOfPrisonByStaying(const Player &player)
+void Logger::logPlayerGetsOutOfPrisonByStaying(const Player &player, const DiceResult &diceResult)
 {
     logFile << "PlayerId:" << (int)player.getId() << " getOutOfPrisonByStayingThreeTurns"
-            << " currBalance:" << player.getCurrentBalance() << std::endl;
+            << " currBalance:" << player.getCurrentBalance() << " first:" << (int)diceResult.getFirst()
+            << " second:" << (int)diceResult.getSecond() << std::endl;
 }
 
 void Logger::logDrawCardCommunityChest(const Player &player, const uint8_t cardToBeDrawed)
@@ -116,4 +119,34 @@ void Logger::logPayingRent(const Player &player, const Player &owner, const int 
     logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance()
             << " paidRent:" << rent << " hasToPayRentToOwnerId:" << (int)owner.getId()
             << " currBalance:" << owner.getCurrentBalance() << std::endl;
+}
+
+void Logger::logRemovePlayer(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance() << " ownedTiles:[";
+
+    for (uint8_t i = 0; i < player.getOwnedTilesIds().size(); i++)
+    {
+        logFile << (int)player.getOwnedTilesIds()[i];
+        if (i != player.getOwnedTilesIds().size() - 1)
+        {
+            logFile << ", ";
+        }
+    }
+    logFile << "]" << " isRemovedFromTheGame" << std::endl;
+}
+
+void Logger::logGameEnd(const std::vector<Player> &players)
+{
+    logFile << "PlayerId:" << (int)players[0].getId() << " currBalance:" << players[0].getCurrentBalance()
+            << " ownedTiles:[";
+    for (uint8_t i = 0; i < players[0].getOwnedTilesIds().size(); i++)
+    {
+        logFile << (int)players[0].getOwnedTilesIds()[i];
+        if (i != players[0].getOwnedTilesIds().size() - 1)
+        {
+            logFile << ", ";
+        }
+    }
+    logFile << "]" << " winsTheGame" << std::endl;
 }
