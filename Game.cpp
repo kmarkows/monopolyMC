@@ -12,6 +12,8 @@ Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, cons
     diceThrower = givenDiceThrower;
     diceThrowerSingle = givenDiceThrowerSingle;
     createPlayersData();
+    chance.setNextCardIdToBePlayed((rand() % chanceCardsNumber));
+    communityChest.setNextCardIdToBePlayed((rand() % communityChestCardsNumber));
 }
 
 void Game::play()
@@ -54,7 +56,7 @@ void Game::play()
 
                 if (tile.getOwnerId() == invalidPlayerId and buyingEnabled)
                 {
-                    handleBuyTile(player);
+                    tileBuyer.tryBuying(player, board, utils);
                 }
                 else if (tile.getOwnerId() != player.getId() and payingEnabled)
                 {
@@ -66,7 +68,7 @@ void Game::play()
             if (not player.isPlaying())
             {
                 PlayerRemover playerRemover;
-                playerRemover.remove(players, player, board);
+                playerRemover.remove(players, player, board, communityChest, chance);
 
                 if (players.size() == 1)
                 {
@@ -86,44 +88,6 @@ void Game::handleTaxTiles(Player &player)
     const auto &tile = board.getTiles().at(player.getCurrTileId());
     const int tax = utils.isIncomeTax(tile) ? 200 : 100;
     player.subtractBalance(tax);
-}
-
-void Game::handleBuyTile(Player &player)
-{
-    // TO DO extract to new class BuyPropertyHandler
-    const auto &tile = board.getTiles().at(player.getCurrTileId());
-    if (tile.getType() == "Railroad")
-    {
-        handleBuyTile(player, tile);
-        return;
-    }
-
-    if (tile.getType() == "Utilities")
-    {
-        handleBuyTile(player, tile);
-        return;
-    }
-
-    if (tile.getType() == "Property")
-    {
-        handleBuyTile(player, tile);
-        return;
-    }
-}
-
-void Game::handleBuyTile(Player &player, const Tile &tile)
-{
-    // always buy strategy TO DO change that
-    const int tileCost = tile.getCost();
-    if (player.getCurrentBalance() > tileCost)
-    {
-        board.getTilesForModification().at(player.getCurrTileId()).setOwnerId(player.getId());
-        player.addOwnedTileId(tile.getId());
-        player.subtractBalance(tileCost);
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logTileBuying(player, tile);
-    }
 }
 
 void Game::handleMovement(Player &player)
@@ -159,7 +123,6 @@ void Game::handleMovement(Player &player)
 
 void Game::handleChanceOrCommunityChestTile(Player &player)
 {
-    // staring from beginning TO DO chose first card randomly
     if (utils.isChanceTile(board.getTiles().at(player.getCurrTileId())))
     {
         chance.playNextCard(*this, player, diceThrower);
@@ -240,6 +203,16 @@ Board &Game::getBoardDataForModification()
 const Utils &Game::getUtils() const
 {
     return utils;
+}
+
+CommunityChest &Game::getCommunityChestForModification()
+{
+    return communityChest;
+}
+
+Chance &Game::getChanceForModification()
+{
+    return chance;
 }
 
 const bool Game::isBuyingEnabled() const

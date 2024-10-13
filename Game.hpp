@@ -8,7 +8,9 @@
 #include "HousesBuilder.hpp"
 #include "Player.hpp"
 #include "RentPayer.hpp"
+#include "TileBuyer.hpp"
 #include "Utils.hpp"
+
 #include <map>
 #include <optional>
 #include <vector>
@@ -35,6 +37,9 @@ class Game
 
     const Utils &getUtils() const;
 
+    CommunityChest &getCommunityChestForModification();
+    Chance &getChanceForModification();
+
     const bool isBuyingEnabled() const;
     void enableBuying();
 
@@ -48,8 +53,6 @@ class Game
     void createPlayersData();
     void handleMovement(Player &player);
     void handleTaxTiles(Player &player);
-    void handleBuyTile(Player &player);
-    void handleBuyTile(Player &player, const Tile &tile);
     void setPrison(Player &player);
     void handleChanceOrCommunityChestTile(Player &player);
 
@@ -66,6 +69,7 @@ class Game
     bool payingEnabled{false};
     Utils utils;
     RentPayer rentPayer;
+    TileBuyer tileBuyer;
     HousesBuilder housesBuilder;
     CommunityChest communityChest;
     Chance chance;

@@ -11,7 +11,13 @@ class Chance
   public:
     Chance();
     void playNextCard(Game &game, Player &player, const DiceThrower *diceThrower);
+
+    void setNextCardIdToBePlayed(const uint8_t givenNextCardIdToBePlayed);
+    void setIsGetOutOfPrisonCardAvailable(const uint8_t givenIsGetOutOfPrisonCardAvailable);
+
     const Card &getCardById(const uint8_t id) const;
+    const uint8_t getNextCardIdToBePlayed() const;
+    const bool getIsGetOutOfPrisonCardAvailable() const;
 
   private:
     void handleUtility(Game &game, Player &currPlayer, const DiceThrower *diceThrower,
@@ -19,5 +25,6 @@ class Chance
     void handleRailroad(Game &game, Player &currPlayer, const uint8_t railroadTileId) const;
 
     uint8_t nextCardIdToBePlayed{0};
+    bool isGetOutOfPrisonCardAvailable{true};
     std::array<Card, chanceCardsNumber> cards;
 };

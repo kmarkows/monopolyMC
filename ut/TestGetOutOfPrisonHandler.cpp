@@ -16,7 +16,7 @@ class TestGetOutOfPrisonHandler : public ::testing::Test
 TEST_F(TestGetOutOfPrisonHandler, TestHaveGetOutOfPrisonCardStrategy1)
 {
     MockDiceThrower<1, 2> mockDiceThrower;
-    player.acquireGetOutOfPrisonCard();
+    player.acquireGetOutOfPrisonChanceCard();
     player.goToPrison();
     player.setCurrTile(prisonTile);
     player.setStayingInPrisonStrategy(1);
@@ -31,7 +31,7 @@ TEST_F(TestGetOutOfPrisonHandler, TestHaveGetOutOfPrisonCardStrategy1)
 TEST_F(TestGetOutOfPrisonHandler, TestHaveGetOutOfPrisonCardStrategy2)
 {
     MockDiceThrower<1, 2> mockDiceThrower;
-    player.acquireGetOutOfPrisonCard();
+    player.acquireGetOutOfPrisonCommunityChestCard();
     player.goToPrison();
     player.setCurrTile(prisonTile);
     player.setStayingInPrisonStrategy(2);

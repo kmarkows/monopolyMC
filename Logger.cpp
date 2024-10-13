@@ -36,18 +36,28 @@ void Logger::logStartOfEachIteration(const std::vector<Player> &players, const u
     }
 }
 
+void Logger::logTryTileBuying(const Player &player, const Tile &tile)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance()
+            << " firstHalfPropertiesFactor:" << player.getBuyingTilesStrategy().firstHalfPropertiesFactor
+            << " secondHalfPropertiesFactor:" << player.getBuyingTilesStrategy().secondHalfPropertiesFactor
+            << " moneyToSpentAtTilesBuying:" << player.getBuyingTilesStrategy().moneyToSpentAtTilesBuying
+            << " triesToBuyTileId:" << (int)player.getCurrTileId() << " tileCost:" << tile.getCost() << std::endl;
+}
+
 void Logger::logTileBuying(const Player &player, const Tile &tile)
 {
     logFile << "PlayerId:" << (int)player.getId() << " boughtTileNumer:" << (int)tile.getId()
             << " for:" << tile.getCost() << " balanceLeft:" << player.getCurrentBalance() << std::endl;
 }
 
-void Logger::logTryHouseBuying(const Player &player)
+void Logger::logTryHouseBuying(const Player &player, const int8_t availableHouses, const int8_t availablHotels)
 {
     logFile << "PlayerId:" << (int)player.getId() << " triesToBuyHouses"
             << " currBalance:" << player.getCurrentBalance()
             << " moneyToSpentAtHouseBuying:" << player.getBuyingHousesStrategy().moneyToSpentAtHouseBuying
-            << " colorPriority:" << (int)player.getBuyingHousesStrategy().colorPriority << std::endl;
+            << " colorPriority:" << (int)player.getBuyingHousesStrategy().colorPriority
+            << " availableHouses:" << (int)availableHouses << " availableHotels:" << (int)availablHotels << std::endl;
 }
 
 void Logger::logHouseBuying(const Player &player, const Tile &tile)

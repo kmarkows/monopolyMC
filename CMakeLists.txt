@@ -13,8 +13,8 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(monopoly.exe main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp Logger.cpp PlayerRemover.cpp)
-add_library(MonopolyLib STATIC main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp Logger.cpp PlayerRemover.cpp)
+add_executable(monopoly.exe main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp Logger.cpp PlayerRemover.cpp TileBuyer.cpp)
+add_library(MonopolyLib STATIC main.cpp Game.cpp Player.cpp Tile.cpp Board.cpp Card.cpp Chance.cpp CommunityChest.cpp GetOutOfPrisonHandler.cpp Utils.cpp RentPayer.cpp HousesBuilder.cpp Logger.cpp PlayerRemover.cpp TileBuyer.cpp)
 
 enable_testing()
 add_subdirectory(ut)

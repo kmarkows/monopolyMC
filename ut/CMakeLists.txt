@@ -96,3 +96,15 @@ add_test(
     NAME TestPlayerRemover
     COMMAND TestPlayerRemover
 )
+
+add_executable(TestTileBuyer TestTileBuyer.cpp)
+target_link_libraries(TestTileBuyer
+    gtest_main
+    gtest
+    MonopolyLib
+)
+
+add_test(
+    NAME TestTileBuyer
+    COMMAND TestTileBuyer
+)

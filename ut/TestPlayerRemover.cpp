@@ -16,6 +16,8 @@ class TestPlayerRemover : public ::testing::Test
     std::vector<Player> players;
     Player player{firstPlayerId};
     Board board;
+    CommunityChest communityChest;
+    Chance chance;
 };
 
 TEST_F(TestPlayerRemover, ThreePlayersInGameFirstIsRemoved)
@@ -32,7 +34,7 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameFirstIsRemoved)
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player, board);
+    playerRemover.remove(players, player, board, communityChest, chance);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(board.getTiles().at(1).getOwnerId(), 0);
@@ -53,7 +55,7 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameThirdIsRemoved)
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player3, board);
+    playerRemover.remove(players, player3, board, communityChest, chance);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(board.getTiles().at(1).getOwnerId(), 0);
@@ -74,11 +76,32 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameSecondIsRemoved)
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player2, board);
+    playerRemover.remove(players, player2, board, communityChest, chance);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(board.getTiles().at(1).getOwnerId(), 0);
     EXPECT_EQ(board.getTiles().at(3).getOwnerId(), 0);
+}
+
+TEST_F(TestPlayerRemover, ThreePlayersInGameFirstIsRemovedGetOutOfPrisonCardsAreReturned)
+{
+    Player player2(secondPlayerId);
+    Player player3(thirdPlayerId);
+
+    player.acquireGetOutOfPrisonChanceCard();
+    chance.setIsGetOutOfPrisonCardAvailable(false);
+    player.acquireGetOutOfPrisonCommunityChestCard();
+    communityChest.setIsGetOutOfPrisonCardAvailable(false);
+
+    players.push_back(player);
+    players.push_back(player2);
+    players.push_back(player3);
+
+    playerRemover.remove(players, player, board, communityChest, chance);
+
+    EXPECT_EQ(players.size(), 2);
+    EXPECT_EQ(chance.getIsGetOutOfPrisonCardAvailable(), true);
+    EXPECT_EQ(communityChest.getIsGetOutOfPrisonCardAvailable(), true);
 }
 
 } // namespace ut

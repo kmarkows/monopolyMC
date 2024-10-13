@@ -15,7 +15,17 @@ const bool Player::isInPrison() const
 
 const bool Player::hasGetOutOfPrisonCard() const
 {
-    return getOutOfPrisonCard;
+    return getOutOfPrisonChanceCard or getOutOfPrisonCommunityChestCard;
+}
+
+const bool Player::hasGetOutOfPrisonChanceCard() const
+{
+    return getOutOfPrisonChanceCard;
+}
+
+const bool Player::hasGetOutOfPrisonCommunityChestCard() const
+{
+    return getOutOfPrisonCommunityChestCard;
 }
 
 const uint8_t Player::getStayingInPrisonStrategy() const
@@ -26,6 +36,11 @@ const uint8_t Player::getStayingInPrisonStrategy() const
 const BuyingHousesStrategy Player::getBuyingHousesStrategy() const
 {
     return buyingHousesStrategy;
+}
+
+const BuyingTilesStrategy Player::getBuyingTilesStrategy() const
+{
+    return buyingTilesStrategy;
 }
 
 const uint8_t Player::getCurrTileId() const
@@ -70,19 +85,38 @@ const uint8_t Player::getPreviousDiceRollSum() const
 
 void Player::goToPrison()
 {
+    // TO DO log going to prison different ways
     Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
     logger.logPlayerGoesToPrison(*this);
     prison = true;
 }
 
-void Player::acquireGetOutOfPrisonCard()
+void Player::acquireGetOutOfPrisonChanceCard()
 {
-    getOutOfPrisonCard = true;
+    getOutOfPrisonChanceCard = true;
+}
+
+void Player::acquireGetOutOfPrisonCommunityChestCard()
+{
+    getOutOfPrisonCommunityChestCard = true;
 }
 
 void Player::useGetOutOfPrisonCard()
 {
-    getOutOfPrisonCard = false;
+    if (hasGetOutOfPrisonCard())
+    {
+        hasGetOutOfPrisonChanceCard() ? useGetOutOfPrisonChanceCard() : useGetOutOfPrisonCommunityChestCard();
+    }
+}
+
+void Player::useGetOutOfPrisonChanceCard()
+{
+    getOutOfPrisonChanceCard = false;
+}
+
+void Player::useGetOutOfPrisonCommunityChestCard()
+{
+    getOutOfPrisonCommunityChestCard = false;
 }
 
 void Player::getOutOfPrison()
@@ -98,6 +132,11 @@ void Player::setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrate
 void Player::setBuyingHousesStrategy(const BuyingHousesStrategy givenBuyingHousesStrategy)
 {
     buyingHousesStrategy = givenBuyingHousesStrategy;
+}
+
+void Player::setBuyingTilesStrategy(const BuyingTilesStrategy givenBuyingTilesStrategy)
+{
+    buyingTilesStrategy = givenBuyingTilesStrategy;
 }
 
 void Player::setCurrTile(const uint8_t nextTile)

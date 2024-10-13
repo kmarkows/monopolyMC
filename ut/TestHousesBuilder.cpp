@@ -16,6 +16,7 @@ class TestHousesBuilder : public ::testing::Test
 
     uint8_t colorPrio{0};
     float moneyToSpentAtHouseBuying{0.0f};
+    bool isBuyingHotels{true};
 };
 
 TEST_F(TestHousesBuilder, build3HousesOnBrownTilesStartingWithNoHouses)
@@ -23,7 +24,8 @@ TEST_F(TestHousesBuilder, build3HousesOnBrownTilesStartingWithNoHouses)
     Player player(firstPlayerId);
     colorPrio = 0;
     moneyToSpentAtHouseBuying = 0.1f;
-    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying});
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
 
     player.addOwnedTileId(1);
     player.addOwnedTileId(3);
@@ -41,7 +43,8 @@ TEST_F(TestHousesBuilder, build6HousesOnBrownTilesStartingWithNoHousesBuild)
     Player player(firstPlayerId);
     colorPrio = 0;
     moneyToSpentAtHouseBuying = 0.2f;
-    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying});
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
 
     player.addOwnedTileId(1);
     player.addOwnedTileId(3);
@@ -59,7 +62,8 @@ TEST_F(TestHousesBuilder, buildAllHousesOnBrownTilesStartingWithNoHousesBuild)
     Player player(firstPlayerId);
     colorPrio = 0;
     moneyToSpentAtHouseBuying = 0.4f;
-    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying});
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
 
     player.addOwnedTileId(1);
     player.addOwnedTileId(3);
@@ -72,12 +76,32 @@ TEST_F(TestHousesBuilder, buildAllHousesOnBrownTilesStartingWithNoHousesBuild)
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 10 * 50);
 }
 
+TEST_F(TestHousesBuilder, buildAllHousesOnBrownButNoHotelsTilesStartingWithNoHousesBuild)
+{
+    Player player(firstPlayerId);
+    colorPrio = 0;
+    moneyToSpentAtHouseBuying = 0.4f;
+    isBuyingHotels = false;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
+
+    player.addOwnedTileId(1);
+    player.addOwnedTileId(3);
+    player.setBalance(startingBalance);
+
+    housesBuilder.tryBuilding(player, board, utils);
+
+    EXPECT_EQ(board.getTiles().at(1).getNumOfHouses(), 4);
+    EXPECT_EQ(board.getTiles().at(3).getNumOfHouses(), 4);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 8 * 50);
+}
+
 TEST_F(TestHousesBuilder, buildAllHousesOnBrownAnd1OnPinkTilesStartingWithNoHousesBuild)
 {
     Player player(firstPlayerId);
     colorPrio = 0;
     moneyToSpentAtHouseBuying = 0.4f;
-    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying});
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
 
     player.addOwnedTileId(1);
     player.addOwnedTileId(3);
@@ -99,7 +123,8 @@ TEST_F(TestHousesBuilder, buildAllHousesOnBrownAnd4OnPinkTilesStartingWithNoHous
     Player player(firstPlayerId);
     colorPrio = 0;
     moneyToSpentAtHouseBuying = 0.6f;
-    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying});
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
 
     player.addOwnedTileId(1);
     player.addOwnedTileId(3);
@@ -123,7 +148,8 @@ TEST_F(TestHousesBuilder, buildNoneHousesOnBrownAnd9OnPinkTilesStartingWithNoHou
     Player player(firstPlayerId);
     colorPrio = 1;
     moneyToSpentAtHouseBuying = 0.6f;
-    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying});
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
 
     player.addOwnedTileId(1);
     player.addOwnedTileId(3);
@@ -140,6 +166,31 @@ TEST_F(TestHousesBuilder, buildNoneHousesOnBrownAnd9OnPinkTilesStartingWithNoHou
     EXPECT_EQ(board.getTiles().at(13).getNumOfHouses(), 3);
     EXPECT_EQ(board.getTiles().at(14).getNumOfHouses(), 3);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance - 9 * 100);
+}
+
+TEST_F(TestHousesBuilder, buildNoneHousesOnBrownAnd9OnPinkTilesStartingWithNoHousesBuildHousesButNoHotels)
+{
+    Player player(firstPlayerId);
+    colorPrio = 1;
+    moneyToSpentAtHouseBuying = 0.9f;
+    isBuyingHotels = false;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
+
+    player.addOwnedTileId(1);
+    player.addOwnedTileId(3);
+    player.addOwnedTileId(11);
+    player.addOwnedTileId(13);
+    player.addOwnedTileId(14);
+    player.setBalance(startingBalance);
+
+    housesBuilder.tryBuilding(player, board, utils);
+
+    EXPECT_EQ(board.getTiles().at(1).getNumOfHouses(), 1);
+    EXPECT_EQ(board.getTiles().at(3).getNumOfHouses(), 2);
+    EXPECT_EQ(board.getTiles().at(11).getNumOfHouses(), 4);
+    EXPECT_EQ(board.getTiles().at(13).getNumOfHouses(), 4);
+    EXPECT_EQ(board.getTiles().at(14).getNumOfHouses(), 4);
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance - 12 * 100 - 3 * 50);
 }
 
 } // namespace ut

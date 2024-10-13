@@ -66,7 +66,7 @@ TEST_F(TestCommunityChest, TestGetOutOfPrisonCardCardId4)
 
     communityChest.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.hasGetOutOfPrisonCard(), true);
+    EXPECT_EQ(player.hasGetOutOfPrisonCommunityChestCard(), true);
 }
 
 TEST_F(TestCommunityChest, TestGoToJailCardCardId5)
@@ -221,6 +221,21 @@ TEST_F(TestCommunityChest, playFirstThreeCardsOnOnePlayerCardIds0And1And2)
 
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200 + 200 - 50);
     EXPECT_EQ(player.getCurrTileId(), 0);
+    EXPECT_EQ(communityChest.getNextCardIdToBePlayed(), 3);
+}
+
+TEST_F(TestCommunityChest, tryToPlayCardId4ButGetOutOfPrisonCardIsNotAvailableSoCardId5IsUsed)
+{
+    player.setBalance(startingBalance);
+    player.setCurrTile(2);
+
+    communityChest.setNextCardIdToBePlayed(4);
+    communityChest.setIsGetOutOfPrisonCardAvailable(false);
+    communityChest.playNextCard(game, player, &mockDiceThrower);
+
+    EXPECT_EQ(player.getCurrTileId(), prisonTile);
+    EXPECT_EQ(player.isInPrison(), true);
+    EXPECT_EQ(communityChest.getNextCardIdToBePlayed(), 6);
 }
 
 } // namespace ut

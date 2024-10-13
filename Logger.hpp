@@ -14,8 +14,9 @@ class Logger
     ~Logger();
 
     void logStartOfEachIteration(const std::vector<Player> &players, const uint32_t iteration);
+    void logTryTileBuying(const Player &player, const Tile &tile);
     void logTileBuying(const Player &player, const Tile &tile);
-    void logTryHouseBuying(const Player &player);
+    void logTryHouseBuying(const Player &player, const int8_t availableHouses, const int8_t availablHotels);
     void logHouseBuying(const Player &player, const Tile &tile);
 
     void logPlayerGoesToPrison(const Player &player);

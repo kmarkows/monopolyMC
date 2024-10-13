@@ -140,19 +140,17 @@ TEST_F(TestGame, TestGoOnLuxuryTaxAndPay)
 TEST_F(TestGame, TestGoOnIncomeTaxPayAndLoseGame)
 {
     iterations = 1;
-    numOfPlayers = 1;
+    numOfPlayers = 2;
     MockDiceThrower<3, 1> mockDiceThrower;
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
 
-    game.getPlayersDataForManipulation().at(0).setBalance(200);
+    game.getPlayerByIdForManipulation(firstPlayerId).setBalance(200);
 
     game.play();
 
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrentBalance(), 0);
-    EXPECT_EQ(game.getPlayersData().at(0).getCurrTileId(), 4);
-    EXPECT_EQ(game.getPlayersData().at(0).isPlaying(), false);
+    EXPECT_EQ(game.getPlayersData().size(), 1);
 }
 
 TEST_F(TestGame, TestGoOn3rdTileAndBuyProperty)
@@ -261,6 +259,7 @@ TEST_F(TestGame, TestPlayerGoesToChanceTileId7)
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
     game.enableBuying();
     game.enableCards();
+    game.getChanceForModification().setNextCardIdToBePlayed(0);
 
     game.play();
 
@@ -276,8 +275,10 @@ TEST_F(TestGame, TestPlayerStartsOnPrisonTileRolls7AndGoesToCommunityChestTileId
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    game.getPlayerByIdForManipulation(firstPlayerId).setCurrTile(prisonTile);
     game.enableBuying();
     game.enableCards();
+    game.getCommunityChestForModification().setNextCardIdToBePlayed(0);
     game.enablePaying();
 
     game.play();

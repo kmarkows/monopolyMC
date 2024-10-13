@@ -84,7 +84,10 @@ Chance::Chance()
         Card([](Game &game, Player &currPlayer, const DiceThrower *diceThrower) { currPlayer.addBalance(50); }, 5);
 
     cards.at(6) = Card(
-        [](Game &game, Player &currPlayer, const DiceThrower *diceThrower) { currPlayer.acquireGetOutOfPrisonCard(); },
+        [this](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
+            currPlayer.acquireGetOutOfPrisonChanceCard();
+            isGetOutOfPrisonCardAvailable = false;
+        },
         6);
 
     cards.at(7) = Card([](Game &game, Player &currPlayer,
@@ -154,17 +157,41 @@ Chance::Chance()
 
 void Chance::playNextCard(Game &game, Player &player, const DiceThrower *diceThrower)
 {
-    // TO DO Handle if prison card is owned by a player then skip this card
+    if (not isGetOutOfPrisonCardAvailable and nextCardIdToBePlayed == 6)
+    {
+        nextCardIdToBePlayed++;
+    }
     Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
     logger.logDrawCardChance(player, nextCardIdToBePlayed);
+
     cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);
     nextCardIdToBePlayed++;
     nextCardIdToBePlayed = nextCardIdToBePlayed % chanceCardsNumber;
 }
 
+void Chance::setNextCardIdToBePlayed(const uint8_t givenNextCardIdToBePlayed)
+{
+    nextCardIdToBePlayed = givenNextCardIdToBePlayed;
+}
+
+void Chance::setIsGetOutOfPrisonCardAvailable(const uint8_t givenIsGetOutOfPrisonCardAvailable)
+{
+    isGetOutOfPrisonCardAvailable = givenIsGetOutOfPrisonCardAvailable;
+}
+
 const Card &Chance::getCardById(const uint8_t id) const
 {
     return cards.at(id);
+}
+
+const uint8_t Chance::getNextCardIdToBePlayed() const
+{
+    return nextCardIdToBePlayed;
+}
+
+const bool Chance::getIsGetOutOfPrisonCardAvailable() const
+{
+    return isGetOutOfPrisonCardAvailable;
 }
 
 void Chance::handleUtility(Game &game, Player &currPlayer, const DiceThrower *diceThrower,

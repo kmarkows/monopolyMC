@@ -6,6 +6,8 @@
 #include "Tile.hpp"
 
 constexpr uint8_t numOfMonopolyBoradTiles = 40;
+constexpr uint8_t maxHousesNumber = 32;
+constexpr uint8_t maxHotelsNumber = 12;
 constexpr uint8_t goToPrisonTile = 30;
 constexpr uint8_t prisonTile = 10;
 

@@ -321,7 +321,7 @@ TEST_F(TestChance, TestAcquireGetOutOfPrisonCardCardId6)
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
-    EXPECT_EQ(player.hasGetOutOfPrisonCard(), true);
+    EXPECT_EQ(player.hasGetOutOfPrisonChanceCard(), true);
 }
 
 TEST_F(TestChance, TestGoBack3TilesCardId7)
@@ -461,6 +461,19 @@ TEST_F(TestChance, playFirstThreeCardsOnOnePlayerCardIds0And1And2)
     chance.playNextCard(game, player, &mockDiceThrower);
     EXPECT_EQ(player.getCurrentBalance(), startingBalance + 200 + 200);
     EXPECT_EQ(player.getCurrTileId(), 11);
+}
+
+TEST_F(TestChance, tryToPlayCardId6ButGetOutOfPrisonCardIsNotAvailableSoCardId7IsUsed)
+{
+    player.setBalance(startingBalance);
+    player.setCurrTile(7);
+
+    chance.setNextCardIdToBePlayed(6);
+    chance.setIsGetOutOfPrisonCardAvailable(false);
+    chance.playNextCard(game, player, &mockDiceThrower);
+
+    EXPECT_EQ(player.getCurrTileId(), 7 - 3);
+    EXPECT_EQ(chance.getNextCardIdToBePlayed(), 8);
 }
 
 } // namespace ut

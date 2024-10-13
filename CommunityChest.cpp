@@ -23,7 +23,10 @@ CommunityChest::CommunityChest()
         Card([](Game &game, Player &currPlayer, const DiceThrower *diceThrower) { currPlayer.addBalance(50); }, 3);
 
     cards.at(4) = Card(
-        [](Game &game, Player &currPlayer, const DiceThrower *diceThrower) { currPlayer.acquireGetOutOfPrisonCard(); },
+        [this](Game &game, Player &currPlayer, const DiceThrower *diceThrower) {
+            currPlayer.acquireGetOutOfPrisonCommunityChestCard();
+            isGetOutOfPrisonCardAvailable = false;
+        },
         4);
 
     cards.at(5) = Card(
@@ -97,15 +100,39 @@ CommunityChest::CommunityChest()
 
 void CommunityChest::playNextCard(Game &game, Player &player, const DiceThrower *diceThrower)
 {
-    // TO DO Handle if prison card is owned by a player then skip this card
+    if (not isGetOutOfPrisonCardAvailable and nextCardIdToBePlayed == 4)
+    {
+        nextCardIdToBePlayed++;
+    }
     Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
     logger.logDrawCardCommunityChest(player, nextCardIdToBePlayed);
+
     cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);
     nextCardIdToBePlayed++;
     nextCardIdToBePlayed = nextCardIdToBePlayed % communityChestCardsNumber;
 }
 
+void CommunityChest::setNextCardIdToBePlayed(const uint8_t givenNextCardIdToBePlayed)
+{
+    nextCardIdToBePlayed = givenNextCardIdToBePlayed;
+}
+
+void CommunityChest::setIsGetOutOfPrisonCardAvailable(const uint8_t givenIsGetOutOfPrisonCardAvailable)
+{
+    isGetOutOfPrisonCardAvailable = givenIsGetOutOfPrisonCardAvailable;
+}
+
 const Card &CommunityChest::getCardById(const uint8_t id) const
 {
     return cards.at(id);
+}
+
+const uint8_t CommunityChest::getNextCardIdToBePlayed() const
+{
+    return nextCardIdToBePlayed;
+}
+
+const bool CommunityChest::getIsGetOutOfPrisonCardAvailable() const
+{
+    return isGetOutOfPrisonCardAvailable;
 }
