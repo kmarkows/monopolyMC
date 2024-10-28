@@ -92,7 +92,7 @@ const uint8_t Player::getPreviousDiceRollSum() const
 void Player::goToPrison()
 {
     // TO DO log going to prison different ways
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logPlayerGoesToPrison(*this);
     prison = true;
 }

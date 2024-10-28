@@ -161,7 +161,7 @@ void Chance::playNextCard(Game &game, Player &player, const DiceThrower *diceThr
     {
         nextCardIdToBePlayed++;
     }
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logDrawCardChance(player, nextCardIdToBePlayed);
 
     cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);

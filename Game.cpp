@@ -20,8 +20,7 @@ void Game::play()
 {
     for (uint32_t it = 0; it < iterations; it++)
     {
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logStartOfEachIteration(players, board, it);
         for (uint8_t i = 0; i < players.size(); i++)
         {
@@ -85,8 +84,7 @@ void Game::play()
 
                 if (players.size() == 1)
                 {
-                    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-                                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+                    Logger logger;
                     logger.logGameEnd(players);
                     return;
                 }

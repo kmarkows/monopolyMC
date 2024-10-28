@@ -1,6 +1,6 @@
 #include "Logger.hpp"
 
-Logger::Logger(const std::string &fileName)
+Logger::Logger()
 {
     logFile.open(fileName, std::ios::app);
     if (!logFile.is_open())

@@ -7,8 +7,7 @@ void TileBuyer::tryBuying(Player &player, Board &board, const Utils &utils)
     auto &tile = board.getTilesForModification().at(player.getCurrTileId());
     if (tile.getType() == "Railroad" or tile.getType() == "Utilities" or tile.getType() == "Property")
     {
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logTryTileBuying(player, tile);
         handleBuyableTile(player, tile, utils);
     }
@@ -38,6 +37,6 @@ void TileBuyer::buyTile(Player &player, Tile &tile)
     tile.setOwnerId(player.getId());
     player.addOwnedTileId(tile.getId());
     player.subtractBalance(tile.getCost());
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logTileBuying(player, tile);
 }

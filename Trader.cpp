@@ -5,8 +5,7 @@
 
 void Trader::trade(Player &buyer, std::vector<Player> &players, Board &board, Utils &utils) const
 {
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logTryTilesTrading(buyer);
     const std::array<std::vector<uint8_t>, 5> tileIdsToBuyToMissingTilesNum{
         createTileIdsToBuyToMissingTilesNum(buyer, board, utils)};
@@ -114,7 +113,6 @@ void Trader::tradeTile(Player &buyer, Player &seller, Board &board, const uint8_
     seller.removeOwnedTileId(tileId);
     seller.addBalance(price);
     board.getTilesForModification().at(tileId).setOwnerId(buyer.getId());
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logTilesTrading(buyer, seller, board.getTiles().at(tileId), price);
 }

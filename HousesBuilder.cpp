@@ -2,13 +2,11 @@
 #include "Logger.hpp"
 
 // TO DO refactoring
-// TO DO divide into houses and hotels building
 
 void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils)
 {
     moneyToSpentAtHouseBuying = player.getBuyingHousesStrategy().moneyToSpentAtHouseBuying * player.getCurrentBalance();
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logTryHouseBuying(player, availableHouses, availableHotels);
     if (player.getBuyingHousesStrategy().colorPriority == 0)
     {
@@ -83,8 +81,7 @@ void HousesBuilder::buildHouses(Player &player, Tile &tileOnPlayerTriesToBuild, 
         player.subtractBalance(tileOnPlayerTriesToBuild.getHouseCost());
         moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
         availableHouses--;
-        Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-                      "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logHouseBuying(player, tileOnPlayerTriesToBuild, availableHouses, availableHotels);
     }
 }
@@ -101,8 +98,7 @@ void HousesBuilder::buildHotels(Player &player, Tile &tileOnPlayerTriesToBuild, 
         moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
         availableHotels--;
         availableHouses += 4;
-        Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-                      "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logHouseBuying(player, tileOnPlayerTriesToBuild, availableHouses, availableHotels);
     }
 }

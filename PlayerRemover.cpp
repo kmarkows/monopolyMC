@@ -5,7 +5,7 @@
 void PlayerRemover::remove(std::vector<Player> &players, Player &playerToRemove, Board &board,
                            CommunityChest &communiyChest, Chance &chance, HousesBuilder &housesBuilder)
 {
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logRemovePlayer(playerToRemove, board);
     for (const uint8_t ownedTileId : playerToRemove.getOwnedTilesIds())
     {

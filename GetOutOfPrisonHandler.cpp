@@ -6,7 +6,7 @@ GetOutOfPrisonHandler::GetOutOfPrisonHandler(Player &givenPlayer, const DiceThro
 
 void GetOutOfPrisonHandler::handle()
 {
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logPlayerTriesToGetOutOfPrison(player);
     if (player.hasGetOutOfPrisonCard() and
         (player.getStayingInPrisonStrategy() == 0 or player.getStayingInPrisonStrategy() == 1))
@@ -15,8 +15,7 @@ void GetOutOfPrisonHandler::handle()
         player.useGetOutOfPrisonCard();
         const auto diceResult = diceThrower->throwDice();
         moveAfterLeavingPrison(diceResult);
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logPlayerGetsOutOfPrisonByCard(player, diceResult);
         return;
     }
@@ -27,8 +26,7 @@ void GetOutOfPrisonHandler::handle()
         player.subtractBalance(prisonFine);
         const auto diceResult = diceThrower->throwDice();
         moveAfterLeavingPrison(diceResult);
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logPlayerGetsOutOfPrisonByFine(player, diceResult);
         return;
     }
@@ -39,27 +37,20 @@ void GetOutOfPrisonHandler::handle()
         player.getOutOfPrison();
         player.subtractBalance(prisonFine);
         moveAfterLeavingPrison(diceResult);
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logPlayerGetsOutOfPrisonByStaying(player, diceResult);
         return;
     }
-    // std::cout << (int)diceResult.getFirst() << " " <<
-    // (int)diceResult.getSecond() << std::endl; std::cout << "trying to get out
-    // of prison" << std::endl;
 
     if (diceResult.getFirst() == diceResult.getSecond())
     {
-        // std::cout << "got out of prison" << std::endl;
         player.getOutOfPrison();
         moveAfterLeavingPrison(diceResult);
-        Logger logger(
-            "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+        Logger logger;
         logger.logPlayerGetsOutOfPrisonByDouble(player, diceResult);
     }
     else
     {
-        // std::cout << "increment get out of prison counter" << std::endl;
         player.incrementTurnsSpentInPrison();
     }
 }

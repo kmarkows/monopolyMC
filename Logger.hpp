@@ -11,7 +11,7 @@
 class Logger
 {
   public:
-    Logger(const std::string &fileName);
+    Logger();
     ~Logger();
 
     void logStartOfEachIteration(const std::vector<Player> &players, const Board &board, const uint32_t iteration);
@@ -41,5 +41,7 @@ class Logger
     void logGameEnd(const std::vector<Player> &players);
 
   private:
+    std::string fileName{
+        "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt"};
     std::ofstream logFile;
 };

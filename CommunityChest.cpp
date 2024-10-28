@@ -104,7 +104,7 @@ void CommunityChest::playNextCard(Game &game, Player &player, const DiceThrower 
     {
         nextCardIdToBePlayed++;
     }
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logDrawCardCommunityChest(player, nextCardIdToBePlayed);
 
     cards.at(nextCardIdToBePlayed).doAction(game, player, diceThrower);

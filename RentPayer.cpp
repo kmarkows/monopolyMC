@@ -4,7 +4,7 @@
 
 void RentPayer::payRent(Player &player, Player &owner, const Tile &tile, const uint8_t diceResult)
 {
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logRentPayer(player, owner, tile);
     if (tile.getType() == "Property")
     {
@@ -27,7 +27,7 @@ void RentPayer::payPropertyRent(Player &player, Player &owner, const Tile &tile)
     const int rentToPay = rents.at(numberOfHouses);
     player.subtractBalance(rentToPay);
     owner.addBalance(rentToPay);
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logPayingRent(player, owner, rentToPay);
 }
 
@@ -38,7 +38,7 @@ void RentPayer::payRailroadyRent(Player &player, Player &owner, const Tile &tile
     const int rentToPay = rents.at(numOfRailroadsOwned - 1);
     player.subtractBalance(rentToPay);
     owner.addBalance(rentToPay);
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logPayingRent(player, owner, rentToPay);
 }
 
@@ -49,6 +49,6 @@ void RentPayer::payUtilitiesRent(Player &player, Player &owner, const Tile &tile
     const int rentToPay = rents.at(numOfUtilitiesOwned - 1);
     player.subtractBalance(rentToPay * diceResult);
     owner.addBalance(rentToPay * diceResult);
-    Logger logger("/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+    Logger logger;
     logger.logPayingRent(player, owner, rentToPay);
 }
