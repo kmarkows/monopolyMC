@@ -1,10 +1,9 @@
 #include "Game.hpp"
+
+#include <chrono>
 #include <cinttypes>
 #include <cstdlib>
 #include <iostream>
-
-#include "./ut/mocks/MockDiceThrower.hpp"
-#include "./ut/mocks/MockDiceThrowerSingle.hpp"
 
 int main()
 {
@@ -18,12 +17,21 @@ int main()
     DiceThrower diceThrower;
     DiceThrowerSingle diceThrowerSingle;
     Game game(1000, 8, &diceThrower, &diceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesTrading();
+    game.enableTilesBuying();
+    game.enableHousesBuying();
     game.enableCards();
     game.enablePaying();
     // game.printPlayersData();
 
-    game.play();
+    auto start = std::chrono::high_resolution_clock::now();
+    for (uint16_t i = 0; i < 1; i++)
+    {
+        game.play();
+    }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Elapsed time:" << duration.count() << "s\n";
 
     // game.printTilesVisitedCounters();
 

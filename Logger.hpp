@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Board.hpp"
 #include "Player.hpp"
 #include "Tile.hpp"
 
@@ -19,6 +20,8 @@ class Logger
     void logTryHouseBuying(const Player &player, const int8_t availableHouses, const int8_t availablHotels);
     void logHouseBuying(const Player &player, const Tile &tile);
 
+    void logTryTilesTrading(const Player &player);
+
     void logPlayerGoesToPrison(const Player &player);
     void logPlayerTriesToGetOutOfPrison(const Player &player);
     void logPlayerGetsOutOfPrisonByCard(const Player &player, const DiceResult &diceResult);
@@ -32,7 +35,7 @@ class Logger
     void logRentPayer(const Player &player, const Player &owner, const Tile &tile);
     void logPayingRent(const Player &player, const Player &owner, const int rent);
 
-    void logRemovePlayer(const Player &player);
+    void logRemovePlayer(const Player &player, const Board &board);
     void logGameEnd(const std::vector<Player> &players);
 
   private:

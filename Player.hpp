@@ -4,6 +4,8 @@
 #include "BuyingTilesStrategy.hpp"
 #include "DiceResult.hpp"
 #include "Tile.hpp"
+#include "TradingStrategy.hpp"
+
 #include <cinttypes>
 
 constexpr uint8_t invalidPlayerId = 0;
@@ -21,6 +23,7 @@ class Player
     const uint8_t getStayingInPrisonStrategy() const;
     const BuyingHousesStrategy getBuyingHousesStrategy() const;
     const BuyingTilesStrategy getBuyingTilesStrategy() const;
+    const TradingStrategy getTradingStrategy() const;
     const uint8_t getCurrTileId() const;
     const uint8_t getId() const;
     const uint8_t getTurnsSpentInPrison() const;
@@ -40,6 +43,7 @@ class Player
     void setStayingInPrisonStrategy(const uint8_t givenStayingInPrisonStrategy);
     void setBuyingHousesStrategy(const BuyingHousesStrategy givenBuyingHousesStrategy);
     void setBuyingTilesStrategy(const BuyingTilesStrategy givenBuyingTilesStrategy);
+    void setTradingStrategy(const TradingStrategy givenTradingStrategy);
     void setCurrTile(const uint8_t nextTile);
     void incrementTurnsSpentInPrison();
     void resetTurnsSpentInPrison();
@@ -50,6 +54,7 @@ class Player
     void setInteractedWithTile();
     void resetInteractedWithTile();
     void addOwnedTileId(const uint8_t newTileId);
+    void removeOwnedTileId(const uint8_t newTileId);
     void setPreviousDiceRollSum(const uint8_t previousRoll);
 
     void print();
@@ -70,4 +75,5 @@ class Player
     uint8_t stayingInPrisonStrategy{0}; // 0 - 1 - 2, as short - if has Cards uses it - as long
     BuyingHousesStrategy buyingHousesStrategy{};
     BuyingTilesStrategy buyingTilesStrategy{};
+    TradingStrategy tradingStrategy{};
 };

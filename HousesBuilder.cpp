@@ -9,7 +9,7 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
     moneyToSpentAtHouseBuying = player.getBuyingHousesStrategy().moneyToSpentAtHouseBuying * player.getCurrentBalance();
     Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
                   "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-    logger.logTryHouseBuying(player, availableHouses, availablHotels);
+    logger.logTryHouseBuying(player, availableHouses, availableHotels);
     if (player.getBuyingHousesStrategy().colorPriority == 0)
     {
         const auto &tileIdsOnWhichPlayerCanBuildHouses = utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board);
@@ -18,7 +18,7 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
             const auto &sameColorTileIdsOnWhichPlayerCanBuild = tileIdsOnWhichPlayerCanBuildHouses[i];
             const Tile &firstTileOfGivenColor = board.getTiles().at(sameColorTileIdsOnWhichPlayerCanBuild[0]);
             while (utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(firstTileOfGivenColor, board) < 5 and
-                   moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost())
+                   moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost() and availableHouses > 0)
             {
                 for (int8_t j = 0; j < sameColorTileIdsOnWhichPlayerCanBuild.size(); j++)
                 {
@@ -29,7 +29,7 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
             }
             while (utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(firstTileOfGivenColor, board) == 5 and
                    moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost() and
-                   player.getBuyingHousesStrategy().isBuyingHotels)
+                   player.getBuyingHousesStrategy().isBuyingHotels and availableHotels > 0)
             {
                 for (int8_t j = 0; j < sameColorTileIdsOnWhichPlayerCanBuild.size(); j++)
                 {
@@ -48,7 +48,7 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
             const auto &sameColorTileIdsOnWhichPlayerCanBuild = tileIdsOnWhichPlayerCanBuildHouses[i];
             const Tile &firstTileOfGivenColor = board.getTiles().at(sameColorTileIdsOnWhichPlayerCanBuild[0]);
             while (utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(firstTileOfGivenColor, board) < 5 and
-                   moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost())
+                   moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost() and availableHouses > 0)
             {
                 for (int8_t j = sameColorTileIdsOnWhichPlayerCanBuild.size() - 1; j >= 0; j--)
                 {
@@ -59,7 +59,7 @@ void HousesBuilder::tryBuilding(Player &player, Board &board, const Utils &utils
             }
             while (utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(firstTileOfGivenColor, board) == 5 and
                    moneyToSpentAtHouseBuying >= firstTileOfGivenColor.getHouseCost() and
-                   player.getBuyingHousesStrategy().isBuyingHotels)
+                   player.getBuyingHousesStrategy().isBuyingHotels and availableHotels > 0)
             {
                 for (int8_t j = sameColorTileIdsOnWhichPlayerCanBuild.size() - 1; j >= 0; j--)
                 {
@@ -94,14 +94,45 @@ void HousesBuilder::buildHotels(Player &player, Tile &tileOnPlayerTriesToBuild, 
 
     if (tileOnPlayerTriesToBuild.getNumOfHouses() <
             utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tileOnPlayerTriesToBuild, board) and
-        moneyToSpentAtHouseBuying >= tileOnPlayerTriesToBuild.getHouseCost() and availablHotels > 0)
+        moneyToSpentAtHouseBuying >= tileOnPlayerTriesToBuild.getHouseCost() and availableHotels > 0)
     {
         tileOnPlayerTriesToBuild.buildHouse();
         player.subtractBalance(tileOnPlayerTriesToBuild.getHouseCost());
         moneyToSpentAtHouseBuying -= tileOnPlayerTriesToBuild.getHouseCost();
-        availablHotels--;
+        availableHotels--;
+        availableHouses += 4;
         Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
                       "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
         logger.logHouseBuying(player, tileOnPlayerTriesToBuild);
     }
+}
+
+void HousesBuilder::addAvailableHouses(const uint8_t availableHousesToAdd)
+{
+    availableHouses += availableHousesToAdd;
+}
+
+const uint8_t HousesBuilder::getAvailableHouses() const
+{
+    return availableHouses;
+}
+
+void HousesBuilder::setAvailableHouses(const uint8_t availableHousesToSet)
+{
+    availableHouses = availableHousesToSet;
+}
+
+void HousesBuilder::addAvailableHotels(const uint8_t availableHotelsToAdd)
+{
+    availableHotels += availableHotelsToAdd;
+}
+
+const uint8_t HousesBuilder::getAvailableHotels() const
+{
+    return availableHotels;
+}
+
+void HousesBuilder::setAvailableHotels(const uint8_t availableHotelsToSet)
+{
+    availableHotels = availableHotelsToSet;
 }

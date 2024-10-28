@@ -244,6 +244,16 @@ TEST_F(TestUtils, isLuxuryTax)
     EXPECT_EQ(true, utils.isLuxuryTax(tile1));
 }
 
+TEST_F(TestUtils, ExpectTilesToBuildToBeNoneBecousePlayerHasNoTiles)
+{
+    Player player(firstPlayerId);
+    Board board;
+
+    std::vector<std::vector<uint8_t>> expectedTileIdsOnWhichPlayerCanBuild{};
+
+    EXPECT_EQ(expectedTileIdsOnWhichPlayerCanBuild, utils.getTileIdsOnWhichPlayerCanBuildHouses(player, board));
+}
+
 TEST_F(TestUtils, ExpectTilesToBuildToBe1And3)
 {
     Player player(firstPlayerId);
@@ -327,6 +337,112 @@ TEST_F(TestUtils, getMaxNumOfHousesThatCanBeBuildOnGivenTileGet3OnPinkTiles)
     board.getTilesForModification().at(14).setNumOfHouses(3);
 
     EXPECT_EQ(3, utils.getMaxNumOfHousesThatCanBeBuildOnGivenTile(tile, board));
+}
+
+TEST_F(TestUtils, getNumOfTilesOfGivenTypeMissingByPlayerExpect2)
+{
+    Tile tile("Railroad", 200, {25, 50, 100, 200}, 0, 25);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(25);
+    player.addOwnedTileId(35);
+
+    EXPECT_EQ(2, utils.getNumOfTilesOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getNumOfTilesOfGivenTypeMissingByPlayerExpect0)
+{
+    Tile tile("Railroad", 200, {25, 50, 100, 200}, 0, 5);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(5);
+    player.addOwnedTileId(15);
+    player.addOwnedTileId(25);
+    player.addOwnedTileId(35);
+
+    EXPECT_EQ(0, utils.getNumOfTilesOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getNumOfTilesOfGivenTypeMissingByPlayerExpect1)
+{
+    Tile tile("Utilities", 150, {4, 10}, 0, 28);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(28);
+
+    EXPECT_EQ(1, utils.getNumOfTilesOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getNumOfTilesOfGivenTypeMissingByPlayerExpect1Property)
+{
+    Tile tile("Property", 60, {2, 10, 30, 90, 160, 250}, 50, 1);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(1);
+
+    EXPECT_EQ(1, utils.getNumOfTilesOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getTileIdsOfGivenTypeMissingByPlayerExpect5And15Railroad)
+{
+    Tile tile("Railroad", 200, {25, 50, 100, 200}, 0, 25);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(25);
+    player.addOwnedTileId(35);
+
+    std::vector<uint8_t> missingTileIdsOfEachType{5, 15};
+    EXPECT_EQ(missingTileIdsOfEachType, utils.getTileIdsOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getTileIdsOfGivenTypeMissingByPlayerExpectNoRailroad)
+{
+    Tile tile("Railroad", 200, {25, 50, 100, 200}, 0, 5);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(5);
+    player.addOwnedTileId(15);
+    player.addOwnedTileId(25);
+    player.addOwnedTileId(35);
+
+    std::vector<uint8_t> missingTileIdsOfEachType{};
+    EXPECT_EQ(missingTileIdsOfEachType, utils.getTileIdsOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getTileIdsOfGivenTypeMissingByPlayerExpect12Utilities)
+{
+    Tile tile("Utilities", 150, {4, 10}, 0, 28);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(28);
+
+    std::vector<uint8_t> missingTileIdsOfEachType{12};
+    EXPECT_EQ(missingTileIdsOfEachType, utils.getTileIdsOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getTileIdsOfGivenTypeMissingByPlayerExpect3Property)
+{
+    Tile tile("Property", 60, {2, 10, 30, 90, 160, 250}, 50, 1);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(1);
+
+    std::vector<uint8_t> missingTileIdsOfEachType{3};
+    EXPECT_EQ(missingTileIdsOfEachType, utils.getTileIdsOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getTileIdsOfGivenTypeMissingByPlayerExpectNoProperty)
+{
+    Tile tile("Property", 400, {50, 200, 600, 1400, 1700, 2000}, 200, 39);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(39);
+    player.addOwnedTileId(37);
+
+    std::vector<uint8_t> missingTileIdsOfEachType{};
+    EXPECT_EQ(missingTileIdsOfEachType, utils.getTileIdsOfGivenTypeMissingByPlayer(player, tile));
+}
+
+TEST_F(TestUtils, getTileIdsOfGivenTypeMissingByPlayerExpect29Property)
+{
+    Tile tile("Property", 260, {22, 110, 330, 800, 975, 1150}, 150, 27);
+    Player player(firstPlayerId);
+    player.addOwnedTileId(27);
+    player.addOwnedTileId(26);
+
+    std::vector<uint8_t> missingTileIdsOfEachType{29};
+    EXPECT_EQ(missingTileIdsOfEachType, utils.getTileIdsOfGivenTypeMissingByPlayer(player, tile));
 }
 
 } // namespace ut

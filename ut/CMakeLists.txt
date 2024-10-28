@@ -108,3 +108,15 @@ add_test(
     NAME TestTileBuyer
     COMMAND TestTileBuyer
 )
+
+add_executable(TestTrader TestTrader.cpp)
+target_link_libraries(TestTrader
+    gtest_main
+    gtest
+    MonopolyLib
+)
+
+add_test(
+    NAME TestTrader
+    COMMAND TestTrader
+)

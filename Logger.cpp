@@ -67,6 +67,20 @@ void Logger::logHouseBuying(const Player &player, const Tile &tile)
             << " balanceLeft:" << player.getCurrentBalance() << std::endl;
 }
 
+void Logger::logTryTilesTrading(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance() << " ownedTiles:[";
+    for (uint8_t i = 0; i < player.getOwnedTilesIds().size(); i++)
+    {
+        logFile << (int)player.getOwnedTilesIds()[i];
+        if (i != player.getOwnedTilesIds().size() - 1)
+        {
+            logFile << ", ";
+        }
+    }
+    logFile << "] tiesTilesTrading" << std::endl;
+}
+
 void Logger::logPlayerGoesToPrison(const Player &player)
 {
     logFile << "PlayerId:" << (int)player.getId() << " goToPrison" << std::endl;
@@ -131,13 +145,14 @@ void Logger::logPayingRent(const Player &player, const Player &owner, const int 
             << " currBalance:" << owner.getCurrentBalance() << std::endl;
 }
 
-void Logger::logRemovePlayer(const Player &player)
+void Logger::logRemovePlayer(const Player &player, const Board &board)
 {
     logFile << "PlayerId:" << (int)player.getId() << " currBalance:" << player.getCurrentBalance() << " ownedTiles:[";
 
     for (uint8_t i = 0; i < player.getOwnedTilesIds().size(); i++)
     {
-        logFile << (int)player.getOwnedTilesIds()[i];
+        logFile << (int)player.getOwnedTilesIds()[i] << "("
+                << (int)board.getTiles().at(player.getOwnedTilesIds()[i]).getNumOfHouses() << ")";
         if (i != player.getOwnedTilesIds().size() - 1)
         {
             logFile << ", ";

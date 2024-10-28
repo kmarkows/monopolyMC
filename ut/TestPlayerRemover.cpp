@@ -18,6 +18,7 @@ class TestPlayerRemover : public ::testing::Test
     Board board;
     CommunityChest communityChest;
     Chance chance;
+    HousesBuilder housesBuilder;
 };
 
 TEST_F(TestPlayerRemover, ThreePlayersInGameFirstIsRemoved)
@@ -34,7 +35,7 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameFirstIsRemoved)
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player, board, communityChest, chance);
+    playerRemover.remove(players, player, board, communityChest, chance, housesBuilder);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(board.getTiles().at(1).getOwnerId(), 0);
@@ -55,7 +56,7 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameThirdIsRemoved)
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player3, board, communityChest, chance);
+    playerRemover.remove(players, player3, board, communityChest, chance, housesBuilder);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(board.getTiles().at(1).getOwnerId(), 0);
@@ -76,7 +77,7 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameSecondIsRemoved)
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player2, board, communityChest, chance);
+    playerRemover.remove(players, player2, board, communityChest, chance, housesBuilder);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(board.getTiles().at(1).getOwnerId(), 0);
@@ -97,11 +98,44 @@ TEST_F(TestPlayerRemover, ThreePlayersInGameFirstIsRemovedGetOutOfPrisonCardsAre
     players.push_back(player2);
     players.push_back(player3);
 
-    playerRemover.remove(players, player, board, communityChest, chance);
+    playerRemover.remove(players, player, board, communityChest, chance, housesBuilder);
 
     EXPECT_EQ(players.size(), 2);
     EXPECT_EQ(chance.getIsGetOutOfPrisonCardAvailable(), true);
     EXPECT_EQ(communityChest.getIsGetOutOfPrisonCardAvailable(), true);
+}
+
+TEST_F(TestPlayerRemover, playerHasTwoTilesOnOneHotelAndOnSecond4Houses)
+{
+    player.addOwnedTileId(1);
+    board.getTilesForModification().at(1).setNumOfHouses(5);
+    player.addOwnedTileId(3);
+    board.getTilesForModification().at(3).setNumOfHouses(4);
+
+    player.addOwnedTileId(6);
+    board.getTilesForModification().at(6).setNumOfHouses(2);
+    player.addOwnedTileId(8);
+    board.getTilesForModification().at(8).setNumOfHouses(2);
+    player.addOwnedTileId(9);
+    board.getTilesForModification().at(9).setNumOfHouses(2);
+
+    Player player2(secondPlayerId);
+    Player player3(thirdPlayerId);
+
+    players.push_back(player);
+    players.push_back(player2);
+    players.push_back(player3);
+
+    housesBuilder.setAvailableHouses(10);
+    housesBuilder.setAvailableHotels(5);
+
+    playerRemover.remove(players, player, board, communityChest, chance, housesBuilder);
+
+    EXPECT_EQ(players.size(), 2);
+    EXPECT_EQ(housesBuilder.getAvailableHouses(), 20);
+    EXPECT_EQ(housesBuilder.getAvailableHotels(), 6);
+    EXPECT_EQ(board.getTiles().at(1).getNumOfHouses(), 0);
+    EXPECT_EQ(board.getTiles().at(3).getNumOfHouses(), 0);
 }
 
 } // namespace ut

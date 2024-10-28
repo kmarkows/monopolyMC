@@ -206,7 +206,7 @@ void Chance::handleUtility(Game &game, Player &currPlayer, const DiceThrower *di
     }
     if (tile.getOwnerId() == invalidPlayerId)
     {
-        if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingEnabled())
+        if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingTilesEnabled())
         {
             tile.setOwnerId(currPlayer.getId());
             currPlayer.addOwnedTileId(tile.getId());
@@ -234,7 +234,7 @@ void Chance::handleRailroad(Game &game, Player &currPlayer, const uint8_t railro
 
     if (tile.getOwnerId() == invalidPlayerId)
     {
-        if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingEnabled())
+        if (currPlayer.getCurrentBalance() > tile.getCost() and game.isBuyingTilesEnabled())
         {
             tile.setOwnerId(currPlayer.getId());
             currPlayer.addOwnedTileId(tile.getId());

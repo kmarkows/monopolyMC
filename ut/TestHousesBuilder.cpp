@@ -19,6 +19,21 @@ class TestHousesBuilder : public ::testing::Test
     bool isBuyingHotels{true};
 };
 
+TEST_F(TestHousesBuilder, buildNoHousesBecousePlayerHasNoTiles)
+{
+    Player player(firstPlayerId);
+    colorPrio = 0;
+    moneyToSpentAtHouseBuying = 0.1f;
+    isBuyingHotels = true;
+    player.setBuyingHousesStrategy({colorPrio, moneyToSpentAtHouseBuying, isBuyingHotels});
+
+    player.setBalance(startingBalance);
+
+    housesBuilder.tryBuilding(player, board, utils);
+
+    EXPECT_EQ(player.getCurrentBalance(), startingBalance);
+}
+
 TEST_F(TestHousesBuilder, build3HousesOnBrownTilesStartingWithNoHouses)
 {
     Player player(firstPlayerId);

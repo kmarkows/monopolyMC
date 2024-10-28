@@ -98,7 +98,7 @@ TEST_F(TestChance, TestGoToTile12FromTile6AndPlayerIsOwnerNothingHappensCardId3)
     player.setBalance(startingBalance);
     player.addOwnedTileId(waterUtilsTileId);
     game.getBoardDataForModification().getTilesForModification().at(waterUtilsTileId).setOwnerId(firstPlayerId);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
@@ -117,7 +117,7 @@ TEST_F(TestChance, TestGoToTile28FromTile6AndPlayerIsOwnerNothingHappensCardId3)
     player.setBalance(startingBalance);
     player.addOwnedTileId(electricityUtilsTileId);
     game.getBoardDataForModification().getTilesForModification().at(electricityUtilsTileId).setOwnerId(firstPlayerId);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
@@ -134,7 +134,7 @@ TEST_F(TestChance, TestGoToTile12FromTile6AndPlayerBuysThatTileCardId3)
     const uint8_t tileClosestToWaterUtilsThanElectricityUtils = 6;
     player.setCurrTile(tileClosestToWaterUtilsThanElectricityUtils);
     player.setBalance(startingBalance);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
@@ -177,7 +177,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerIsOwnerNothingHappensCardId4)
     player.setBalance(startingBalance);
     player.addOwnedTileId(closestRailway);
     game.getBoardDataForModification().getTilesForModification().at(closestRailway).setOwnerId(firstPlayerId);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
@@ -194,7 +194,7 @@ TEST_F(TestChance, TestGoToTile5FromTile6AndPlayerBuysThatTileCardId4)
     const uint8_t tileClosestToRailroad5Tile = 6;
     player.setCurrTile(tileClosestToRailroad5Tile);
     player.setBalance(startingBalance);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 
@@ -293,7 +293,7 @@ TEST_F(TestChance, TestGoToTile17FromTile15AndPlayerBuysThatTileCardId4)
     const uint8_t tileClosestToRailroad5Tile = 17;
     player.setCurrTile(tileClosestToRailroad5Tile);
     player.setBalance(startingBalance);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     chance.getCardById(currentlyTestedCard).doAction(game, player, &mockDiceThrower);
 

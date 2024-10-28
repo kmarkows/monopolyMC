@@ -13,6 +13,8 @@ class DiceThrower
         return diceResult;
     }
 
+    virtual ~DiceThrower() = default;
+
   private:
     uint8_t getRandNumberFrom1To6() const
     {

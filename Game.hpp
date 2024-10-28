@@ -9,6 +9,7 @@
 #include "Player.hpp"
 #include "RentPayer.hpp"
 #include "TileBuyer.hpp"
+#include "Trader.hpp"
 #include "Utils.hpp"
 
 #include <map>
@@ -40,8 +41,14 @@ class Game
     CommunityChest &getCommunityChestForModification();
     Chance &getChanceForModification();
 
-    const bool isBuyingEnabled() const;
-    void enableBuying();
+    const bool isTradingTilesEnabled() const;
+    void enableTilesTrading();
+
+    const bool isBuyingTilesEnabled() const;
+    void enableTilesBuying();
+
+    const bool isBuyingHousesEnabled() const;
+    void enableHousesBuying();
 
     const bool areCardsEnabled() const;
     void enableCards();
@@ -64,12 +71,15 @@ class Game
     const DiceThrower *diceThrower;
     const DiceThrowerSingle *diceThrowerSingle;
     Board board{};
-    bool buyingEnabled{false};
+    bool tradingEnabled{false};
+    bool tilesBuyingEnabled{false};
+    bool housesBuyingEnabled{false};
     bool cardsEnabled{false};
     bool payingEnabled{false};
     Utils utils;
     RentPayer rentPayer;
     TileBuyer tileBuyer;
+    Trader trader;
     HousesBuilder housesBuilder;
     CommunityChest communityChest;
     Chance chance;

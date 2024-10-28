@@ -161,7 +161,7 @@ TEST_F(TestGame, TestGoOn3rdTileAndBuyProperty)
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     game.play();
 
@@ -184,7 +184,7 @@ TEST_F(TestGame, TestGoOn5rdTileAndBuyRailroad)
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     game.play();
 
@@ -207,7 +207,7 @@ TEST_F(TestGame, TestGoOn5rdTileAndBuyPropertyAndUtilities)
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     game.play();
 
@@ -233,7 +233,7 @@ TEST_F(TestGame, TestPlayer1Buys3rdPropertyAndLaterPlayer2CannotBuyIt)
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesBuying();
 
     game.play();
 
@@ -257,7 +257,7 @@ TEST_F(TestGame, TestPlayerGoesToChanceTileId7)
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesBuying();
     game.enableCards();
     game.getChanceForModification().setNextCardIdToBePlayed(0);
 
@@ -276,7 +276,7 @@ TEST_F(TestGame, TestPlayerStartsOnPrisonTileRolls7AndGoesToCommunityChestTileId
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
     game.getPlayerByIdForManipulation(firstPlayerId).setCurrTile(prisonTile);
-    game.enableBuying();
+    game.enableTilesBuying();
     game.enableCards();
     game.getCommunityChestForModification().setNextCardIdToBePlayed(0);
     game.enablePaying();
@@ -295,7 +295,7 @@ TEST_F(TestGame, TestFirstPlayerGoesToTileId6BuysIdAndThenSecondPlayerGoesToThat
     MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
     Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
-    game.enableBuying();
+    game.enableTilesBuying();
     game.enablePaying();
 
     game.play();

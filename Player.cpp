@@ -1,4 +1,5 @@
 #include "Player.hpp"
+
 #include "Logger.hpp"
 
 #include <iostream>
@@ -41,6 +42,11 @@ const BuyingHousesStrategy Player::getBuyingHousesStrategy() const
 const BuyingTilesStrategy Player::getBuyingTilesStrategy() const
 {
     return buyingTilesStrategy;
+}
+
+const TradingStrategy Player::getTradingStrategy() const
+{
+    return tradingStrategy;
 }
 
 const uint8_t Player::getCurrTileId() const
@@ -139,6 +145,11 @@ void Player::setBuyingTilesStrategy(const BuyingTilesStrategy givenBuyingTilesSt
     buyingTilesStrategy = givenBuyingTilesStrategy;
 }
 
+void Player::setTradingStrategy(const TradingStrategy givenTradingStrategy)
+{
+    tradingStrategy = givenTradingStrategy;
+}
+
 void Player::setCurrTile(const uint8_t nextTile)
 {
     currTile = nextTile;
@@ -191,6 +202,13 @@ void Player::resetInteractedWithTile()
 void Player::addOwnedTileId(const uint8_t newTileId)
 {
     ownedTilesIds.push_back(newTileId);
+    std::sort(ownedTilesIds.begin(), ownedTilesIds.end());
+}
+
+void Player::removeOwnedTileId(const uint8_t tileIdToRemove)
+{
+    auto it = std::find(ownedTilesIds.begin(), ownedTilesIds.end(), tileIdToRemove);
+    ownedTilesIds.erase(it);
     std::sort(ownedTilesIds.begin(), ownedTilesIds.end());
 }
 
