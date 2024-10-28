@@ -115,6 +115,6 @@ void Trader::tradeTile(Player &buyer, Player &seller, Board &board, const uint8_
     seller.addBalance(price);
     board.getTilesForModification().at(tileId).setOwnerId(buyer.getId());
     Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
-            "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
+                  "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
     logger.logTilesTrading(buyer, seller, board.getTiles().at(tileId), price);
 }
