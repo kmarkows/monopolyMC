@@ -85,7 +85,7 @@ void HousesBuilder::buildHouses(Player &player, Tile &tileOnPlayerTriesToBuild, 
         availableHouses--;
         Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
                       "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logHouseBuying(player, tileOnPlayerTriesToBuild);
+        logger.logHouseBuying(player, tileOnPlayerTriesToBuild, availableHouses, availableHotels);
     }
 }
 
@@ -103,7 +103,7 @@ void HousesBuilder::buildHotels(Player &player, Tile &tileOnPlayerTriesToBuild, 
         availableHouses += 4;
         Logger logger("/Users/konradmarkowski/Documents/Projekty Metody "
                       "Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logHouseBuying(player, tileOnPlayerTriesToBuild);
+        logger.logHouseBuying(player, tileOnPlayerTriesToBuild, availableHouses, availableHotels);
     }
 }
 

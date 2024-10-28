@@ -14,13 +14,14 @@ class Logger
     Logger(const std::string &fileName);
     ~Logger();
 
-    void logStartOfEachIteration(const std::vector<Player> &players, const uint32_t iteration);
+    void logStartOfEachIteration(const std::vector<Player> &players, const Board& board, const uint32_t iteration);
     void logTryTileBuying(const Player &player, const Tile &tile);
     void logTileBuying(const Player &player, const Tile &tile);
     void logTryHouseBuying(const Player &player, const int8_t availableHouses, const int8_t availablHotels);
-    void logHouseBuying(const Player &player, const Tile &tile);
+    void logHouseBuying(const Player &player, const Tile &tile, const int8_t availableHouses, const int8_t availablHotels);
 
     void logTryTilesTrading(const Player &player);
+    void logTilesTrading(const Player &player, const Player& owner, const Tile& tile, const int price);
 
     void logPlayerGoesToPrison(const Player &player);
     void logPlayerTriesToGetOutOfPrison(const Player &player);

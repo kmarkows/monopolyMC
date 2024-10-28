@@ -22,7 +22,7 @@ void Game::play()
     {
         Logger logger(
             "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/monopolyGameLogs.txt");
-        logger.logStartOfEachIteration(players, it);
+        logger.logStartOfEachIteration(players, board, it);
         for (uint8_t i = 0; i < players.size(); i++)
         {
             auto &player = players.at(i);
