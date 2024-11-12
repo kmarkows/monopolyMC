@@ -1,6 +1,5 @@
 #include "../Game.cpp"
 #include "./mocks/MockDiceThrower.hpp"
-#include "./mocks/MockDiceThrowerSingle.hpp"
 #include <gtest/gtest.h>
 
 namespace ut
@@ -15,6 +14,7 @@ class TestGame : public ::testing::Test
   protected:
     uint32_t iterations;
     uint32_t numOfPlayers;
+    std::vector<uint8_t> defaultPlayerOrder{1, 2, 3, 4, 5, 6, 7, 8};
 };
 
 TEST_F(TestGame, testMovement)
@@ -22,9 +22,8 @@ TEST_F(TestGame, testMovement)
     iterations = 5;
     numOfPlayers = 1;
     MockDiceThrower<1, 2> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     game.play();
 
@@ -38,9 +37,8 @@ TEST_F(TestGame, TestGoToPrison)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<6, 6> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     game.play();
 
@@ -53,9 +51,8 @@ TEST_F(TestGame, TestGetOutOfPrisonThrowingDouble)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<6, 6> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     constexpr uint8_t likesToStayInPrison = 2;
     game.getPlayersDataForManipulation().at(0).goToPrison();
@@ -74,9 +71,8 @@ TEST_F(TestGame, TestGetOutOfPrisonNotThrowingDouble)
     iterations = 3;
     numOfPlayers = 1;
     MockDiceThrower<1, 2> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     constexpr uint8_t likesToStayInPrison = 2;
     game.getPlayersDataForManipulation().at(0).goToPrison();
@@ -96,9 +92,8 @@ TEST_F(TestGame, TestGoingThroughStartTileAndGet200)
     iterations = 7;
     numOfPlayers = 1;
     MockDiceThrower<3, 4> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     game.play();
 
@@ -110,9 +105,8 @@ TEST_F(TestGame, TestGoOnIncomeTaxAndPay)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<3, 1> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     game.play();
 
@@ -125,9 +119,8 @@ TEST_F(TestGame, TestGoOnLuxuryTaxAndPay)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<3, 4> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     game.getPlayersDataForManipulation().at(0).setCurrTile(31);
 
@@ -142,9 +135,8 @@ TEST_F(TestGame, TestGoOnIncomeTaxPayAndLoseGame)
     iterations = 1;
     numOfPlayers = 2;
     MockDiceThrower<3, 1> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
 
     game.getPlayerByIdForManipulation(firstPlayerId).setBalance(200);
 
@@ -158,9 +150,8 @@ TEST_F(TestGame, TestGoOn3rdTileAndBuyProperty)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<2, 1> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.enableTilesBuying();
 
     game.play();
@@ -181,9 +172,8 @@ TEST_F(TestGame, TestGoOn5rdTileAndBuyRailroad)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<2, 3> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.enableTilesBuying();
 
     game.play();
@@ -204,9 +194,8 @@ TEST_F(TestGame, TestGoOn5rdTileAndBuyPropertyAndUtilities)
     iterations = 2;
     numOfPlayers = 1;
     MockDiceThrower<4, 2> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.enableTilesBuying();
 
     game.play();
@@ -230,9 +219,8 @@ TEST_F(TestGame, TestPlayer1Buys3rdPropertyAndLaterPlayer2CannotBuyIt)
     iterations = 1;
     numOfPlayers = 2;
     MockDiceThrower<2, 1> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.enableTilesBuying();
 
     game.play();
@@ -254,9 +242,8 @@ TEST_F(TestGame, TestPlayerGoesToChanceTileId7)
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<3, 4> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.enableTilesBuying();
     game.enableCards();
     game.getChanceForModification().setNextCardIdToBePlayed(0);
@@ -272,9 +259,8 @@ TEST_F(TestGame, TestPlayerStartsOnPrisonTileRolls7AndGoesToCommunityChestTileId
     iterations = 1;
     numOfPlayers = 1;
     MockDiceThrower<3, 4> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.getPlayerByIdForManipulation(firstPlayerId).setCurrTile(prisonTile);
     game.enableTilesBuying();
     game.enableCards();
@@ -292,9 +278,8 @@ TEST_F(TestGame, TestFirstPlayerGoesToTileId6BuysIdAndThenSecondPlayerGoesToThat
     iterations = 1;
     numOfPlayers = 2;
     MockDiceThrower<2, 4> mockDiceThrower;
-    MockDiceThrowerSingle<1> mockDiceThrowerSingle;
 
-    Game game(iterations, numOfPlayers, &mockDiceThrower, &mockDiceThrowerSingle);
+    Game game(iterations, numOfPlayers, &mockDiceThrower, defaultPlayerOrder);
     game.enableTilesBuying();
     game.enablePaying();
 

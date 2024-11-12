@@ -5,7 +5,7 @@ Logger::Logger()
     logFile.open(fileName, std::ios::app);
     if (!logFile.is_open())
     {
-        std::cout << "Log file not opened" << std::endl;
+        std::cout << "Error: Could not open the monopolyGameLogs.txt file!" << std::endl;
     }
 }
 
@@ -16,7 +16,6 @@ Logger::~Logger()
 
 void Logger::logStartOfEachIteration(const std::vector<Player> &players, const Board &board, const uint32_t iteration)
 {
-    logFile << std::endl;
     logFile << "---------------------------------- Start of iteration:" << (int)iteration
             << " ----------------------------------" << std::endl;
     for (const auto &player : players)
@@ -35,6 +34,18 @@ void Logger::logStartOfEachIteration(const std::vector<Player> &players, const B
         }
         logFile << "]" << std::endl;
     }
+    logFile << std::endl;
+}
+
+void Logger::logDiceRolling(const Player &player, const DiceResult &diceResult)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " rolls:[" << (int)diceResult.getFirst() << ", "
+            << (int)diceResult.getSecond() << "]" << std::endl;
+}
+
+void Logger::logMovement(const Player &player)
+{
+    logFile << "PlayerId:" << (int)player.getId() << " endsOnTile:" << (int)player.getCurrTileId() << std::endl;
 }
 
 void Logger::logTryTileBuying(const Player &player, const Tile &tile)
@@ -193,4 +204,9 @@ void Logger::logGameEnd(const std::vector<Player> &players)
         }
     }
     logFile << "]" << " winsTheGame" << std::endl;
+}
+
+void Logger::playerEndsTurn()
+{
+    logFile << std::endl;
 }

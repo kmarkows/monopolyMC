@@ -15,8 +15,13 @@ class Logger
     ~Logger();
 
     void logStartOfEachIteration(const std::vector<Player> &players, const Board &board, const uint32_t iteration);
+
+    void logDiceRolling(const Player &player, const DiceResult &diceResult);
+    void logMovement(const Player &player);
+
     void logTryTileBuying(const Player &player, const Tile &tile);
     void logTileBuying(const Player &player, const Tile &tile);
+
     void logTryHouseBuying(const Player &player, const int8_t availableHouses, const int8_t availablHotels);
     void logHouseBuying(const Player &player, const Tile &tile, const int8_t availableHouses,
                         const int8_t availablHotels);
@@ -39,6 +44,7 @@ class Logger
 
     void logRemovePlayer(const Player &player, const Board &board);
     void logGameEnd(const std::vector<Player> &players);
+    void playerEndsTurn();
 
   private:
     std::string fileName{

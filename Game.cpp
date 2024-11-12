@@ -5,13 +5,12 @@
 #include "PlayerRemover.hpp"
 
 Game::Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower,
-           const DiceThrowerSingle *givenDiceThrowerSingle)
+           const std::vector<uint8_t> &playersOrder)
 {
     iterations = givenIterations;
     numOfPlayers = givenNumOfPlayers;
     diceThrower = givenDiceThrower;
-    diceThrowerSingle = givenDiceThrowerSingle;
-    createPlayersData();
+    createPlayersData(playersOrder);
     chance.setNextCardIdToBePlayed((rand() % chanceCardsNumber));
     communityChest.setNextCardIdToBePlayed((rand() % communityChestCardsNumber));
 }
@@ -27,13 +26,12 @@ void Game::play()
             auto &player = players.at(i);
             player.resetInteractedWithTile();
 
-            if (tradingEnabled)
+            if (tradingEnabled and player.getOwnedTilesIds().size() != 0)
             {
                 trader.trade(player, players, board, utils);
             }
 
-            // TO DO write to testGame some tests including houses building
-            if (housesBuyingEnabled)
+            if (housesBuyingEnabled and player.getOwnedTilesIds().size() != 0)
             {
                 housesBuilder.tryBuilding(player, board, utils);
             }
@@ -86,11 +84,15 @@ void Game::play()
                 {
                     Logger logger;
                     logger.logGameEnd(players);
+                    saveWinningPlayerData(players[0].getId());
+                    saveTilesData();
                     return;
                 }
                 i--;
             }
             collectTilesData(player.getCurrTileId());
+            Logger logger;
+            logger.playerEndsTurn();
         }
     }
 }
@@ -112,6 +114,8 @@ void Game::handleMovement(Player &player)
     while (throwCounter < 3 and isDouble)
     {
         auto diceResult = diceThrower->throwDice();
+        Logger logger;
+        logger.logDiceRolling(player, diceResult);
         isDouble = diceResult.getFirst() == diceResult.getSecond();
         throwCounter++;
 
@@ -132,6 +136,8 @@ void Game::handleMovement(Player &player)
 
     nextTile = nextTile % numOfMonopolyBoradTiles;
     player.setCurrTile(nextTile);
+    Logger logger;
+    logger.logMovement(player);
 }
 
 void Game::handleChanceOrCommunityChestTile(Player &player)
@@ -152,11 +158,11 @@ void Game::setPrison(Player &player)
     player.setCurrTile(prisonTile);
 }
 
-void Game::createPlayersData()
+void Game::createPlayersData(const std::vector<uint8_t> &playersOrder)
 {
-    for (uint8_t id = 1; id < numOfPlayers + 1; id++)
+    for (uint8_t i = 0; i < playersOrder.size(); i++)
     {
-        Player player(id);
+        Player player(playersOrder[i]);
         players.push_back(player);
     }
 }
@@ -164,6 +170,38 @@ void Game::createPlayersData()
 void Game::collectTilesData(const uint8_t currTile)
 {
     tilesVisitedCounters[currTile]++;
+}
+
+void Game::saveTilesData()
+{
+    std::ofstream file(
+        "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/statistics/tilesVisitsCounter.txt",
+        std::ios::app);
+    if (!file)
+    {
+        std::cout << "Error: Could not open the winningPlayers.txt file!" << std::endl;
+        return;
+    }
+    for (const auto &[key, value] : tilesVisitedCounters)
+    {
+        file << (int)key << "(" << (int)value << ") ";
+    }
+    file << std::endl;
+    file.close();
+}
+
+void Game::saveWinningPlayerData(const uint8_t playerId)
+{
+    std::ofstream file(
+        "/Users/konradmarkowski/Documents/Projekty Metody Numeryczne/MonopolyMc/logs/statistics/winningPlayers.txt",
+        std::ios::app);
+    if (!file)
+    {
+        std::cout << "Error: Could not open the winningPlayers.txt file!" << std::endl;
+        return;
+    }
+    file << (int)playerId << " ";
+    file.close();
 }
 
 void Game::printTilesVisitedCounters()

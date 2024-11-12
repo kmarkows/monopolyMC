@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <ctime>
 
 #include "DiceResult.hpp"
 
@@ -18,6 +19,6 @@ class DiceThrower
   private:
     uint8_t getRandNumberFrom1To6() const
     {
-        return 1 + (rand() % 6);
+        return 1 + (std::rand() % 6);
     }
 };

@@ -4,7 +4,6 @@
 #include "Chance.hpp"
 #include "CommunityChest.hpp"
 #include "DiceThrower.hpp"
-#include "DiceThrowerSingle.hpp"
 #include "HousesBuilder.hpp"
 #include "Player.hpp"
 #include "RentPayer.hpp"
@@ -21,7 +20,7 @@ class Game
   public:
     Game() = default;
     Game(const uint32_t givenIterations, const uint8_t givenNumOfPlayers, const DiceThrower *givenDiceThrower,
-         const DiceThrowerSingle *givenDiceThrowerSingle);
+         const std::vector<uint8_t> &playersOrder);
     void play();
 
     void printPlayersData();
@@ -57,19 +56,20 @@ class Game
     void enablePaying();
 
   private:
-    void createPlayersData();
+    void createPlayersData(const std::vector<uint8_t> &playersOrder);
     void handleMovement(Player &player);
     void handleTaxTiles(Player &player);
     void setPrison(Player &player);
     void handleChanceOrCommunityChestTile(Player &player);
 
     void collectTilesData(const uint8_t currTile);
+    void saveTilesData();
+    void saveWinningPlayerData(const uint8_t playerId);
 
     uint32_t iterations;
     uint8_t numOfPlayers;
     std::vector<Player> players{};
     const DiceThrower *diceThrower;
-    const DiceThrowerSingle *diceThrowerSingle;
     Board board{};
     bool tradingEnabled{false};
     bool tilesBuyingEnabled{false};
